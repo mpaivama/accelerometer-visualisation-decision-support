@@ -1,0 +1,153 @@
+{
+  "candidate_combinations_evaluated": 746496,
+  "valid_decision_equivalent_combinations": 15216,
+  "rejected_candidate_combinations": 731280,
+  "long_format_recommendation_rows": 23112,
+  "unique_visualisation_names": 28,
+  "unique_ordered_recommendation_name_sets": 26,
+  "unique_reviewable_recommendation_sets": 26,
+  "unique_recommendation_detail_records": 30,
+  "unique_recommendation_and_guidance_outputs": 1344,
+  "unique_complete_formatted_outputs": 12336,
+  "unique_decision_paths": 928,
+  "unique_design_note_sets": 144,
+  "valid_combinations_by_primary_task": {
+    "compare_values": 1296,
+    "composition": 2160,
+    "distribution": 720,
+    "event_pattern": 1440,
+    "relationship": 960,
+    "temporal_pattern": 8640
+  },
+  "recommendation_frequency": {
+    "Observation-by-time heatmap": 2880,
+    "100% stacked bar chart": 2160,
+    "Small-multiple composition bars": 1944,
+    "Small-multiple time-series plots": 1920,
+    "Behaviour timeline (tile plot)": 1440,
+    "Behaviour-by-time heatmap": 1440,
+    "Proportion-over-time profile": 1440,
+    "Stacked area profile": 1440,
+    "Pie or doughnut chart": 1080,
+    "Box or violin plot with raw points": 936,
+    "Time-series line plot": 720,
+    "Faceted density or ECDF plot": 648,
+    "Event raster or time-bin heatmap": 480,
+    "Event timeline or raster plot": 480,
+    "Event-frequency time profile": 480,
+    "Hexbin or two-dimensional density plot": 480,
+    "Scatter plot": 480,
+    "Paired dot plot or slope chart": 432,
+    "Repeated-measures line plot": 432,
+    "Summary time profile": 360,
+    "Summary time profile with interval ribbon": 360,
+    "Ternary plot": 360,
+    "Dot plot with summary and interval": 288,
+    "Bar chart": 144,
+    "Empirical cumulative distribution (ECDF)": 72,
+    "Histogram or density plot": 72,
+    "Point-range plot": 72,
+    "Summary dot plot": 72
+  },
+  "rejection_reason_frequency": {
+    "'n_compositional_parts' is only used when primary_task='composition'. Set n_compositional_parts=None for the selected task.": 357696,
+    "'n_overlaid_series' is only used when primary_task='temporal_pattern'. Set n_overlaid_series=1 for the selected task.": 89856,
+    "Incompatible inputs: primary_task='composition' requires data_form='classified_behaviour' or data_form='composition'. Change 'data_form', or choose a different 'primary_task'.": 62208,
+    "Incompatible inputs: primary_task='distribution' necessarily displays variability. Set show_variability=True.": 62208,
+    "Incompatible inputs: primary_task='relationship' requires data_form='continuous_signal' or data_form='derived_metric'. For categories, use primary_task='compare_values'.": 62208,
+    "'many_observations' currently changes recommendations only for primary_task='temporal_pattern' or primary_task='relationship'. Set many_observations=False for the selected task.": 20736,
+    "Incompatible inputs: primary_task='relationship' requires paired observed values. Set display_level='individual' or display_level='multiple_observations', not 'summary'.": 20736,
+    "Missing input: primary_task='composition' requires 'n_compositional_parts'. Enter the number of movement-behaviour parts that together form the fixed whole, for example 4.": 15552,
+    "'n_comparison_levels' is only used when comparison_structure='paired_repeated'. Set n_comparison_levels=1 for the selected comparison structure.": 12000,
+    "Incompatible comparison inputs: comparison_structure='paired_repeated' requires a comparison. Set comparison_focus to 'groups', 'time', or 'conditions'. If there is no comparison, keep comparison_focus='none' and set comparison_structure='not_applicable'.": 4608,
+    "comparison_focus='conditions' means a comparison is being made. Set comparison_structure='independent' or comparison_structure='paired_repeated'.": 4608,
+    "comparison_focus='groups' means a comparison is being made. Set comparison_structure='independent' or comparison_structure='paired_repeated'.": 4608,
+    "comparison_focus='none' is valid and means there is no comparison. For this choice, also set comparison_structure='not_applicable'.": 4608,
+    "comparison_focus='time' means a comparison is being made. Set comparison_structure='independent' or comparison_structure='paired_repeated'.": 4608,
+    "comparison_structure='paired_repeated' requires at least two linked comparison levels. Set n_comparison_levels to 2 or greater.": 4608,
+    "Incompatible inputs: primary_task='compare_values' requires a comparison. Set comparison_focus to 'groups', 'time', or 'conditions'. If there is no comparison, choose a different primary_task.": 432
+  },
+  "enumeration_domains": {
+    "data_form": [
+      "classified_behaviour",
+      "composition",
+      "continuous_signal",
+      "derived_metric"
+    ],
+    "primary_task": [
+      "compare_values",
+      "composition",
+      "distribution",
+      "event_pattern",
+      "relationship",
+      "temporal_pattern"
+    ],
+    "display_level": [
+      "individual",
+      "multiple_observations",
+      "summary"
+    ],
+    "comparison_focus": [
+      "conditions",
+      "groups",
+      "none",
+      "time"
+    ],
+    "comparison_structure": [
+      "independent",
+      "not_applicable",
+      "paired_repeated"
+    ],
+    "show_variability": [
+      false,
+      true
+    ],
+    "many_observations": [
+      false,
+      true
+    ],
+    "target_audience": [
+      "general",
+      "technical"
+    ],
+    "temporal_context": [
+      "full_24h",
+      "not_applicable",
+      "wake_time"
+    ],
+    "n_overlaid_series": [
+      1,
+      4,
+      7
+    ],
+    "n_comparison_levels": [
+      1,
+      2,
+      3
+    ],
+    "n_compositional_parts": [
+      null,
+      2,
+      3,
+      4
+    ]
+  },
+  "representative_numeric_values": {
+    "n_overlaid_series": {
+      "1": "Represents 1-3 overlaid temporal series: no layout warning.",
+      "4": "Represents 4-6 overlaid temporal series: readability warning.",
+      "7": "Represents more than 6 series: split/filter/summarise recommendation."
+    },
+    "n_comparison_levels": {
+      "1": "Used when the comparison is not paired or repeated.",
+      "2": "Represents exactly two linked levels: paired dot or slope chart.",
+      "3": "Represents more than two linked levels: repeated-measures line plot."
+    },
+    "n_compositional_parts": {
+      "null": "Used when the primary task is not composition.",
+      "2": "Represents a two-part composition.",
+      "3": "Represents exactly three parts: ternary plot may be suggested.",
+      "4": "Represents more than three compositional parts."
+    }
+  }
+}

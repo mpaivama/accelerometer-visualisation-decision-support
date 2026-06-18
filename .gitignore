@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+node_modules/
+node_modules
+.DS_Store
+
+# Local drafts and reference material not part of the reproducible toolkit code.
+Toolkit_operationalisation.ipynb
+Figure 2.png
+
+# Bulky generated report outputs. Regenerate with generate_decision_report.py.
+Decision_tree_full_report.md
+Decision_tree_full_report.xlsx
+build_decision_report_workbook.mjs
+verify_decision_report_workbook.mjs
+decision_report/workbook_data.json
+decision_report/*_preview.png
+decision_report/valid_combinations.csv
+decision_report/recommendations_long.csv
+figures/Decision_tree_architecture_figure.png

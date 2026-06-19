@@ -45,7 +45,7 @@ REPORT_REPRESENTATIVE_VALUES = {
     },
     "n_comparison_levels": {
         1: "Used when the comparison is not paired or repeated.",
-        2: "Represents exactly two linked levels: paired dot or slope chart.",
+        2: "Represents exactly two linked levels: paired, slope, or dumbbell display.",
         3: "Represents more than two linked levels: repeated-measures line plot.",
     },
     "n_compositional_parts": {
@@ -389,8 +389,9 @@ def _visual_mapping(visualisation: str) -> str:
         ),
         "Paired dot plot or slope chart": (
             "The x-axis represents the two linked time points or conditions, the y-axis "
-            "represents the metric value, and lines connect repeated observations from "
-            "the same unit."
+            "represents the metric value, and paired marks or lines connect the linked "
+            "values. When only summaries are shown, points represent paired summary "
+            "estimates and optional intervals represent uncertainty."
         ),
         "Repeated-measures line plot": (
             "The x-axis represents ordered repeated time points or conditions, the "
@@ -489,6 +490,12 @@ def _adaptation_guidance(visualisation: str) -> str:
             "bounds. State whether intervals are confidence intervals, standard "
             "errors, or another quantity."
         ),
+        "paired": (
+            "Change the paired time points or conditions, the accelerometer metric, "
+            "and the unit or summary group being linked. If only summary estimates "
+            "are available, use a paired/dumbbell summary layout with clearly defined "
+            "intervals instead of implying participant-level trajectories."
+        ),
         "bar": (
             "Change the category and count/proportion mappings. Use a zero "
             "baseline and avoid bars for summary metrics where distance from zero is "
@@ -507,6 +514,8 @@ def _adaptation_guidance(visualisation: str) -> str:
     }
 
     name = visualisation.lower()
+    if any(term in name for term in ("paired", "slope", "dumbbell")):
+        return guidance["paired"]
     if any(term in name for term in ("line", "profile", "area")):
         return guidance["line"]
     if "heatmap" in name or "tile" in name:
@@ -672,10 +681,14 @@ def _compare_values(inputs: DecisionInputs, recs: list[Recommendation]) -> None:
                 recs,
                 "Paired dot plot or slope chart",
                 "primary",
-                "Shows both within-unit change and the overall direction of differences.",
-                "Use for two paired time points or conditions.",
-                "Can become cluttered with many observations; use transparency or a "
-                "summary layer when needed.",
+                "Shows the direction and size of a two-level paired difference, either "
+                "for observed units or for paired summary estimates.",
+                "Use for two linked time points or conditions, including summary "
+                "weekday-versus-weekend or pre-post estimates when individual "
+                "paired values are not displayed.",
+                "Do not draw participant-level connecting lines when only summary "
+                "estimates are available; use a summary paired/dumbbell layout with "
+                "clearly labelled intervals instead.",
             )
         else:
             _add(

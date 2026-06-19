@@ -140,7 +140,7 @@
     },
     "n_comparison_levels": {
       "1": "Used when the comparison is not paired or repeated.",
-      "2": "Represents exactly two linked levels: paired dot or slope chart.",
+      "2": "Represents exactly two linked levels: paired, slope, or dumbbell display.",
       "3": "Represents more than two linked levels: repeated-measures line plot."
     },
     "n_compositional_parts": {

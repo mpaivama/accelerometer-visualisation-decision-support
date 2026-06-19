@@ -9,6 +9,12 @@ be a comprehensive plotting package, and it deliberately excludes visualisation
 of model coefficients, adjusted predictions, predicted values, or other
 model-derived results.
 
+This is a preliminary version. The decision tree is expected to change as it is
+applied to additional real-world accelerometer studies. The current version
+should therefore be read as an iterative decision-support component rather than a
+closed or definitive taxonomy of visualisation choices. Feedback and future case
+studies are part of the intended refinement process.
+
 ## Current scope
 
 The decision tree is intended for visualising:
@@ -122,7 +128,8 @@ For `continuous_signal` or `derived_metric` data:
 ### Compare values
 
 - Paired/repeated comparison with two linked levels -> Paired dot plot or slope
-  chart.
+  chart, including a summary paired/dumbbell variant when only summary estimates
+  and intervals are available.
 - Paired/repeated comparison with more than two linked levels ->
   Repeated-measures line plot.
 - Independent comparison with observations visible -> Dot plot with summary and
@@ -244,8 +251,31 @@ review-status fields.
   rows and report sections.
 - The architecture figure has been updated to use the current title and the
   current proportion branch wording.
+- Application to the NHANES 2011-2014 case-study paper led to a refinement of
+  the two-level paired/repeated comparison recommendation. The original wording
+  implied participant-level connected lines, but the case-study paper reports
+  weighted weekday and weekend summary estimates with confidence intervals.
+  The recommendation now explicitly supports a summary paired/dumbbell variant
+  and cautions against drawing participant-level trajectories when only summary
+  estimates are available.
 
-## Questions to revisit after applying the tree to the case study
+## Case-study-driven refinement
+
+The first worked application used To et al. (2022), a paper comparing weekday
+and weekend physical activity in NHANES 2011-2014 using daily MIMS-units. The
+case study clarified three points:
+
+- The toolkit should use the descriptive accelerometer outputs from Tables 1 and
+  2 as the basis for visualisation templates, because they directly display
+  accelerometer-derived metrics.
+- Regression/model outputs from Tables 3 and 4 are important to the paper but
+  remain outside the scope of this decision-tree component.
+- A paired/repeated comparison can be communicated at the summary-estimate level,
+  not only through participant-level paired observations. This required the
+  paired dot/slope recommendation to include summary paired/dumbbell displays
+  with clearly labelled intervals.
+
+## Questions to revisit after the first case-study application
 
 - Whether the field names `data_form`, `display_level`, and `primary_task` are
   understandable enough for movement-behaviour researchers without programming
@@ -261,6 +291,9 @@ review-status fields.
   templates for the worked case study, and which should remain signposts only.
 - Whether any recommendation names are still too broad without examples, even
   after adding visual mappings.
+- Whether future case studies expose more cases where one recommendation name
+  needs separate implementation variants for raw observations versus summary
+  estimates.
 
 ## Files generated from this iteration
 
@@ -274,3 +307,5 @@ review-status fields.
   report.
 - `decision_report/recommendation_sets.csv`: reviewable recommendation-set index.
 - `figures/Decision_tree_architecture_figure.*`: current architecture figure.
+- `CASE_STUDY_DECISION_TREE_APPLICATION.md`: first worked application and
+  case-study-driven refinement notes.

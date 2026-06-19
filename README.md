@@ -9,6 +9,12 @@ direct displays of accelerometer metrics. It is deliberately not a comprehensive
 plotting package, and it does not cover model coefficients, adjusted
 predictions, predicted values, or other model-derived results.
 
+This is a preliminary version of the decision-tree component. It is intended to
+be improved through real-world applications, feedback from movement-behaviour
+researchers, and future worked examples. Users are encouraged to treat the tool
+as part of an iterative development process and to suggest refinements where the
+recommendations do not fully fit a study context.
+
 ## What The Tool Does
 
 The decision tree asks about:
@@ -46,6 +52,8 @@ make_decision_tree_architecture_figure.py
 Toolkit_operationalisation_v1.ipynb
                                   Notebook demonstration of the decision tree
 DECISION_TREE_REVIEW.md            Current human-readable review of the tree
+CASE_STUDY_DECISION_TREE_APPLICATION.md
+                                  First worked application of the decision tree
 decision_report/                   Small generated audit artifacts
 figures/                           Architecture figure and caption
 test_*.py                          Unit tests
@@ -156,3 +164,19 @@ behaviour data, including:
 
 Do not use this component to select visualisations for statistical model
 results. Those outputs require a different decision process.
+
+## Development Status
+
+This repository is an early review version of the toolkit component. The
+recommendation logic has already been refined after applying it to the NHANES
+2011-2014 case-study paper included in the project documentation. Future
+applications will probably reveal additional edge cases, wording improvements,
+and plotting-template needs.
+
+Feedback is welcome, especially on:
+
+- whether the decision-tree questions are understandable to non-programmers;
+- whether the recommended visual mappings are specific enough to reproduce;
+- whether additional real-world accelerometer studies expose missing decision
+  points;
+- whether any recommendation should be split into a more precise option.

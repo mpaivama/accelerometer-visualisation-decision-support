@@ -43,6 +43,23 @@ class DecisionTreeTests(unittest.TestCase):
         )
         self.assertEqual(result, ["Paired dot plot or slope chart"])
 
+    def test_summary_paired_comparison_allows_dumbbell_estimates(self):
+        result = recommend_visualisations(
+            DecisionInputs(
+                data_form="derived_metric",
+                primary_task="compare_values",
+                display_level="summary",
+                comparison_focus="time",
+                comparison_structure="paired_repeated",
+                n_comparison_levels=2,
+            )
+        )
+        recommendation = result.recommendations[0]
+        self.assertEqual(recommendation.visualisation, "Paired dot plot or slope chart")
+        self.assertIn("paired summary estimates", recommendation.visual_mapping)
+        self.assertIn("summary paired/dumbbell", recommendation.caution)
+        self.assertIn("summary estimates are available", recommendation.adaptation_guidance)
+
     def test_continuous_relationship_recommends_scatterplot(self):
         result = names(
             DecisionInputs(

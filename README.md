@@ -20,7 +20,7 @@ fully fit a study context.
 
 ## Toolkit Components
 
-The repository currently contains three connected pieces:
+The repository currently contains four connected pieces:
 
 1. **Decision tree recommendation engine**
 
@@ -40,6 +40,11 @@ The repository currently contains three connected pieces:
    `case_study/` contains reproducible code and outputs for the NHANES
    2011-2014 worked example. It demonstrates how selected decision-tree
    recommendations can be translated into checklist-informed figures.
+
+4. **Visualisation checklist**
+
+   `checklist/` contains the current checklist draft used to refine the
+   case-study figures and to document checklist-informed design choices.
 
 The decision tree includes a recommendation-to-example registry. When a
 recommendation is returned, the output tells the user whether the case study
@@ -88,6 +93,7 @@ CASE_STUDY_DECISION_TREE_APPLICATION.md
                                   First worked application of the decision tree
 case_study/                        NHANES worked example code, figures, and
                                   reproducibility notes
+checklist/                         Checklist component of the toolkit
 decision_report/                   Small generated audit artifacts
 figures/                           Architecture figure and caption
 test_*.py                          Unit tests
@@ -155,6 +161,7 @@ Reports. 2022;28:101892.
 The case-study folder contains:
 
 - the dataset reconstruction script;
+- the published reference paper PDF under its open-access licence;
 - transparent reconstruction rules;
 - compact reproduced outputs needed to regenerate the figures;
 - checklist-informed visualisation code;

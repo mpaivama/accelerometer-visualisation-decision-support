@@ -10,8 +10,9 @@ physical activity between weekdays and weekend days among U.S. children and
 adults: Cross-sectional analysis of NHANES 2011-2014 data.* Preventive Medicine
 Reports. 2022;28:101892.
 
-The published article PDF is not included in this repository. The case-study
-documents cite the paper and describe the rules extracted from it.
+The published article PDF is included in `references/`. The PDF metadata
+identifies the paper as open access under the Creative Commons Attribution 4.0
+International licence.
 
 ## What Is Included
 
@@ -30,6 +31,9 @@ CASE_STUDY_DATASET_REPRODUCTION_RULES.md
 CASE_STUDY_VISUALISATION_CODE_GUIDE.md
     Guide to the plotting script, including which parts are case-study-specific
     and how the examples link to decision-tree recommendations.
+
+references/
+    Published NHANES case-study paper and citation/licence note.
 
 outputs/case_study_summary_estimates.csv
 outputs/case_study_participant_metrics.csv

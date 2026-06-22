@@ -18,7 +18,6 @@ decision_report/workbook_data.json
 decision_report/*_preview.png
 decision_report/valid_combinations.csv
 decision_report/recommendations_long.csv
-figures/Decision_tree_architecture_figure.png
 
 # Case-study raw public data and bulky regenerated intermediates.
 # Download NHANES .xpt files from CDC and regenerate these when needed.

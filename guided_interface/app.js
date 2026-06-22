@@ -147,6 +147,22 @@ function addDetail(card, label, text) {
   card.append(paragraph);
 }
 
+function addDetailList(card, label, items) {
+  if (!items || items.length === 0) return;
+  const container = document.createElement("div");
+  const strong = document.createElement("strong");
+  const list = document.createElement("ul");
+  container.className = "recommendation-detail";
+  strong.textContent = `${label}: `;
+  items.forEach((item) => {
+    const row = document.createElement("li");
+    row.textContent = item;
+    list.append(row);
+  });
+  container.append(strong, list);
+  card.append(container);
+}
+
 function renderList(elementId, items) {
   const list = document.querySelector(elementId);
   list.replaceChildren();
@@ -178,6 +194,14 @@ async function renderResults() {
     addDetail(card, "Use when", recommendation.use_when);
     addDetail(card, "Caution", recommendation.caution);
     addDetail(card, "How to adapt code later", recommendation.adaptation_guidance);
+    addDetail(card, "Worked example status", recommendation.implementation_status);
+    addDetail(card, "Worked example note", recommendation.implementation_note);
+    addDetail(card, "Example code file", recommendation.example_code_file);
+    addDetailList(card, "Direct worked examples", recommendation.direct_case_study_examples);
+    addDetailList(card, "Related worked examples", recommendation.related_case_study_examples);
+    addDetail(card, "Data needed", recommendation.data_required);
+    addDetailList(card, "Adapt in the worked example", recommendation.case_study_adaptation_points);
+    addDetailList(card, "Checklist aspects to review", recommendation.checklist_aspects_to_review);
     recommendationList.append(card);
   });
 

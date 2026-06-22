@@ -188,16 +188,7 @@ def recommendation_signature(recommendations):
     """Return the review-level identity of a recommendation output."""
 
     return tuple(
-        (
-            rec.visualisation,
-            rec.visual_mapping,
-            rec.rank,
-            rec.rationale,
-            rec.use_when,
-            rec.caution or "",
-            rec.adaptation_guidance or "",
-            rec.implementation_status,
-        )
+        json.dumps(asdict(rec), sort_keys=True)
         for rec in recommendations
     )
 

@@ -18,7 +18,7 @@ def names(inputs):
 
 class DecisionTreeTests(unittest.TestCase):
     def test_summary_group_comparison_recommends_point_range(self):
-        result = names(
+        result = recommend_visualisations(
             DecisionInputs(
                 data_form="derived_metric",
                 primary_task="compare_values",
@@ -27,8 +27,13 @@ class DecisionTreeTests(unittest.TestCase):
                 comparison_structure="independent",
             )
         )
-        self.assertEqual(result[0], "Point-range plot")
-        self.assertIn("Bar chart", result)
+        names = [recommendation.visualisation for recommendation in result.recommendations]
+        self.assertEqual(names[0], "Point-range plot")
+        self.assertIn("Bar chart", names)
+        point_range = result.recommendations[0]
+        self.assertEqual(point_range.implementation_status, "direct_example_available")
+        self.assertTrue(point_range.direct_case_study_examples)
+        self.assertIn("plot_difference_by_sample", point_range.direct_case_study_examples[0])
 
     def test_paired_two_condition_comparison_recommends_paired_dots(self):
         result = names(
@@ -59,6 +64,8 @@ class DecisionTreeTests(unittest.TestCase):
         self.assertIn("paired summary estimates", recommendation.visual_mapping)
         self.assertIn("summary paired/dumbbell", recommendation.caution)
         self.assertIn("summary estimates are available", recommendation.adaptation_guidance)
+        self.assertEqual(recommendation.implementation_status, "direct_example_available")
+        self.assertTrue(recommendation.direct_case_study_examples)
 
     def test_continuous_relationship_recommends_scatterplot(self):
         result = names(
@@ -71,7 +78,7 @@ class DecisionTreeTests(unittest.TestCase):
         self.assertEqual(result, ["Scatter plot"])
 
     def test_many_continuous_observations_recommends_hexbin(self):
-        result = names(
+        result = recommend_visualisations(
             DecisionInputs(
                 data_form="derived_metric",
                 primary_task="relationship",
@@ -79,7 +86,13 @@ class DecisionTreeTests(unittest.TestCase):
                 many_observations=True,
             )
         )
-        self.assertEqual(result, ["Hexbin or two-dimensional density plot"])
+        self.assertEqual(
+            [recommendation.visualisation for recommendation in result.recommendations],
+            ["Hexbin or two-dimensional density plot"],
+        )
+        recommendation = result.recommendations[0]
+        self.assertEqual(recommendation.implementation_status, "direct_example_available")
+        self.assertIn("plot_weekday_weekend_relationship", recommendation.direct_case_study_examples[0])
 
     def test_summary_without_variability_recommends_summary_dots(self):
         result = names(
@@ -197,10 +210,40 @@ class DecisionTreeTests(unittest.TestCase):
         self.assertIn("Visual mapping:", output)
         self.assertIn("Why:", output)
         self.assertIn("Adaptation:", output)
+        self.assertIn("Example code file:", output)
+        self.assertIn("Checklist aspects to review:", output)
         self.assertIn("DESIGN NOTES", output)
         self.assertNotIn("CROSS-CUTTING", output)
         self.assertIn("full 24-hour day", output)
         self.assertLess(output.index("Visual mapping:"), output.index("Why:"))
+
+    def test_related_example_guidance_is_available_for_scatterplot(self):
+        result = recommend_visualisations(
+            DecisionInputs(
+                data_form="derived_metric",
+                primary_task="relationship",
+                display_level="multiple_observations",
+            )
+        )
+        recommendation = result.recommendations[0]
+        self.assertEqual(recommendation.visualisation, "Scatter plot")
+        self.assertEqual(recommendation.implementation_status, "related_example_available")
+        self.assertTrue(recommendation.related_case_study_examples)
+        self.assertIn("hexbin", recommendation.related_case_study_examples[0].lower())
+
+    def test_general_example_guidance_is_available_for_unimplemented_recommendation(self):
+        result = recommend_visualisations(
+            DecisionInputs(
+                data_form="continuous_signal",
+                primary_task="temporal_pattern",
+                display_level="individual",
+            )
+        )
+        recommendation = result.recommendations[0]
+        self.assertEqual(recommendation.visualisation, "Time-series line plot")
+        self.assertEqual(recommendation.implementation_status, "general_example_available")
+        self.assertTrue(recommendation.related_case_study_examples)
+        self.assertIn("not implemented", recommendation.implementation_note)
 
     def test_each_primary_task_generates_a_recommendation(self):
         valid_inputs = [

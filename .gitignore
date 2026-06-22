@@ -19,3 +19,11 @@ decision_report/*_preview.png
 decision_report/valid_combinations.csv
 decision_report/recommendations_long.csv
 figures/Decision_tree_architecture_figure.png
+
+# Case-study raw public data and bulky regenerated intermediates.
+# Download NHANES .xpt files from CDC and regenerate these when needed.
+*.xpt
+case_study/NHANES*/
+case_study/outputs/.matplotlib_cache/
+case_study/outputs/case_study_valid_day_metrics.csv
+case_study/outputs/case_study_analytic_valid_day_metrics.csv

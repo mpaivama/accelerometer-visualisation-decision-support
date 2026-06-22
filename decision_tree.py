@@ -116,6 +116,13 @@ class Recommendation:
     caution: str | None = None
     adaptation_guidance: str | None = None
     implementation_status: str = "signpost_only"
+    implementation_note: str | None = None
+    example_code_file: str | None = None
+    direct_case_study_examples: list[str] = field(default_factory=list)
+    related_case_study_examples: list[str] = field(default_factory=list)
+    data_required: str | None = None
+    case_study_adaptation_points: list[str] = field(default_factory=list)
+    checklist_aspects_to_review: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -126,6 +133,227 @@ class DecisionResult:
     decision_path: list[str]
     recommendations: list[Recommendation]
     design_notes: list[str] = field(default_factory=list)
+
+
+CASE_STUDY_EXAMPLE_CODE_FILE = (
+    "case_study/create_case_study_visualisations.py in the repository; "
+    "Case study/scripts/create_case_study_visualisations.py in the shared Use cases folder."
+)
+
+CASE_STUDY_EXAMPLES = {
+    "paired_overall": (
+        "Figure 1 / plot_overall_weekday_weekend(): paired summary "
+        "weekday-versus-weekend MIMS estimates."
+    ),
+    "point_range": (
+        "Figures 2-3 / plot_difference_by_sample(): point-range subgroup "
+        "differences with 95% confidence intervals."
+    ),
+    "paired_panels": (
+        "Figures 4-5 / plot_weekday_weekend_means_by_sample(): panelled paired "
+        "weekday and weekend-day summary estimates."
+    ),
+    "distribution": (
+        "Figure 6 / plot_individual_difference_distribution(): filled "
+        "small-multiple distribution of participant-level differences."
+    ),
+    "hexbin": (
+        "Figure 7 / plot_weekday_weekend_relationship(): hexbin density display "
+        "for many paired continuous observations."
+    ),
+    "helpers": (
+        "Shared helpers in create_case_study_visualisations.py: "
+        "apply_plot_style(), clean_axis(), configure_x_axis(), save_figure(), "
+        "and write_figure_notes()."
+    ),
+}
+
+DEFAULT_CHECKLIST_ASPECTS = [
+    "Confirm that the plotted values are direct accelerometer-derived metrics.",
+    "Use explicit metric names and units.",
+    "Use accessible colour and avoid relying on colour alone.",
+    "State what any intervals, annotations, or reference lines represent.",
+    "Write a caption and alt text that explain the visual mapping.",
+]
+
+CASE_STUDY_IMPLEMENTATION_REGISTRY = {
+    "Paired dot plot or slope chart": {
+        "implementation_status": "direct_example_available",
+        "implementation_note": (
+            "A worked case-study example is available for paired summary "
+            "accelerometer metrics. Use it as the primary starting point when the "
+            "decision tree recommends a two-level paired comparison."
+        ),
+        "direct_case_study_examples": [
+            CASE_STUDY_EXAMPLES["paired_overall"],
+            CASE_STUDY_EXAMPLES["paired_panels"],
+        ],
+        "data_required": (
+            "One row per paired level, group, or subgroup, with estimate and "
+            "optional lower/upper interval columns."
+        ),
+        "case_study_adaptation_points": [
+            "Replace weekday/weekend labels with the paired levels or conditions.",
+            "Replace MIMS-units with the selected accelerometer metric and units.",
+            "Use summary connectors only for linked summary estimates; avoid implying participant-level trajectories when individual trajectories are not plotted.",
+        ],
+        "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS
+        + [
+            "Make it explicit when an axis is zoomed and does not start at zero.",
+            "Keep paired values visually close and explain the connector meaning.",
+        ],
+    },
+    "Point-range plot": {
+        "implementation_status": "direct_example_available",
+        "implementation_note": (
+            "A worked case-study example is available for summary comparisons "
+            "with uncertainty intervals."
+        ),
+        "direct_case_study_examples": [CASE_STUDY_EXAMPLES["point_range"]],
+        "data_required": (
+            "One row per category or subgroup, with a summary estimate and lower/"
+            "upper interval columns."
+        ),
+        "case_study_adaptation_points": [
+            "Replace subgroup domains and category order with those relevant to the research question.",
+            "Replace weekday-minus-weekend MIMS-units with the selected summary metric.",
+            "Define whether intervals are confidence intervals, standard errors, or another quantity.",
+        ],
+        "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS
+        + [
+            "Align numeric labels with point estimates rather than interval lines.",
+            "Use a zero/reference line only when it has a clear interpretation.",
+        ],
+    },
+    "Histogram or density plot": {
+        "implementation_status": "direct_example_available",
+        "implementation_note": (
+            "A worked case-study example is available for displaying the "
+            "distribution of participant-level accelerometer metrics."
+        ),
+        "direct_case_study_examples": [CASE_STUDY_EXAMPLES["distribution"]],
+        "data_required": (
+            "Participant-level or observation-level metric values, optionally with "
+            "a grouping variable for panels."
+        ),
+        "case_study_adaptation_points": [
+            "Replace the participant-level difference variable with the metric whose distribution should be shown.",
+            "Choose histogram bin width or density smoothing deliberately and report any trimming.",
+            "Use filled area or another clear distribution encoding when distribution shape is the message.",
+        ],
+        "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS
+        + [
+            "Avoid implying tails were removed when axes are trimmed; state trimming transparently.",
+            "Use small multiples when overlapping distributions reduce readability.",
+        ],
+    },
+    "Hexbin or two-dimensional density plot": {
+        "implementation_status": "direct_example_available",
+        "implementation_note": (
+            "A worked case-study example is available for many paired continuous "
+            "observations where a standard scatterplot would overplot."
+        ),
+        "direct_case_study_examples": [CASE_STUDY_EXAMPLES["hexbin"]],
+        "data_required": (
+            "One row per observation with two paired continuous variables; at "
+            "least one should be a direct accelerometer-derived metric."
+        ),
+        "case_study_adaptation_points": [
+            "Replace weekday and weekend-day MIMS variables with the two continuous variables to compare.",
+            "Choose bin size or density settings deliberately and describe the colour scale.",
+            "Use a reference line only when it has a meaningful interpretation for the variables.",
+        ],
+        "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS
+        + [
+            "Explain unfamiliar encodings such as hexbins in the caption.",
+            "Use a colour-vision-deficiency friendly sequential scale for density.",
+        ],
+    },
+    "Faceted density or ECDF plot": {
+        "implementation_status": "related_example_available",
+        "implementation_note": (
+            "The exact density/ECDF variant is not implemented, but Figure 6 "
+            "shows the same small-multiple distribution logic and checklist "
+            "treatment."
+        ),
+        "related_case_study_examples": [CASE_STUDY_EXAMPLES["distribution"]],
+        "data_required": (
+            "Observation-level metric values and a grouping variable for facets."
+        ),
+        "case_study_adaptation_points": [
+            "Replace the filled histogram layer with a density curve or ECDF layer.",
+            "Keep shared axes across facets when visual comparison is intended.",
+            "Explain density or cumulative proportion in plain language when needed.",
+        ],
+        "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
+    },
+    "Scatter plot": {
+        "implementation_status": "related_example_available",
+        "implementation_note": (
+            "The exact scatterplot is not implemented, but Figure 7 provides a "
+            "closely related relationship example. Use a scatter layer instead "
+            "of hexbin when overplotting is not a concern."
+        ),
+        "related_case_study_examples": [CASE_STUDY_EXAMPLES["hexbin"]],
+        "data_required": (
+            "One row per observation with paired values for two continuous variables."
+        ),
+        "case_study_adaptation_points": [
+            "Replace the hexbin layer with points when the number of observations is readable.",
+            "Use transparency or small markers if mild overplotting remains.",
+            "Avoid adding trend lines unless they represent a clearly described descriptive summary rather than a model result.",
+        ],
+        "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
+    },
+    "Dot plot with summary and interval": {
+        "implementation_status": "related_example_available",
+        "implementation_note": (
+            "The exact raw-point-plus-summary figure is not implemented, but the "
+            "point-range example shows the summary and interval layer. Add raw "
+            "points when individual observations are available."
+        ),
+        "related_case_study_examples": [CASE_STUDY_EXAMPLES["point_range"]],
+        "data_required": (
+            "Observation-level values plus group summary estimates and intervals."
+        ),
+        "case_study_adaptation_points": [
+            "Add raw points behind the summary marker using jitter or transparency.",
+            "Keep the summary marker visually distinct from individual observations.",
+            "State whether intervals show uncertainty around the summary or variability in observations.",
+        ],
+        "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
+    },
+    "Summary dot plot": {
+        "implementation_status": "related_example_available",
+        "implementation_note": (
+            "The exact no-interval summary dot plot is not implemented, but the "
+            "point-range example can be adapted by removing the interval layer."
+        ),
+        "related_case_study_examples": [CASE_STUDY_EXAMPLES["point_range"]],
+        "data_required": "One summary value per category or subgroup.",
+        "case_study_adaptation_points": [
+            "Remove the interval layer and make clear why uncertainty or variability is not shown.",
+            "Use direct labels when there are few summary values.",
+            "Keep the original metric units on the axis.",
+        ],
+        "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
+    },
+    "Box or violin plot with raw points": {
+        "implementation_status": "related_example_available",
+        "implementation_note": (
+            "The exact box/violin plot is not implemented, but Figure 6 provides "
+            "the closest participant-level distribution example."
+        ),
+        "related_case_study_examples": [CASE_STUDY_EXAMPLES["distribution"]],
+        "data_required": "Observation-level values and the category or group being compared.",
+        "case_study_adaptation_points": [
+            "Replace the histogram layer with a box, violin, and/or raw-point layer.",
+            "Use raw points when sample size and overlap allow.",
+            "Avoid violin layers for very small samples.",
+        ],
+        "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
+    },
+}
 
 
 def validate_inputs(inputs: DecisionInputs) -> None:
@@ -306,6 +534,47 @@ def validate_inputs(inputs: DecisionInputs) -> None:
         )
 
 
+def _implementation_metadata(visualisation: str) -> dict:
+    """Return case-study example guidance for a recommendation."""
+
+    if visualisation in CASE_STUDY_IMPLEMENTATION_REGISTRY:
+        metadata = CASE_STUDY_IMPLEMENTATION_REGISTRY[visualisation].copy()
+    else:
+        metadata = {
+            "implementation_status": "general_example_available",
+            "implementation_note": (
+                "This exact visualisation is not implemented in the worked case "
+                "study. The case-study plotting script still provides adaptable "
+                "examples of data preparation, visual mapping, checklist-informed "
+                "design defaults, accessible colour, captions, alt text, and "
+                "multi-format export. Use the closest visual mapping as a starting "
+                "point rather than building from a blank script."
+            ),
+            "related_case_study_examples": [CASE_STUDY_EXAMPLES["helpers"]],
+            "data_required": (
+                "Prepare data in the structure described by the visual mapping for "
+                "this recommendation."
+            ),
+            "case_study_adaptation_points": [
+                "Start from the case-study script section whose visual structure is closest to this recommendation.",
+                "Replace the NHANES-specific metric names, grouping variables, category order, and labels.",
+                "Adapt the plotting layer so the marks match the recommended visual mapping.",
+                "Review the checklist items that depend on the chosen visualisation type.",
+            ],
+            "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
+        }
+
+    metadata.setdefault("implementation_status", "general_example_available")
+    metadata.setdefault("implementation_note", None)
+    metadata.setdefault("example_code_file", CASE_STUDY_EXAMPLE_CODE_FILE)
+    metadata.setdefault("direct_case_study_examples", [])
+    metadata.setdefault("related_case_study_examples", [])
+    metadata.setdefault("data_required", None)
+    metadata.setdefault("case_study_adaptation_points", [])
+    metadata.setdefault("checklist_aspects_to_review", DEFAULT_CHECKLIST_ASPECTS)
+    return metadata
+
+
 def _add(
     recommendations: list[Recommendation],
     visualisation: str,
@@ -323,6 +592,7 @@ def _add(
             use_when=use_when,
             caution=caution,
             adaptation_guidance=_adaptation_guidance(visualisation),
+            **_implementation_metadata(visualisation),
         )
     )
 
@@ -974,6 +1244,32 @@ def format_result(result: DecisionResult) -> str:
         if rec.adaptation_guidance:
             lines.append(f"   Adaptation: {rec.adaptation_guidance}")
         lines.append(f"   Code status: {rec.implementation_status}")
+        if rec.implementation_note:
+            lines.append(f"   Code note: {rec.implementation_note}")
+        if rec.example_code_file:
+            lines.append(f"   Example code file: {rec.example_code_file}")
+        if rec.direct_case_study_examples:
+            lines.append("   Direct worked example(s):")
+            lines.extend(
+                f"      - {example}" for example in rec.direct_case_study_examples
+            )
+        if rec.related_case_study_examples:
+            lines.append("   Related worked example(s):")
+            lines.extend(
+                f"      - {example}" for example in rec.related_case_study_examples
+            )
+        if rec.data_required:
+            lines.append(f"   Data needed: {rec.data_required}")
+        if rec.case_study_adaptation_points:
+            lines.append("   Adapt in the worked example:")
+            lines.extend(
+                f"      - {point}" for point in rec.case_study_adaptation_points
+            )
+        if rec.checklist_aspects_to_review:
+            lines.append("   Checklist aspects to review:")
+            lines.extend(
+                f"      - {aspect}" for aspect in rec.checklist_aspects_to_review
+            )
 
     lines.append("\nDESIGN NOTES")
     lines.extend(f"- {note}" for note in result.design_notes)

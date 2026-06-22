@@ -1,0 +1,7 @@
+step,n_before,n_after,n_excluded
+Age >= 6 years,19931,16733,3198
+PAM summary data available (PAXSTS == 1),16733,14175,2558
+PAM worn on non-dominant hand (PAXHAND == 1),14175,14048,127
+Not known pregnant at exam (exclude RIDEXPRG == 1),14048,13943,105
+Does not need special equipment to walk (exclude PFQ054 == 1),13943,13012,931
+Positive MEC exam weight,13012,13012,0

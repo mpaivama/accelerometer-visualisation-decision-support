@@ -1,2 +1,5 @@
 matplotlib
 nbformat
+numpy
+pandas
+tabulate

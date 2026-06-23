@@ -1,0 +1,22 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Accelerometer data visualisation decision support toolkit
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Marian
+    family-names: Marchiori
+    email: marianmarchiori@hotmail.com
+    orcid: 'https://orcid.org/0000-0002-8849-1291'
+repository-code: >-
+  https://github.com/mpaivama/accelerometer-visualisation-decision-support
+abstract: >-
+  This repository contains a preliminary toolkit to support
+  visualisation decision-making in accelerometer-based
+  movement behaviour research.
+version: '0.1'
+date-released: '2026-06-23'

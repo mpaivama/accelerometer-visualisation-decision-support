@@ -146,6 +146,15 @@ Suggested case-study implementation:
 - Day type is shown with colour, side-by-side positions, or small panels.
 - Adult and child samples should be separated into panels or separate figures.
 
+Bar-chart condition:
+
+The conditional bar-chart alternative is not the preferred choice for this
+case-study branch. The plotted values are weighted mean MIMS-units with
+confidence intervals, and the main task is precise comparison of estimates and
+uncertainty across subgroups. A bar chart would use length from zero, but it
+would not communicate the intervals or the paired weekday/weekend structure as
+clearly as the point-range or paired/dumbbell displays.
+
 ## Decision-tree application 3: weekday-minus-weekend difference by subgroup
 
 Research question represented: Which subgroups show larger or smaller weekday
@@ -190,6 +199,15 @@ because it directly communicates the paper's central message: adults and
 children were generally more active on weekdays, but the size of that difference
 varied across subgroups.
 
+Bar-chart condition:
+
+The conditional bar-chart alternative is also not preferred for this branch.
+Although weekday-minus-weekend differences have a meaningful zero, the published
+descriptive output includes confidence intervals and may include values on
+either side of zero in other applications. A zero-reference point-range plot
+keeps the estimate, uncertainty interval, and direction of difference visible in
+one visual structure.
+
 ## Decision-tree application 4: percentage difference
 
 Research question represented: What is the relative size of the weekday-weekend
@@ -223,22 +241,99 @@ Suggested case-study implementation:
 
 - Use percentage difference as annotation or secondary context rather than the
   main figure.
-- If visualised directly, use a dot plot with subgroup categories on one axis
-  and percentage difference on the other.
+- If visualised directly, use a summary dot plot with the sample or subgroup
+  categories on one axis and percentage difference on the other.
+- The worked code includes this as Figure 8 for the overall adult and
+  child/adolescent samples.
 - Avoid overemphasising percentages without uncertainty intervals.
+
+Bar-chart condition:
+
+The conditional bar-chart alternative becomes reasonable only when all of these
+conditions are met:
+
+- the metric has a meaningful zero;
+- the message is magnitude from zero rather than uncertainty, distribution, or
+  small differences between nearby estimates;
+- the value is a count, total, duration, proportion, or percentage, rather than
+  a mean that needs interval context;
+- the number of categories is small enough for direct labels and a true zero
+  baseline to remain readable.
+
+For the worked case study, these conditions are met most clearly by the overall
+percentage-difference summaries, so the code now includes Figure 9 as a
+conditional bar-chart example. The bar chart is an implementation example for
+this specific conditional branch, not a replacement for the point-range or
+dumbbell plots used for MIMS-unit means and differences.
+
+## Optional implementation example 5: distribution of individual differences
+
+Research question represented: How much do individual weekday-weekend
+differences vary within adults and children/adolescents?
+
+This branch was not central to the published paper's tabular presentation, but
+the reproduced participant-level dataset makes it useful as an additional
+toolkit example. It demonstrates how the decision tree can move from summary
+estimates to a distribution-focused display when individual variation is the
+main message.
+
+Current decision-tree recommendation:
+
+- Histogram or density plot.
+- Faceted density or ECDF plot when comparing distributions.
+
+Suggested case-study implementation:
+
+- Use aligned small-multiple density/histogram panels for adults and
+  children/adolescents.
+- The x-axis represents participant-level weekday-minus-weekend MIMS-units.
+- The distribution area represents the relative density of participant-level
+  differences.
+- A zero reference line marks no weekday-weekend difference.
+- Median lines provide a simple descriptive anchor without turning the figure
+  into a statistical-significance display.
+
+The worked code includes this as Figure 6.
+
+## Optional implementation example 6: participant-level weekday/weekend relationship
+
+Research question represented: Do participants with higher weekday activity also
+tend to have higher weekend-day activity?
+
+This branch is an exploratory direct display of accelerometer metrics. It is not
+used to communicate model results and should not be interpreted as a regression
+or adjusted association.
+
+Current decision-tree recommendation:
+
+- Hexbin or two-dimensional density plot for many paired continuous
+  observations.
+
+Suggested case-study implementation:
+
+- Use one panel for adults and one for children/adolescents.
+- The x-axis represents participant-level weekend-day MIMS-units.
+- The y-axis represents participant-level weekday MIMS-units.
+- Hexagon colour represents participant density.
+- A diagonal equality line marks equal weekday and weekend-day activity.
+
+The worked code includes this as Figure 7.
 
 ## Not selected decision-tree branches
 
-The paper does not require these branches for the current toolkit case study:
+The paper does not require these branches as primary displays of the published
+descriptive tables:
 
 - `temporal_pattern`: weekday/weekend are discrete day-type summaries, not
   within-day time profiles.
-- `distribution`: the paper does not communicate distributions of individual
-  MIMS values.
+- `distribution`: the published paper does not communicate distributions of
+  individual MIMS values, although the worked code includes Figure 6 as an
+  optional implementation example using the reproduced participant-level data.
 - `composition`: MIMS-units are not compositional parts of a fixed whole.
-- `relationship`: the subgroup characteristics are categorical in the paper;
-  categorical characteristics should be handled as group comparisons, not
-  continuous relationships.
+- `relationship`: subgroup characteristics are categorical in the published
+  tables and should be handled as group comparisons. The worked code includes
+  Figure 7 only for the direct participant-level relationship between weekday
+  and weekend-day MIMS-units.
 - `event_pattern`: the paper does not visualise bouts, events, or transitions.
 
 ## Recommended figure set for the worked case study
@@ -247,12 +342,25 @@ Based on the decision-tree outputs and the scope of the toolkit, the worked case
 study should prioritise:
 
 1. A summary paired/dumbbell plot for overall weekday versus weekend MIMS-units
-   in adults and children.
+   in adults and children/adolescents (Figure 1).
 2. A horizontal point-range plot for weekday-minus-weekend MIMS-unit differences
-   across subgroups, with a zero reference line.
+   across subgroups, with a zero reference line (Figures 2 and 3).
 3. Optional point-range plots for weekday and weekend MIMS-unit means by
    subgroup if the worked example needs to show the absolute activity levels
-   behind the differences.
+   behind the differences (Figures 4 and 5).
+4. An optional distribution plot of participant-level weekday-weekend
+   differences to demonstrate how the same accelerometer metric can be
+   communicated when individual variability is the main message (Figure 6).
+5. An optional two-dimensional density plot of participant-level weekday and
+   weekend-day MIMS-units to demonstrate direct relationships between two
+   accelerometer metrics, without moving into model-result visualisation
+   (Figure 7).
+6. An optional summary dot plot for percentage weekday-weekend differences when
+   the relative difference is useful as secondary descriptive context (Figure
+   8).
+7. A conditional bar-chart example for percentage differences only when
+   magnitude from a meaningful zero is the main message and uncertainty is not
+   central (Figure 9).
 
 The model-result tables can be discussed as part of the paper context, but they
 should not be used as the basis for this toolkit component's visualisation

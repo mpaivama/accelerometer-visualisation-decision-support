@@ -22,7 +22,7 @@ prepare_case_study_dataset.py
     files.
 
 create_case_study_visualisations.py
-    Generates the seven checklist-informed case-study figures.
+    Generates the nine checklist-informed case-study figures.
 
 CASE_STUDY_DATASET_REPRODUCTION_RULES.md
     Transparent record of rules extracted from the paper and rules extrapolated

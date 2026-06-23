@@ -148,6 +148,7 @@ HEXBIN_CMAP = "cividis_r"
 METRIC_WEEKDAY = "Weekday MIMS-units"
 METRIC_WEEKEND = "Weekend-day MIMS-units"
 METRIC_DIFFERENCE = "Weekday minus weekend MIMS-units"
+METRIC_PERCENT = "Percent difference from weekday"
 
 
 # ============================================================
@@ -269,6 +270,10 @@ def thousands(x: float, _pos: int) -> str:
 
 def formatted_value(value: float) -> str:
     return f"{value:,.0f}"
+
+
+def formatted_percent(value: float) -> str:
+    return f"{value:.1f}%"
 
 
 def metric_subset(summary: pd.DataFrame, metric: str) -> pd.DataFrame:
@@ -837,6 +842,194 @@ def plot_weekday_weekend_means_by_sample(summary: pd.DataFrame, sample: str) -> 
     }
 
 
+def overall_percent_difference(summary: pd.DataFrame) -> pd.DataFrame:
+    percent = metric_subset(summary, METRIC_PERCENT)
+    percent = percent[percent["domain"] == "sample"].copy()
+    percent["sample"] = pd.Categorical(percent["sample"], SAMPLE_ORDER, ordered=True)
+    return percent.sort_values("sample")
+
+
+def plot_percentage_difference_summary_dot(summary: pd.DataFrame) -> dict:
+    """Example: summary dot plot without intervals.
+
+    DECISION TREE LINK:
+    Directly implements "Summary dot plot" for a summary-value comparison where
+    uncertainty is unavailable or deliberately outside the visualisation's
+    purpose.
+
+    CASE STUDY SPECIFIC:
+    The plotted value is the overall weekday-weekend percentage difference
+    relative to weekday MIMS-units. ADAPT HERE by replacing ``METRIC_PERCENT``
+    and the sample labels for another summary metric without intervals.
+    """
+
+    percent = overall_percent_difference(summary)
+
+    fig, ax = plt.subplots(figsize=(7.2, 3.4))
+    y_positions = {sample: i for i, sample in enumerate(SAMPLE_ORDER)}
+    for row in percent.itertuples():
+        y = y_positions[row.sample]
+        color = SAMPLE_COLORS[row.sample]
+        ax.scatter(
+            row.estimate,
+            y,
+            s=72,
+            color=color,
+            edgecolor="white",
+            linewidth=1.0,
+            zorder=3,
+        )
+        ax.text(
+            row.estimate + 0.16,
+            y,
+            formatted_percent(row.estimate),
+            color=color,
+            fontsize=9,
+            va="center",
+            ha="left",
+            fontweight="bold",
+        )
+
+    x_high = max(5.8, percent["estimate"].max() * 1.35)
+    ax.axvline(0, color=DESIGN.zero, linewidth=1.0)
+    ax.set_xlim(0, x_high)
+    ax.set_yticks(list(y_positions.values()))
+    ax.set_yticklabels([wrap_label(sample, 25) for sample in SAMPLE_ORDER])
+    ax.invert_yaxis()
+    configure_x_axis(
+        ax,
+        label="Weekday-weekend difference (% of weekday MIMS-units)",
+        major_step=1,
+        minor_step=0.5,
+        show_label=True,
+    )
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda x, _pos: f"{x:.0f}%"))
+    clean_axis(ax)
+    fig.suptitle(
+        "Percentage weekday-weekend difference by sample",
+        x=0.01,
+        ha="left",
+        y=0.98,
+    )
+    note = (
+        "Dots show reconstructed weighted percentage differences. Intervals are not drawn in this example "
+        "because the percentage column is treated as secondary descriptive context; use a point-range plot "
+        "when uncertainty is central to the message."
+    )
+    fig.text(0.01, 0.012, "\n".join(textwrap.wrap(note, width=118)), ha="left", va="bottom", fontsize=8.5, color=DESIGN.muted)
+    fig.subplots_adjust(left=0.25, right=0.96, top=0.75, bottom=0.29)
+
+    paths = save_figure(fig, "figure_08_percentage_difference_summary_dot")
+    return {
+        "title": "Percentage weekday-weekend difference by sample",
+        "files": paths,
+        "caption": (
+            "Reconstructed weekday-weekend percentage differences relative to weekday MIMS-units for "
+            "adults and children/adolescents. Dots show weighted summary percentages without intervals."
+        ),
+        "alt_text": (
+            "Summary dot plot showing that children/adolescents have a larger percentage difference "
+            "between weekday and weekend-day activity than adults."
+        ),
+        "checklist_notes": [
+            "Uses position on a common axis rather than area or decoration to compare summary values.",
+            "Keeps zero visible so the direction and scale of the percentage difference are clear.",
+            "Labels each dot directly because only two summary values are shown.",
+            "States why intervals are not drawn and redirects users to point-range plots when uncertainty matters.",
+        ],
+    }
+
+
+def plot_percentage_difference_bar_alternative(summary: pd.DataFrame) -> dict:
+    """Conditional example: horizontal bar chart for a zero-based percentage.
+
+    DECISION TREE LINK:
+    Implements the "Bar chart" conditional alternative. This is appropriate
+    only when magnitude relative to a meaningful zero is central and uncertainty
+    is not the main message.
+
+    CASE STUDY SPECIFIC:
+    The bars show overall percentage difference from weekday MIMS-units. ADAPT
+    HERE only for zero-based accelerometer summaries such as counts, totals,
+    durations, or percentages/proportions.
+    """
+
+    percent = overall_percent_difference(summary)
+
+    fig, ax = plt.subplots(figsize=(7.2, 3.4))
+    y_positions = np.arange(len(percent))
+    colors = [SAMPLE_COLORS[sample] for sample in percent["sample"]]
+    ax.barh(
+        y_positions,
+        percent["estimate"],
+        color=colors,
+        alpha=0.82,
+        height=0.46,
+        edgecolor="white",
+        linewidth=1.0,
+    )
+    for yi, row in enumerate(percent.itertuples()):
+        ax.text(
+            row.estimate + 0.13,
+            yi,
+            formatted_percent(row.estimate),
+            color=SAMPLE_COLORS[row.sample],
+            fontsize=9,
+            va="center",
+            ha="left",
+            fontweight="bold",
+        )
+
+    x_high = max(5.8, percent["estimate"].max() * 1.35)
+    ax.axvline(0, color=DESIGN.zero, linewidth=1.0)
+    ax.set_xlim(0, x_high)
+    ax.set_yticks(y_positions)
+    ax.set_yticklabels([wrap_label(sample, 25) for sample in percent["sample"]])
+    ax.invert_yaxis()
+    configure_x_axis(
+        ax,
+        label="Weekday-weekend difference (% of weekday MIMS-units)",
+        major_step=1,
+        minor_step=0.5,
+        show_label=True,
+    )
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda x, _pos: f"{x:.0f}%"))
+    clean_axis(ax)
+    fig.suptitle(
+        "Conditional bar-chart example: percentage difference by sample",
+        x=0.01,
+        ha="left",
+        y=0.98,
+    )
+    note = (
+        "This bar version is a conditional alternative because the percentage difference has a meaningful "
+        "zero and the message is magnitude from zero. Prefer point-range or dot plots when uncertainty, "
+        "distribution, or precise comparisons are the main message."
+    )
+    fig.text(0.01, 0.012, "\n".join(textwrap.wrap(note, width=118)), ha="left", va="bottom", fontsize=8.5, color=DESIGN.muted)
+    fig.subplots_adjust(left=0.25, right=0.96, top=0.75, bottom=0.29)
+
+    paths = save_figure(fig, "figure_09_percentage_difference_bar_alternative")
+    return {
+        "title": "Conditional bar-chart example: percentage difference by sample",
+        "files": paths,
+        "caption": (
+            "Conditional bar-chart version of the reconstructed weekday-weekend percentage differences "
+            "relative to weekday MIMS-units. Bar length represents percentage difference from zero."
+        ),
+        "alt_text": (
+            "Horizontal bar chart showing percentage weekday-weekend differences for adults and "
+            "children/adolescents, with children/adolescents showing the larger relative difference."
+        ),
+        "checklist_notes": [
+            "Demonstrates the bar-chart condition explicitly: a zero-based percentage where distance from zero is the message.",
+            "Uses a true zero baseline and direct labels to reduce ambiguity.",
+            "Keeps the example visually simple so the conditional alternative does not replace richer interval displays.",
+            "Documents that bars are not recommended for the MIMS mean and difference figures where uncertainty is central.",
+        ],
+    }
+
+
 def plot_individual_difference_distribution(participant: pd.DataFrame) -> dict:
     """Example: filled small-multiple distribution plot.
 
@@ -1126,6 +1319,8 @@ def main() -> None:
         plot_weekday_weekend_means_by_sample(summary, "Children/adolescents 6-19"),
         plot_individual_difference_distribution(participant),
         plot_weekday_weekend_relationship(participant),
+        plot_percentage_difference_summary_dot(summary),
+        plot_percentage_difference_bar_alternative(summary),
     ]
     notes_path = write_figure_notes(records)
     print("Case-study visualisations generated.")

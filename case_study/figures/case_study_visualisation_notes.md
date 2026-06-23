@@ -127,3 +127,33 @@ The estimates are direct accelerometer-derived metrics from the reproduced case-
 - Uses the equality line as a direct visual cue for the paired comparison.
 - Reports the percentage of participants with higher weekday activity in each panel.
 - States the axis trimming transparently to avoid distorting interpretation.
+
+## Figure 8. Percentage weekday-weekend difference by sample
+
+**Files:** figure_08_percentage_difference_summary_dot.png, figure_08_percentage_difference_summary_dot.pdf, figure_08_percentage_difference_summary_dot.svg
+
+**Caption:** Reconstructed weekday-weekend percentage differences relative to weekday MIMS-units for adults and children/adolescents. Dots show weighted summary percentages without intervals.
+
+**Alt text:** Summary dot plot showing that children/adolescents have a larger percentage difference between weekday and weekend-day activity than adults.
+
+**Checklist-informed design choices:**
+
+- Uses position on a common axis rather than area or decoration to compare summary values.
+- Keeps zero visible so the direction and scale of the percentage difference are clear.
+- Labels each dot directly because only two summary values are shown.
+- States why intervals are not drawn and redirects users to point-range plots when uncertainty matters.
+
+## Figure 9. Conditional bar-chart example: percentage difference by sample
+
+**Files:** figure_09_percentage_difference_bar_alternative.png, figure_09_percentage_difference_bar_alternative.pdf, figure_09_percentage_difference_bar_alternative.svg
+
+**Caption:** Conditional bar-chart version of the reconstructed weekday-weekend percentage differences relative to weekday MIMS-units. Bar length represents percentage difference from zero.
+
+**Alt text:** Horizontal bar chart showing percentage weekday-weekend differences for adults and children/adolescents, with children/adolescents showing the larger relative difference.
+
+**Checklist-informed design choices:**
+
+- Demonstrates the bar-chart condition explicitly: a zero-based percentage where distance from zero is the message.
+- Uses a true zero baseline and direct labels to reduce ambiguity.
+- Keeps the example visually simple so the conditional alternative does not replace richer interval displays.
+- Documents that bars are not recommended for the MIMS mean and difference figures where uncertainty is central.

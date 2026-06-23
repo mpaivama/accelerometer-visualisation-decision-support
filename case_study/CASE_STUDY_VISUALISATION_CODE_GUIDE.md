@@ -45,6 +45,8 @@ The case study currently implements these visualisation structures:
 | Figures 4-5 | `plot_weekday_weekend_means_by_sample()` | Related paired/dumbbell summary display |
 | Figure 6 | `plot_individual_difference_distribution()` | Histogram or density plot; related to faceted distribution displays |
 | Figure 7 | `plot_weekday_weekend_relationship()` | Hexbin or two-dimensional density plot |
+| Figure 8 | `plot_percentage_difference_summary_dot()` | Summary dot plot without intervals |
+| Figure 9 | `plot_percentage_difference_bar_alternative()` | Conditional bar chart for zero-based percentages |
 
 ## Where Users Should Adapt The Code
 
@@ -75,6 +77,7 @@ The examples demonstrate:
 - meaningful category order;
 - panelled layouts to reduce clutter;
 - transparent notes when axes are zoomed or trimmed;
+- explicit notes when a bar chart is used only as a conditional alternative;
 - figure-level captions and alt text.
 
 ## Recommendations Not Directly Implemented

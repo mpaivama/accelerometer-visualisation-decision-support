@@ -61,13 +61,83 @@ Each recommendation contains:
 | `use_when` | Conditions under which the recommendation is most appropriate. |
 | `caution` | Interpretation, readability, or design risks. |
 | `adaptation_guidance` | Signposting for where a plotting template would need to be adapted. |
-| `implementation_status` | Currently `signpost_only` unless a case-study plotting template is later attached. |
+| `implementation_status` | Indicates whether the worked case study contains a direct example, a related example, or only general adaptable example code. |
+| `implementation_note` | Explains how closely the worked case-study code matches the recommendation. |
+| `example_code_file` | Points to the case-study plotting script that users can inspect or adapt. |
+| `direct_case_study_examples` | Lists figures or functions that directly implement the recommendation. |
+| `related_case_study_examples` | Lists figures or functions with a related visual structure. |
+| `data_required` | Describes the data structure needed to produce the recommended visualisation. |
+| `case_study_adaptation_points` | Identifies the case-study-specific elements a user would need to replace or edit. |
+| `checklist_aspects_to_review` | Lists checklist principles that remain especially relevant when implementing or adapting the recommendation. |
 
 The addition of `visual_mapping` was important because recommendation names,
 rationales, and cautions alone were not always enough for a user to reproduce the
 intended figure structure. For example, "summary time profile" and
 "event-frequency time profile" can be interpreted in multiple ways unless the
 axes and visual encodings are stated.
+
+## User-facing output at the end of the workflow
+
+When the guided interface or GitHub Pages workflow is completed, the user sees
+three output sections: recommended visualisations, the decision path, and design
+notes. These outputs are intended to make the recommendation actionable rather
+than simply naming a chart type.
+
+### Recommended visualisation cards
+
+For each recommended visualisation, the interface displays the following fields
+in this order:
+
+| User-facing label | Underlying field | What the user learns |
+| --- | --- | --- |
+| Recommendation title | `visualisation` | The recommended visualisation family, such as "Point-range plot" or "Paired dot plot or slope chart". |
+| Rank | `rank` | Whether the visualisation is the primary recommendation, an alternative, a conditional alternative, a comparison alternative, or a specialist alternative. |
+| Visual mapping | `visual_mapping` | What the visualisation should look like: what goes on the axes, rows, columns, panels, colours, marks, or intervals. |
+| Why | `rationale` | The reason this visualisation fits the selected research/visual task. |
+| Use when | `use_when` | The situation in which this recommendation is most appropriate. |
+| Caution | `caution` | Risks, interpretive limitations, or readability issues to consider. |
+| How to adapt code later | `adaptation_guidance` | Which visual mappings or plotting layers would need to change in a plotting template. |
+| Worked example status | `implementation_status` | Whether the current NHANES worked case study contains a direct example, a related example, or only general adaptable code. |
+| Worked example note | `implementation_note` | A short explanation of the relationship between the recommendation and the worked example. |
+| Example code file | `example_code_file` | Where to find the case-study plotting code. |
+| Direct worked examples | `direct_case_study_examples` | Case-study figures/functions that directly implement the recommendation, where available. |
+| Related worked examples | `related_case_study_examples` | Case-study figures/functions that can be used as a starting point when the exact recommendation is not implemented. |
+| Data needed | `data_required` | The minimum data structure the user would need to prepare. |
+| Adapt in the worked example | `case_study_adaptation_points` | The case-study-specific labels, variables, groupings, or plotting layers the user would need to replace. |
+| Checklist aspects to review | `checklist_aspects_to_review` | Checklist principles that should be checked when producing the final figure. |
+
+This means the final output does four things for each recommendation:
+
+- names the recommended visualisation;
+- specifies the intended visual structure;
+- explains why and when it should be used;
+- signposts how the user could begin implementing it from the worked-example
+  plotting code.
+
+### Decision path
+
+The decision path summarises the answers that led to the recommendation. It is
+shown so users can check whether the recommendation follows from the intended
+data form, research task, display level, comparison structure, and relevant
+numeric refinements.
+
+The current decision path includes:
+
+- primary task;
+- form of accelerometer metric;
+- display level;
+- comparison focus and comparison structure;
+- number of temporal series, when relevant;
+- number of linked comparison levels, when relevant;
+- number of compositional parts, when relevant.
+
+### Design notes
+
+Design notes are generated from the same decision path and provide broader
+checklist-informed guidance. They may remind users to show variability, explain
+why variability is absent, use consistent axes and colour mappings, describe
+full-24-hour or wake-time context, split crowded temporal displays, or use
+plain-language annotation for general audiences.
 
 ## Current validation logic
 

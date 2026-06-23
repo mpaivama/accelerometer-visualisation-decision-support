@@ -20,7 +20,7 @@ fully fit a study context.
 
 ## Toolkit Components
 
-The repository currently contains four connected pieces:
+The repository currently contains five connected pieces:
 
 1. **Decision tree recommendation engine**
 
@@ -35,13 +35,20 @@ The repository currently contains four connected pieces:
    interface. The interface asks one question at a time and hides questions that
    are not relevant to earlier answers.
 
-3. **Worked case-study implementation**
+3. **Static GitHub Pages interface**
+
+   `build_static_site.py`, `static_site_templates/`, and `docs/` provide a
+   browser-only version of the guided decision tree. The static site is
+   generated from the Python decision tree, so users can run the recommender
+   without installing Python while the repository keeps one source of truth.
+
+4. **Worked case-study implementation**
 
    `case_study/` contains reproducible code and outputs for the NHANES
    2011-2014 worked example. It demonstrates how selected decision-tree
    recommendations can be translated into checklist-informed figures.
 
-4. **Visualisation checklist**
+5. **Visualisation checklist**
 
    `checklist/` contains the current checklist draft used to refine the
    case-study figures and to document checklist-informed design choices.
@@ -83,6 +90,9 @@ movement-behaviour compositions.
 decision_tree.py                  Core rule-based recommendation engine
 guided_interface.py               Local web interface server
 guided_interface/                 Browser interface files
+build_static_site.py              Static GitHub Pages generator
+static_site_templates/             Templates copied into the generated site
+docs/                              Generated static recommender site
 generate_decision_report.py        Exhaustive decision-report generator
 make_decision_tree_architecture_figure.py
                                   Script for the architecture figure
@@ -148,6 +158,42 @@ The interface output includes implementation guidance. For each recommendation,
 it indicates whether the worked case study contains a direct example, a related
 example, or general code that can be adapted.
 
+## Static GitHub Pages Site
+
+The generated static site lets people use the recommender in a normal browser,
+without installing Python or running the local server.
+
+The site is generated from the current Python decision tree:
+
+```bash
+python3 build_static_site.py
+```
+
+This writes the browser-only site to:
+
+```text
+docs/
+```
+
+Do not edit `docs/data.js` by hand. It is generated from `decision_tree.py` and
+`guided_interface.py`. If the decision tree or guided questions change, rerun
+`python3 build_static_site.py` and commit the updated `docs/` files.
+
+The repository also includes a GitHub Actions workflow:
+
+```text
+.github/workflows/pages.yml
+```
+
+When GitHub Pages is configured to deploy from GitHub Actions, the workflow
+rebuilds the static site from Python on every push to `main`.
+
+Expected public URL after GitHub Pages is enabled:
+
+```text
+https://mpaivama.github.io/accelerometer-visualisation-decision-support/
+```
+
 ## Worked Case Study
 
 The worked example applies the toolkit to a published NHANES 2011-2014 study of
@@ -211,11 +257,12 @@ to review the end points of the decision tree.
 Run:
 
 ```bash
-python3 -m unittest test_decision_tree.py test_guided_interface.py test_decision_report.py -v
+python3 -m unittest test_decision_tree.py test_guided_interface.py test_decision_report.py test_static_site.py -v
 ```
 
 The tests check recommendation logic, validation messages, interface branching,
-and report-generation assumptions.
+report-generation assumptions, and whether the generated static site data is
+up to date with the current Python source.
 
 ## Optional Dependencies
 

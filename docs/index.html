@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Decision support for visualising accelerometer-derived movement behaviour data</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <p class="eyebrow">Guided decision tree</p>
+        <h1>Decision support for visualising accelerometer-derived movement behaviour data</h1>
+        <p class="intro">
+          Answer one question at a time to identify visualisations suited to
+          directly displaying accelerometer metrics. Questions that do not
+          apply to your research question will be skipped automatically.
+        </p>
+        <div class="header-actions">
+          <a class="button primary" href="https://github.com/mpaivama/accelerometer-visualisation-decision-support">
+            View toolkit repository
+          </a>
+          <a class="button secondary" href="https://github.com/mpaivama/accelerometer-visualisation-decision-support/tree/main/case_study">
+            Worked case study
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="summary-panel" aria-label="Answered questions">
+        <div class="summary-heading">
+          <h2>Your path</h2>
+          <span id="progress-label">Starting</span>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        <ol id="answer-summary" class="answer-summary">
+          <li class="empty-summary">Your answers will appear here.</li>
+        </ol>
+      </aside>
+
+      <section class="workspace" aria-live="polite">
+        <div id="error-box" class="error-box" hidden></div>
+
+        <article id="question-card" class="card question-card">
+          <p id="question-number" class="eyebrow"></p>
+          <h2 id="question-title">Loading the first question...</h2>
+          <p id="question-help" class="question-help"></p>
+          <div id="answer-controls" class="answer-controls"></div>
+          <div class="navigation">
+            <button id="back-button" class="button secondary" type="button" disabled>
+              Back
+            </button>
+            <button id="reset-button" class="button quiet" type="button">
+              Start again
+            </button>
+          </div>
+        </article>
+
+        <section id="results" class="results" hidden>
+          <div class="results-header">
+            <p class="eyebrow">Decision-tree result</p>
+            <h2>Recommended visualisations</h2>
+            <p>
+              These recommendations were generated from the Python decision tree
+              used by the repository, notebook, local interface, and decision
+              report. This page runs fully in the browser.
+            </p>
+          </div>
+          <div id="recommendation-list" class="recommendation-list"></div>
+
+          <article class="card supporting-card">
+            <h3>Decision path</h3>
+            <ul id="decision-path"></ul>
+          </article>
+
+          <article class="card supporting-card">
+            <h3>Design notes</h3>
+            <ul id="design-notes"></ul>
+          </article>
+
+          <div class="results-actions">
+            <button id="results-back-button" class="button secondary" type="button">
+              Change the last answer
+            </button>
+            <button id="results-reset-button" class="button primary" type="button">
+              Start a new decision path
+            </button>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        Scope: direct visualisation of accelerometer signals, classified
+        behaviours, derived metrics, and movement-behaviour compositions.
+        Model results are outside the scope of this toolkit.
+      </p>
+      <p id="source-note"></p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

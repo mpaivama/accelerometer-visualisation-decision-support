@@ -37,12 +37,26 @@ To stop the interface, return to the terminal and press `Control-C`.
 - `guided_interface/app.js`: browser-side interaction.
 - `test_guided_interface.py`: tests for branch logic and recommendation calls.
 
+## Static Browser Version
+
+The GitHub Pages site is generated from the same Python decision tree and
+guided question flow:
+
+```bash
+python3 build_static_site.py
+```
+
+This writes a browser-only version of the interface to `docs/`. The generated
+site does not need a Python server, so it can be shared through GitHub Pages.
+
 ## Development Notes
 
 The recommendation logic should remain in `decision_tree.py`. If the decision
 tree later gains new input fields or changes which fields are conditional, edit
-the question definitions and branch rules in `guided_interface.py`, then rerun:
+the question definitions and branch rules in `guided_interface.py`, rebuild the
+static site, then rerun:
 
 ```bash
-python3 -m unittest test_guided_interface.py test_decision_tree.py test_decision_report.py -v
+python3 build_static_site.py
+python3 -m unittest test_guided_interface.py test_decision_tree.py test_decision_report.py test_static_site.py -v
 ```

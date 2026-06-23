@@ -115,8 +115,9 @@ framework while separating the intended visual message more explicitly.
   Show spread, skewness, unusual values, or the distribution of metrics such
   as bout duration ("How long?").
 - `"compare_values"`: **"How much?", "How often?", or "How long?", and do
-  these values differ?** Compare accelerometer metrics across groups, discrete
-  time points, or conditions.
+  these values differ?** Show the magnitude of accelerometer metrics for one
+  observation or summary, or compare them across groups, discrete time points,
+  or conditions.
 - `"composition"`: **"How important is each behaviour in relation to the
   others?"** Show how movement behaviours divide a fixed period such as the
   24-hour day.
@@ -156,10 +157,10 @@ Connection to the earlier framework:
   total for the sample or for each comparison level."""
         ),
         nbf.v4.new_markdown_cell(
-            """### 4. What is being compared? (`comparison_focus`)
+            """### 4. Is the visualisation comparing values? (`comparison_focus`)
 
 - `"none"`: there is no explicit comparison; the purpose is to describe one
-  signal, distribution, composition, or pattern.
+  metric, selected observation, signal, distribution, composition, or pattern.
 - `"groups"`: compare **who** the observations come from. Examples: women
   versus men, age groups, or BMI categories.
 - `"time"`: compare **when** the observations were recorded using discrete,

@@ -303,18 +303,36 @@ class DecisionTreeTests(unittest.TestCase):
         self.assertIn("columns represent time", recommendation.visual_mapping)
         self.assertIn("colour encodes the metric value", recommendation.visual_mapping)
 
-    def test_compare_values_requires_a_defined_comparison(self):
-        with self.assertRaisesRegex(
-            ValueError,
-            "primary_task='compare_values' requires a comparison.*Set comparison_focus",
-        ):
-            recommend_visualisations(
-                DecisionInputs(
-                    data_form="derived_metric",
-                    primary_task="compare_values",
-                    display_level="summary",
-                )
+    def test_compare_values_allows_no_explicit_comparison(self):
+        result = recommend_visualisations(
+            DecisionInputs(
+                data_form="classified_behaviour",
+                primary_task="compare_values",
+                display_level="individual",
+                comparison_focus="none",
+                comparison_structure="not_applicable",
+                show_variability=False,
             )
+        )
+        self.assertEqual(
+            [recommendation.visualisation for recommendation in result.recommendations],
+            ["Bar chart"],
+        )
+        self.assertIn("how long one classified behaviour lasted", result.recommendations[0].use_when)
+
+    def test_compare_values_without_comparison_can_show_multiple_observed_values(self):
+        result = recommend_visualisations(
+            DecisionInputs(
+                data_form="derived_metric",
+                primary_task="compare_values",
+                display_level="multiple_observations",
+                comparison_focus="none",
+                comparison_structure="not_applicable",
+            )
+        )
+        recommendation = result.recommendations[0]
+        self.assertEqual(recommendation.visualisation, "Dot plot of observed values")
+        self.assertIn("without forcing an artificial comparison", recommendation.rationale)
 
     def test_model_result_data_form_is_outside_scope(self):
         with self.assertRaisesRegex(ValueError, "Enter exactly one of"):

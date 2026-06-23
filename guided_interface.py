@@ -159,10 +159,11 @@ QUESTIONS: dict[str, dict[str, Any]] = {
         ],
     },
     "comparison_focus": {
-        "title": "What is being compared?",
+        "title": "Is the visualisation comparing values?",
         "help": (
-            "Choose the distinction central to the research question: who, when, "
-            "or under which condition."
+            "Choose no explicit comparison when the goal is to describe one "
+            "metric, observation, distribution, composition, or pattern without "
+            "contrasting groups, time periods, or conditions."
         ),
         "type": "choice",
         "options": [
@@ -170,7 +171,8 @@ QUESTIONS: dict[str, dict[str, Any]] = {
                 "value": "none",
                 "label": "No explicit comparison",
                 "description": (
-                    "Describe one signal, distribution, composition, or pattern."
+                    "Describe one metric, selected observation, signal, "
+                    "distribution, composition, or pattern."
                 ),
             },
             {
@@ -409,9 +411,6 @@ def _option_values(field: str, answers: dict[str, Any]) -> set[Any] | None:
 
     if field == "display_level" and answers.get("primary_task") == "relationship":
         values.discard("summary")
-
-    if field == "comparison_focus" and answers.get("primary_task") == "compare_values":
-        values.discard("none")
 
     return values
 

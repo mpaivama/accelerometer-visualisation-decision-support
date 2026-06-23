@@ -152,8 +152,9 @@ rules are:
   `data_form="continuous_signal"` or `data_form="derived_metric"`.
 - Relationship displays cannot use `display_level="summary"` because they require
   paired observed values.
-- `primary_task="compare_values"` requires a comparison focus of groups, time, or
-  conditions.
+- `primary_task="compare_values"` can be used with no explicit comparison when
+  the purpose is to show how much, how often, or how long for one observation,
+  one summary, or one set of observed values.
 - If `comparison_focus="none"`, then `comparison_structure` must be
   `not_applicable`.
 - If there is a comparison, `comparison_structure` must be `independent` or
@@ -197,6 +198,14 @@ For `continuous_signal` or `derived_metric` data:
 
 ### Compare values
 
+- No explicit comparison with one selected observation -> Bar chart, with direct
+  value labelling and a meaningful zero baseline.
+- No explicit comparison with multiple observations -> Dot plot of observed
+  values.
+- No explicit comparison with one summary value and variability -> Point-range
+  plot.
+- No explicit comparison with one summary value and no variability -> Summary
+  dot plot, with bar chart as a conditional alternative.
 - Paired/repeated comparison with two linked levels -> Paired dot plot or slope
   chart, including a summary paired/dumbbell variant when only summary estimates
   and intervals are available.
@@ -251,13 +260,13 @@ integers are unbounded.
 
 | Report metric | Current count |
 | --- | ---: |
-| Valid decision-equivalent combinations | 15,216 |
-| Unique visualisation names | 28 |
-| Unique ordered visualisation-name sets | 26 |
-| Unique reviewable recommendation sets | 26 |
-| Unique recommendation detail records | 30 |
-| Unique complete formatted outputs | 12,336 |
-| Unique decision paths | 928 |
+| Valid decision-equivalent combinations | 15,360 |
+| Unique visualisation names | 29 |
+| Unique ordered visualisation-name sets | 29 |
+| Unique reviewable recommendation sets | 30 |
+| Unique recommendation detail records | 35 |
+| Unique complete formatted outputs | 12,480 |
+| Unique decision paths | 940 |
 | Unique design-note sets | 144 |
 
 Important interpretation: `unique_visualisation_names` counts distinct chart
@@ -296,7 +305,11 @@ logic. Each row below is one distinct ordered recommendation output.
 | RS023 | 72 | distribution | general / technical | Histogram or density plot; Empirical cumulative distribution (ECDF) |
 | RS024 | 72 | compare_values | general / technical | Point-range plot; Bar chart |
 | RS025 | 72 | compare_values | general / technical | Summary dot plot; Bar chart |
-| RS026 | 36 | composition | technical | 100% stacked bar chart; Ternary plot |
+| RS026 | 48 | compare_values | general / technical | Bar chart |
+| RS027 | 48 | compare_values | general / technical | Dot plot of observed values |
+| RS028 | 36 | composition | technical | 100% stacked bar chart; Ternary plot |
+| RS029 | 24 | compare_values | general / technical | Point-range plot |
+| RS030 | 24 | compare_values | general / technical | Summary dot plot; Bar chart |
 
 The full review table is stored in `decision_report/recommendation_sets.csv` and
 `Decision_tree_recommendation_sets.csv`. Those files include the representative
@@ -316,7 +329,7 @@ review-status fields.
 - General-audience composition recommendations now start with pie or doughnut
   charts, while retaining 100% stacked bars as a comparison-oriented alternative.
 - The exhaustive report now includes a Recommendation Sets sheet and CSV so the
-  26 distinct ordered recommendation outputs can be reviewed one by one.
+  30 distinct ordered recommendation outputs can be reviewed one by one.
 - The Markdown report and Excel workbook now share the same generated summary
   rows and report sections.
 - The architecture figure has been updated to use the current title and the
@@ -328,6 +341,12 @@ review-status fields.
   The recommendation now explicitly supports a summary paired/dumbbell variant
   and cautions against drawing participant-level trajectories when only summary
   estimates are available.
+- User review of the guided interface showed that `primary_task="compare_values"`
+  was too restrictive because it forced users to choose a comparison even when
+  they only wanted to show how long, how often, or how much for one observation
+  or metric. The tree now allows `comparison_focus="none"` for this task and
+  recommends single-value, observed-value, or single-summary displays as
+  appropriate.
 
 ## Case-study-driven refinement
 

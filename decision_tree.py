@@ -353,6 +353,29 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
         ],
         "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
     },
+    "Dot plot of observed values": {
+        "implementation_status": "related_example_available",
+        "implementation_note": (
+            "The exact one-axis raw-value dot plot is not implemented, but "
+            "Figure 6 provides the closest participant-level observed-value "
+            "example and checklist treatment."
+        ),
+        "related_case_study_examples": [CASE_STUDY_EXAMPLES["distribution"]],
+        "data_required": (
+            "One observed accelerometer metric value per participant, day, bout, "
+            "or other unit."
+        ),
+        "case_study_adaptation_points": [
+            "Replace the case-study difference metric with the single metric whose values should be displayed.",
+            "Use one position axis for the metric value and jitter or transparency when points overlap.",
+            "Add a clearly distinct summary marker only if a summary is part of the intended message.",
+        ],
+        "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS
+        + [
+            "State what each point represents.",
+            "Use a distribution display instead if shape, spread, or tails are the main message.",
+        ],
+    },
 }
 
 
@@ -499,20 +522,6 @@ def validate_inputs(inputs: DecisionInputs) -> None:
             "being made. Set comparison_structure='independent' or "
             "comparison_structure='paired_repeated'."
         )
-
-    if inputs.primary_task == "compare_values":
-        if inputs.comparison_focus == "none":
-            raise ValueError(
-                "Incompatible inputs: primary_task='compare_values' requires a "
-                "comparison. Set comparison_focus to 'groups', 'time', or "
-                "'conditions'. If there is no comparison, choose a different "
-                "primary_task."
-            )
-        if inputs.comparison_structure == "not_applicable":
-            raise ValueError(
-                "Missing comparison structure: primary_task='compare_values' requires "
-                "comparison_structure='independent' or 'paired_repeated'."
-            )
 
     if (
         inputs.comparison_structure != "paired_repeated"
@@ -673,6 +682,11 @@ def _visual_mapping(visualisation: str) -> str:
             "show observations, a marker shows the summary, and an interval shows "
             "variability or uncertainty."
         ),
+        "Dot plot of observed values": (
+            "The metric value is shown on one axis and each point represents one "
+            "participant, day, bout, or other observed unit; an optional marker can "
+            "show a clearly labelled summary."
+        ),
         "Point-range plot": (
             "Categories are shown on one axis and summary values on the other; intervals "
             "represent variability or uncertainty."
@@ -682,8 +696,8 @@ def _visual_mapping(visualisation: str) -> str:
             "represents one summary value without an interval."
         ),
         "Bar chart": (
-            "Categories are shown on one axis and bar length or height represents a "
-            "count, total, or proportion."
+            "Categories or one selected metric are shown on one axis and bar length "
+            "or height represents a count, total, duration, or proportion."
         ),
         "Pie or doughnut chart": (
             "Each slice represents a movement-behaviour category and slice angle or area "
@@ -945,6 +959,69 @@ def _distribution(inputs: DecisionInputs, recs: list[Recommendation]) -> None:
 
 
 def _compare_values(inputs: DecisionInputs, recs: list[Recommendation]) -> None:
+    if inputs.comparison_focus == "none":
+        if inputs.display_level == "individual":
+            _add(
+                recs,
+                "Bar chart",
+                "primary",
+                "Communicates the magnitude of one duration, frequency, volume, or "
+                "proportion using a familiar length encoding.",
+                "Use for one selected participant, day, bout, behaviour, or other "
+                "observation, such as how long one classified behaviour lasted.",
+                "For a single value, direct text may be enough. If a bar is used, "
+                "use a meaningful zero baseline and label the value and units directly.",
+            )
+        elif inputs.display_level == "multiple_observations":
+            _add(
+                recs,
+                "Dot plot of observed values",
+                "primary",
+                "Shows how much, how often, or how long for several observed units "
+                "without forcing an artificial comparison group.",
+                "Use when multiple participants, days, bouts, or observations should "
+                "remain visible but the aim is not to compare groups, time periods, "
+                "or conditions.",
+                "If the main message is distribution shape, spread, or unusual values, "
+                "run the decision tree with primary_task='distribution'.",
+            )
+        else:
+            if inputs.show_variability:
+                _add(
+                    recs,
+                    "Point-range plot",
+                    "primary",
+                    "Shows one accelerometer summary metric precisely and displays "
+                    "its variability or uncertainty.",
+                    "Use for a single mean, median, rate, proportion, or other direct "
+                    "metric summary with a clearly defined interval.",
+                    "Define both the summary metric and interval; do not imply a "
+                    "comparison when only one estimate is shown.",
+                )
+            else:
+                _add(
+                    recs,
+                    "Summary dot plot",
+                    "primary",
+                    "Shows one summary value precisely using position without implying "
+                    "a distribution or comparison.",
+                    "Use when one aggregate accelerometer metric is sufficient and "
+                    "uncertainty or variability is unavailable or outside the purpose.",
+                    "State what the dot represents and why no uncertainty or "
+                    "variability is shown.",
+                )
+                _add(
+                    recs,
+                    "Bar chart",
+                    "conditional alternative",
+                    "Uses length from zero to communicate one count, total, duration, "
+                    "or proportion.",
+                    "Use only when magnitude relative to a meaningful zero is central.",
+                    "Direct text or a summary dot may be clearer for a single summary "
+                    "metric.",
+                )
+        return
+
     if inputs.comparison_structure == "paired_repeated":
         if inputs.n_comparison_levels == 2:
             _add(

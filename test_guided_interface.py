@@ -37,12 +37,12 @@ class GuidedInterfaceTests(unittest.TestCase):
         self.assertIn("composition", values)
         self.assertNotIn("relationship", values)
 
-    def test_compare_values_does_not_offer_no_comparison(self):
+    def test_compare_values_offers_no_explicit_comparison(self):
         question = question_for(
             "comparison_focus", {"primary_task": "compare_values"}
         )
         values = {option["value"] for option in question["options"]}
-        self.assertNotIn("none", values)
+        self.assertIn("none", values)
 
     def test_relationship_does_not_offer_summary_display(self):
         question = question_for("display_level", {"primary_task": "relationship"})
@@ -113,6 +113,21 @@ class GuidedInterfaceTests(unittest.TestCase):
         response = recommendation_response(BASE_COMPLETE)
         names = [item["visualisation"] for item in response["recommendations"]]
         self.assertEqual(names[0], "Histogram or density plot")
+        self.assertEqual(response["inputs"]["comparison_structure"], "not_applicable")
+
+    def test_compare_values_can_describe_one_selected_observation(self):
+        answers = {
+            "data_form": "classified_behaviour",
+            "primary_task": "compare_values",
+            "display_level": "individual",
+            "comparison_focus": "none",
+            "show_variability": False,
+            "target_audience": "technical",
+            "temporal_context": "not_applicable",
+        }
+        response = recommendation_response(answers)
+        names = [item["visualisation"] for item in response["recommendations"]]
+        self.assertEqual(names, ["Bar chart"])
         self.assertEqual(response["inputs"]["comparison_structure"], "not_applicable")
 
     def test_incomplete_flow_gives_plain_language_prompt(self):

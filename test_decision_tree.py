@@ -210,10 +210,12 @@ class DecisionTreeTests(unittest.TestCase):
         self.assertIn("Visual mapping:", output)
         self.assertIn("Why:", output)
         self.assertIn("Adaptation:", output)
+        self.assertIn("Worked example status: general example available", output)
         self.assertIn("Example code file:", output)
         self.assertIn("Checklist aspects to review:", output)
         self.assertIn("DESIGN NOTES", output)
         self.assertNotIn("CROSS-CUTTING", output)
+        self.assertNotIn("general_example_available", output)
         self.assertIn("full 24-hour day", output)
         self.assertLess(output.index("Visual mapping:"), output.index("Why:"))
 
@@ -319,6 +321,10 @@ class DecisionTreeTests(unittest.TestCase):
             ["Bar chart"],
         )
         self.assertIn("how long one classified behaviour lasted", result.recommendations[0].use_when)
+        self.assertTrue(
+            any("No explicit comparison" in item for item in result.decision_path)
+        )
+        self.assertFalse(any("not_applicable" in item for item in result.decision_path))
 
     def test_compare_values_without_comparison_can_show_multiple_observed_values(self):
         result = recommend_visualisations(

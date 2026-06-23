@@ -172,16 +172,21 @@ def _stable_payload_key(payload: dict[str, Any]) -> str:
 
 
 def _answer_labels() -> dict[str, dict[str, str]]:
+    def label_key(value: Any) -> str:
+        if isinstance(value, bool):
+            return str(value).lower()
+        return str(value)
+
     labels: dict[str, dict[str, str]] = {}
     for field, question in QUESTIONS.items():
         if question["type"] == "choice":
             labels[field] = {
-                str(option["value"]): option["label"]
+                label_key(option["value"]): option["label"]
                 for option in question["options"]
             }
         elif field in NUMBER_OPTION_LABELS:
             labels[field] = {
-                str(value): label
+                label_key(value): label
                 for value, label in NUMBER_OPTION_LABELS[field].items()
             }
     return labels

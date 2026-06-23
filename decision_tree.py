@@ -85,6 +85,60 @@ INVALID_VALUE_HINTS = {
     ),
 }
 
+DISPLAY_LABELS = {
+    "data_form": {
+        "continuous_signal": "Continuous signal",
+        "classified_behaviour": "Classified behaviour",
+        "derived_metric": "Derived metric",
+        "composition": "Movement-behaviour composition",
+    },
+    "primary_task": {
+        "temporal_pattern": "Temporal pattern",
+        "distribution": "Distribution",
+        "compare_values": "How much, how often, or how long / compare values",
+        "composition": "Composition",
+        "relationship": "Relationship",
+        "event_pattern": "Event pattern",
+    },
+    "display_level": {
+        "individual": "One selected observation",
+        "multiple_observations": "Multiple observed values",
+        "summary": "Summary values only",
+    },
+    "comparison_focus": {
+        "none": "No explicit comparison",
+        "groups": "Groups",
+        "time": "Discrete time periods",
+        "conditions": "Conditions",
+    },
+    "comparison_structure": {
+        "independent": "Independent",
+        "paired_repeated": "Paired or repeated",
+        "not_applicable": "Not applicable",
+    },
+    "target_audience": {
+        "technical": "Technical audience",
+        "general": "General audience",
+    },
+    "temporal_context": {
+        "full_24h": "Complete 24-hour day",
+        "wake_time": "Waking time only",
+        "not_applicable": "Not applicable",
+    },
+    "implementation_status": {
+        "direct_example_available": "direct example available",
+        "related_example_available": "related example available",
+        "general_example_available": "general example available",
+        "signpost_only": "Signpost only",
+    },
+}
+
+
+def display_label(field: str, value: object) -> str:
+    """Return a plain-language label for internal categorical values."""
+
+    return DISPLAY_LABELS.get(field, {}).get(str(value), str(value))
+
 
 @dataclass(frozen=True)
 class DecisionInputs:
@@ -983,7 +1037,7 @@ def _compare_values(inputs: DecisionInputs, recs: list[Recommendation]) -> None:
                 "remain visible but the aim is not to compare groups, time periods, "
                 "or conditions.",
                 "If the main message is distribution shape, spread, or unusual values, "
-                "run the decision tree with primary_task='distribution'.",
+                "choose distribution as the main visual task instead.",
             )
         else:
             if inputs.show_variability:
@@ -1277,11 +1331,19 @@ def recommend_visualisations(inputs: DecisionInputs) -> DecisionResult:
     }
     branches[inputs.primary_task](inputs, recommendations)
 
+    if inputs.comparison_focus == "none":
+        comparison_label = display_label("comparison_focus", inputs.comparison_focus)
+    else:
+        comparison_label = (
+            f"{display_label('comparison_focus', inputs.comparison_focus)} "
+            f"({display_label('comparison_structure', inputs.comparison_structure)})"
+        )
+
     decision_path = [
-        f"Primary task: {inputs.primary_task}",
-        f"Form of accelerometer metric: {inputs.data_form}",
-        f"Display level: {inputs.display_level}",
-        f"Comparison: {inputs.comparison_focus} ({inputs.comparison_structure})",
+        f"Primary task: {display_label('primary_task', inputs.primary_task)}",
+        f"Form of accelerometer metric: {display_label('data_form', inputs.data_form)}",
+        f"Display level: {display_label('display_level', inputs.display_level)}",
+        f"Comparison: {comparison_label}",
     ]
     if inputs.primary_task == "temporal_pattern":
         decision_path.append(
@@ -1320,9 +1382,12 @@ def format_result(result: DecisionResult) -> str:
             lines.append(f"   Caution: {rec.caution}")
         if rec.adaptation_guidance:
             lines.append(f"   Adaptation: {rec.adaptation_guidance}")
-        lines.append(f"   Code status: {rec.implementation_status}")
+        lines.append(
+            f"   Worked example status: "
+            f"{display_label('implementation_status', rec.implementation_status)}"
+        )
         if rec.implementation_note:
-            lines.append(f"   Code note: {rec.implementation_note}")
+            lines.append(f"   Worked example note: {rec.implementation_note}")
         if rec.example_code_file:
             lines.append(f"   Example code file: {rec.example_code_file}")
         if rec.direct_case_study_examples:

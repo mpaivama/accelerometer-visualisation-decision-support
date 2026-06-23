@@ -65,6 +65,11 @@ class StaticSiteTests(unittest.TestCase):
             for option in question["options"]
         ]
         self.assertIn("More than 6 series", numeric_labels)
+        self.assertEqual(data["answer_labels"]["show_variability"]["true"], "Yes")
+        self.assertEqual(
+            data["answer_labels"]["many_observations"]["false"],
+            "No, individual observations remain readable",
+        )
 
     def test_static_path_returns_case_study_like_recommendation(self) -> None:
         data = build_static_data()

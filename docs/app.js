@@ -23,6 +23,13 @@ const resultsBackButton = document.querySelector("#results-back-button");
 const resultsResetButton = document.querySelector("#results-reset-button");
 const sourceNote = document.querySelector("#source-note");
 
+const displayText = {
+  direct_example_available: "direct example available",
+  related_example_available: "related example available",
+  general_example_available: "general example available",
+  signpost_only: "signpost only",
+};
+
 function valueKey(value) {
   return JSON.stringify(value);
 }
@@ -134,7 +141,7 @@ function addDetail(card, label, text) {
   const strong = document.createElement("strong");
   paragraph.className = "recommendation-detail";
   strong.textContent = `${label}: `;
-  paragraph.append(strong, document.createTextNode(text));
+  paragraph.append(strong, document.createTextNode(displayText[text] || text));
   card.append(paragraph);
 }
 

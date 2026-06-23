@@ -261,17 +261,17 @@ def summary_metric_rows(summary):
         ),
         ("Rejected candidate combinations", "rejected_candidate_combinations"),
         ("Long-format recommendation rows", "long_format_recommendation_rows"),
-        ("Unique visualisation names", "unique_visualisation_names"),
+        ("Distinct chart names", "unique_visualisation_names"),
         (
-            "Unique ordered visualisation-name sets",
+            "Distinct chart-name combinations",
             "unique_ordered_recommendation_name_sets",
         ),
         (
-            "Unique reviewable recommendation sets",
+            "Distinct full recommendation outputs",
             "unique_reviewable_recommendation_sets",
         ),
         (
-            "Unique recommendation detail records",
+            "Distinct individual recommendation cards",
             "unique_recommendation_detail_records",
         ),
         (
@@ -309,8 +309,10 @@ def how_to_use_rows():
         {
             "section": "Recommendation Sets",
             "description": (
-                "One row per distinct ordered recommendation output; best for "
-                "manual review of end-point adequacy."
+                "One row per distinct full recommendation output, including "
+                "chart names, ranks, visual mappings, rationales, cautions, "
+                "and use-when statements; best for manual review of end-point "
+                "adequacy."
             ),
         },
         {
@@ -343,9 +345,10 @@ def how_to_use_rows():
         {
             "section": "Uniqueness counts",
             "description": (
-                "Visualisation names count chart labels only. Later uniqueness "
-                "metrics progressively include recommendation details, guidance, "
-                "and decision paths."
+                "Distinct chart names count labels only. Chart-name combinations "
+                "count ordered bundles of labels. Full recommendation outputs "
+                "also include details such as rank, mapping, rationale, use-when "
+                "text, cautions, and implementation guidance."
             ),
         },
     ]

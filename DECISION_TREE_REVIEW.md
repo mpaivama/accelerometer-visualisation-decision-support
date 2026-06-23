@@ -261,17 +261,27 @@ integers are unbounded.
 | Report metric | Current count |
 | --- | ---: |
 | Valid decision-equivalent combinations | 15,360 |
-| Unique visualisation names | 29 |
-| Unique ordered visualisation-name sets | 29 |
-| Unique reviewable recommendation sets | 30 |
-| Unique recommendation detail records | 35 |
+| Distinct chart names | 29 |
+| Distinct chart-name combinations | 29 |
+| Distinct full recommendation outputs | 30 |
+| Distinct individual recommendation cards | 35 |
 | Unique complete formatted outputs | 12,480 |
 | Unique decision paths | 940 |
 | Unique design-note sets | 144 |
 
-Important interpretation: `unique_visualisation_names` counts distinct chart
-labels. `unique_reviewable_recommendation_sets` counts distinct ordered
-recommendation outputs that can be reviewed one by one.
+Important interpretation:
+
+- Distinct chart names count chart labels only, such as "Bar chart" or
+  "Point-range plot".
+- Distinct chart-name combinations count ordered bundles of chart labels returned
+  together, ignoring differences in the explanatory text.
+- Distinct full recommendation outputs count the full user-facing output to
+  review, including chart names, ranks, visual mappings, rationales, use-when
+  statements, cautions, and implementation guidance.
+- Distinct individual recommendation cards count individual recommendation cards
+  across the tree. The same chart name can appear in more than one card if its
+  rank, rationale, use-when statement, caution, or implementation guidance
+  changes across decision paths.
 
 ## Current recommendation-set index
 

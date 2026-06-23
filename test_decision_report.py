@@ -89,7 +89,8 @@ class DecisionReportTests(unittest.TestCase):
         }
         metric_labels = [row["report_metric"] for row in summary_metric_rows(summary)]
         self.assertIn("Candidate combinations evaluated", metric_labels)
-        self.assertIn("Unique reviewable recommendation sets", metric_labels)
+        self.assertIn("Distinct full recommendation outputs", metric_labels)
+        self.assertIn("Distinct individual recommendation cards", metric_labels)
         self.assertIn("Unique design-note sets", metric_labels)
 
         sections = [row["section"] for row in how_to_use_rows()]

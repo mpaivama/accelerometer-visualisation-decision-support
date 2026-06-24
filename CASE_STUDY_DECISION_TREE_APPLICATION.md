@@ -54,6 +54,17 @@ Out of scope for this component:
 - adjusted differences from Model 1 or Model 2;
 - significance stars or p-values as primary visual encodings.
 
+Suggested table legend for paper:
+
+Table X. Decision-tree inputs used to derive visualisation recommendations for
+the NHANES worked case study. The first column reproduces the question wording
+shown in the guided user interface, and the second column gives the option
+selected for the case-study visualisation task. Only questions triggered by the
+relevant decision path are shown. The rationale column explains how each
+selection was interpreted from the published paper and reconstructed
+accelerometer metrics. MIMS = Monitor-Independent Movement Summary units; CI =
+confidence interval.
+
 ## Decision-tree application 1: overall weekday vs weekend comparison
 
 Research question represented: Are adults and children more active on weekdays
@@ -61,20 +72,17 @@ than on weekend days?
 
 This is the main descriptive comparison in the abstract and Tables 1 and 2.
 
-| Decision-tree field | Case-study answer | Reason |
+| User-interface question | Case-study selection | Rationale |
 | --- | --- | --- |
-| `data_form` | `derived_metric` | Daily MIMS-units are numeric summaries derived from raw accelerometer data. |
-| `primary_task` | `compare_values` | The question is "How much physical activity, and does it differ between weekdays and weekend days?" |
-| `display_level` | `summary` | The paper communicates weighted means, differences, and confidence intervals rather than individual participant values. |
-| `comparison_focus` | `time` | The central comparison is weekday versus weekend day. |
-| `comparison_structure` | `paired_repeated` | The same participants contribute weekday and weekend-day summaries. |
-| `show_variability` | `True` | The paper reports 95% confidence intervals. |
-| `many_observations` | `False` | The intended figure would show summary estimates, not thousands of raw observations. |
-| `target_audience` | `technical` | The case-study output is for a scientific paper/toolkit demonstration. |
-| `temporal_context` | `full_24h` | The paper describes daily valid-day MIMS-units from continuously worn devices; this should be checked again when reconstructing the dataset. |
-| `n_overlaid_series` | `1` | Not used for this non-temporal-profile task. |
-| `n_comparison_levels` | `2` | Weekday and weekend day are the two linked levels. |
-| `n_compositional_parts` | `None` | MIMS-units are not a movement-behaviour composition. |
+| What form do the accelerometer values take? | Derived metric | Daily MIMS-units are numeric summaries derived from raw accelerometer data. |
+| What is the main message the visualisation should communicate? | How much, how often, or how long, and do values differ? | The question is "How much physical activity, and does it differ between weekdays and weekend days?" |
+| What level of observation should be visible? | Summary values only | The paper communicates weighted means, differences, and confidence intervals rather than individual participant values. |
+| Is the visualisation comparing values? | Discrete time periods: when? | The central comparison is weekday versus weekend day. |
+| Are the comparison observations independent or linked? | Paired or repeated | The same participants contribute weekday and weekend-day summaries. |
+| Should variability or uncertainty be visible? | Yes | The paper reports 95% confidence intervals. |
+| Who is the target audience? | Technical audience | The case-study output is for a scientific paper/toolkit demonstration. |
+| What period does the metric represent? | The complete 24-hour day | The paper describes daily valid-day MIMS-units from continuously worn devices; this should be checked again when reconstructing the dataset. |
+| How many linked comparison levels are there? | 2 | Weekday and weekend day are the two linked levels. |
 
 Current decision-tree recommendation:
 
@@ -116,20 +124,16 @@ Because this question combines two comparison structures, it is best decomposed:
 For the toolkit worked example, the clearer visual task is usually the subgroup
 comparison, with weekday/weekend shown through colour, position, or faceting.
 
-| Decision-tree field | Case-study answer | Reason |
+| User-interface question | Case-study selection | Rationale |
 | --- | --- | --- |
-| `data_form` | `derived_metric` | Weighted mean daily MIMS-units are derived accelerometer summaries. |
-| `primary_task` | `compare_values` | The goal is to compare "how much" physical activity across categories. |
-| `display_level` | `summary` | The visualisation would show weighted means and 95% confidence intervals. |
-| `comparison_focus` | `groups` | The main visual grouping is age, gender, ethnicity, education, poverty, marital status, or weight status. |
-| `comparison_structure` | `independent` | Subgroup categories are treated as independent comparison levels. |
-| `show_variability` | `True` | 95% confidence intervals are part of the reported descriptive output. |
-| `many_observations` | `False` | The visualisation uses summary estimates. |
-| `target_audience` | `technical` | The intended audience is movement-behaviour researchers. |
-| `temporal_context` | `full_24h` | The metric is reported as daily MIMS-units. |
-| `n_overlaid_series` | `1` | Not used for this task. |
-| `n_comparison_levels` | `1` | Not used because the selected comparison structure is independent. |
-| `n_compositional_parts` | `None` | Not a composition task. |
+| What form do the accelerometer values take? | Derived metric | Weighted mean daily MIMS-units are derived accelerometer summaries. |
+| What is the main message the visualisation should communicate? | How much, how often, or how long, and do values differ? | The goal is to compare "how much" physical activity across categories. |
+| What level of observation should be visible? | Summary values only | The visualisation would show weighted means and 95% confidence intervals. |
+| Is the visualisation comparing values? | Groups: who? | The main visual grouping is age, gender, ethnicity, education, poverty, marital status, or weight status. |
+| Are the comparison observations independent or linked? | Independent | Subgroup categories are treated as independent comparison levels. |
+| Should variability or uncertainty be visible? | Yes | 95% confidence intervals are part of the reported descriptive output. |
+| Who is the target audience? | Technical audience | The intended audience is movement-behaviour researchers. |
+| What period does the metric represent? | The complete 24-hour day | The metric is reported as daily MIMS-units. |
 
 Current decision-tree recommendation:
 
@@ -162,20 +166,16 @@ versus weekend differences?
 
 This corresponds to the difference column in Tables 1 and 2.
 
-| Decision-tree field | Case-study answer | Reason |
+| User-interface question | Case-study selection | Rationale |
 | --- | --- | --- |
-| `data_form` | `derived_metric` | The weekday-minus-weekend value is a derived accelerometer metric calculated from daily MIMS-units. |
-| `primary_task` | `compare_values` | The task is to compare the size of the weekday-weekend difference across subgroups. |
-| `display_level` | `summary` | The paper reports one difference estimate and interval per subgroup category. |
-| `comparison_focus` | `groups` | The comparison is across subgroup categories. |
-| `comparison_structure` | `independent` | Subgroup categories are independent comparison levels. |
-| `show_variability` | `True` | The difference estimates include 95% confidence intervals. |
-| `many_observations` | `False` | The intended display is a summary estimate plot. |
-| `target_audience` | `technical` | The case-study output is for a scientific/toolkit audience. |
-| `temporal_context` | `full_24h` | The difference is calculated from daily MIMS-units. |
-| `n_overlaid_series` | `1` | Not used for this task. |
-| `n_comparison_levels` | `1` | Not used for independent subgroup comparisons. |
-| `n_compositional_parts` | `None` | Not a composition task. |
+| What form do the accelerometer values take? | Derived metric | The weekday-minus-weekend value is a derived accelerometer metric calculated from daily MIMS-units. |
+| What is the main message the visualisation should communicate? | How much, how often, or how long, and do values differ? | The task is to compare the size of the weekday-weekend difference across subgroups. |
+| What level of observation should be visible? | Summary values only | The paper reports one difference estimate and interval per subgroup category. |
+| Is the visualisation comparing values? | Groups: who? | The comparison is across subgroup categories. |
+| Are the comparison observations independent or linked? | Independent | Subgroup categories are independent comparison levels. |
+| Should variability or uncertainty be visible? | Yes | The difference estimates include 95% confidence intervals. |
+| Who is the target audience? | Technical audience | The case-study output is for a scientific/toolkit audience. |
+| What period does the metric represent? | The complete 24-hour day | The difference is calculated from daily MIMS-units. |
 
 Current decision-tree recommendation:
 
@@ -217,20 +217,16 @@ The percentage column in Tables 1 and 2 is descriptive and useful for
 interpretation, but it does not include confidence intervals in the published
 tables.
 
-| Decision-tree field | Case-study answer | Reason |
+| User-interface question | Case-study selection | Rationale |
 | --- | --- | --- |
-| `data_form` | `derived_metric` | Percentage difference is calculated from MIMS-unit summaries. |
-| `primary_task` | `compare_values` | The task compares relative difference size across groups. |
-| `display_level` | `summary` | One percentage is reported per subgroup category. |
-| `comparison_focus` | `groups` | The percentages are compared across subgroup categories. |
-| `comparison_structure` | `independent` | Subgroup categories are independent. |
-| `show_variability` | `False` | The published percentage values do not have uncertainty intervals. |
-| `many_observations` | `False` | The figure would show summary percentages. |
-| `target_audience` | `technical` | The case-study output is for a scientific/toolkit audience. |
-| `temporal_context` | `full_24h` | The percentages are based on daily MIMS-unit summaries. |
-| `n_overlaid_series` | `1` | Not used for this task. |
-| `n_comparison_levels` | `1` | Not used for independent subgroup comparisons. |
-| `n_compositional_parts` | `None` | Not a composition task. |
+| What form do the accelerometer values take? | Derived metric | Percentage difference is calculated from MIMS-unit summaries. |
+| What is the main message the visualisation should communicate? | How much, how often, or how long, and do values differ? | The task compares relative difference size across groups. |
+| What level of observation should be visible? | Summary values only | One percentage is reported per subgroup category. |
+| Is the visualisation comparing values? | Groups: who? | The percentages are compared across subgroup categories. |
+| Are the comparison observations independent or linked? | Independent | Subgroup categories are independent. |
+| Should variability or uncertainty be visible? | No | The published percentage values do not have uncertainty intervals. |
+| Who is the target audience? | Technical audience | The case-study output is for a scientific/toolkit audience. |
+| What period does the metric represent? | The complete 24-hour day | The percentages are based on daily MIMS-unit summaries. |
 
 Current decision-tree recommendation:
 

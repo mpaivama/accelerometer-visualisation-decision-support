@@ -201,6 +201,11 @@ generated only to show the intended visual mapping and should not be interpreted
 as real accelerometer data or as evidence that the design has been formally
 tested.
 
+Both the case-study plotting code and the simulated-example generator include
+`ADAPT HERE` comments showing where users would replace data sources, metric
+columns, grouping variables, labels, units, intervals, category orders, and
+visual mappings for their own datasets and scenarios.
+
 To regenerate the simulated examples:
 
 ```bash

@@ -4,6 +4,21 @@ These figures use small simulated datasets created inside each plotting
 function. They are intended to show the visual structure of recommendation
 families that are not directly implemented in the NHANES worked case study.
 They are not validation evidence for comprehension or effectiveness.
+
+How to adapt this script for real data:
+1. Find the function whose name matches the recommendation returned by the
+   decision tree. The ``RECOMMENDATION_TO_EXAMPLE`` mapping below is the index.
+2. Replace the small mock-data block at the start of that function, or the
+   helper that creates that data, with a real dataframe or array from your
+   analysis pipeline.
+3. Keep the visual mapping named in the recommendation: for example, do not
+   change a row-by-time heatmap into a grouped bar chart unless the decision
+   tree recommendation has changed.
+4. Replace labels, units, category names, grouping variables, intervals,
+   reference lines, and captions so they match the new dataset and audience.
+5. Re-check the visualisation checklist, especially colour accessibility,
+   uncertainty/variability display, axis scale, annotation, and whether the
+   plotted values are direct accelerometer-derived metrics.
 """
 
 from __future__ import annotations
@@ -41,6 +56,108 @@ BEHAVIOUR_COLOURS = {
     "Sedentary": "#A0A7B4",
     "Light PA": "#59A14F",
     "MVPA": "#E69F00",
+}
+
+# ============================================================
+# RECOMMENDATION-TO-EXAMPLE INDEX
+# ============================================================
+# ADAPT HERE when adding, removing, or renaming recommendation examples:
+# - add one entry for each recommendation family illustrated in this script;
+# - keep the recommendation_name exactly aligned with decision_tree.py;
+# - point users to the plotting function and the main items they must replace.
+RECOMMENDATION_TO_EXAMPLE = {
+    "Behaviour timeline (tile plot)": {
+        "function": "example_behaviour_timeline_tile_plot",
+        "adapt": "Replace the one-row behaviour sequence, behaviour labels, and time resolution.",
+    },
+    "Behaviour-by-time heatmap": {
+        "function": "example_behaviour_by_time_heatmap",
+        "adapt": "Replace the observation-by-time behaviour matrix and category colour map.",
+    },
+    "Proportion-over-time profile": {
+        "function": "example_proportion_over_time_profile",
+        "adapt": "Replace proportions by time and behaviour category; preserve the proportion scale.",
+    },
+    "Stacked area profile": {
+        "function": "example_stacked_area_profile",
+        "adapt": "Replace compositional proportions over time; ensure parts sum to the intended whole.",
+    },
+    "Time-series line plot": {
+        "function": "example_time_series_line_plot",
+        "adapt": "Replace time and metric series; use one line per participant, day, group, or condition.",
+    },
+    "Observation-by-time heatmap": {
+        "function": "example_observation_by_time_heatmap",
+        "adapt": "Replace the observation-by-time metric matrix and choose a meaningful shared colour scale.",
+    },
+    "Small-multiple time-series plots": {
+        "function": "example_small_multiple_time_series_plots",
+        "adapt": "Replace the series and facet variable; keep shared axes when panels are compared.",
+    },
+    "Summary time profile with interval ribbon": {
+        "function": "example_summary_time_profile_with_interval_ribbon",
+        "adapt": "Replace summary values and interval bounds; define what the ribbon represents.",
+    },
+    "Summary time profile": {
+        "function": "example_summary_time_profile",
+        "adapt": "Replace summary profiles and group labels; use consistent colours across groups.",
+    },
+    "Empirical cumulative distribution (ECDF)": {
+        "function": "example_empirical_cumulative_distribution_ecdf",
+        "adapt": "Replace observed metric values; explain cumulative proportion if needed.",
+    },
+    "Box or violin plot with raw points": {
+        "function": "example_box_or_violin_plot_with_raw_points",
+        "adapt": "Replace group-level observed values; reconsider violin layers for small samples.",
+    },
+    "Faceted density or ECDF plot": {
+        "function": "example_faceted_density_or_ecdf_plot",
+        "adapt": "Replace values and facet groups; keep shared axes for direct comparison.",
+    },
+    "Repeated-measures line plot": {
+        "function": "example_repeated_measures_line_plot",
+        "adapt": "Replace linked participant-level repeated measures and period labels.",
+    },
+    "Dot plot with summary and interval": {
+        "function": "example_dot_plot_with_summary_and_interval",
+        "adapt": "Replace raw values, summary statistic, and interval calculation.",
+    },
+    "Dot plot of observed values": {
+        "function": "example_dot_plot_of_observed_values",
+        "adapt": "Replace the one-dimensional observed metric values and any summary marker.",
+    },
+    "Pie or doughnut chart": {
+        "function": "example_pie_or_doughnut_chart",
+        "adapt": "Replace composition parts; use only when a general-audience part-whole display is justified.",
+    },
+    "100% stacked bar chart": {
+        "function": "example_100_percent_stacked_bar_chart",
+        "adapt": "Replace composition parts by group; ensure every bar totals 100%.",
+    },
+    "Small-multiple composition bars": {
+        "function": "example_small_multiple_composition_bars",
+        "adapt": "Replace composition parts and facet contexts; keep part ordering consistent.",
+    },
+    "Ternary plot": {
+        "function": "example_ternary_plot",
+        "adapt": "Replace three-part compositional data; do not use this template for more than three parts.",
+    },
+    "Scatter plot": {
+        "function": "example_scatter_plot",
+        "adapt": "Replace the two paired continuous variables; avoid model-result overlays unless justified separately.",
+    },
+    "Event timeline or raster plot": {
+        "function": "example_event_timeline_or_raster_plot",
+        "adapt": "Replace event times and observation identifiers.",
+    },
+    "Event raster or time-bin heatmap": {
+        "function": "example_event_raster_or_time_bin_heatmap",
+        "adapt": "Replace event times and bin size; explain what one coloured cell counts.",
+    },
+    "Event-frequency time profile": {
+        "function": "example_event_frequency_time_profile",
+        "adapt": "Replace event times and aggregation interval; label frequency units clearly.",
+    },
 }
 
 
@@ -97,7 +214,13 @@ def clean_axis(ax: plt.Axes) -> None:
 
 
 def behaviour_matrix(n_rows: int, n_bins: int) -> np.ndarray:
-    """Return simple categorical behaviour sequences across a 24-hour day."""
+    """Return simple categorical behaviour sequences across a 24-hour day.
+
+    ADAPT HERE for real classified behaviour data:
+    replace this simulated matrix with epochs or time bins coded as behaviour
+    categories. Keep the output shape as observations x ordered time bins for
+    the tile and heatmap examples.
+    """
 
     hours = np.linspace(0, 24, n_bins, endpoint=False)
     matrix = np.zeros((n_rows, n_bins), dtype=int)
@@ -115,6 +238,12 @@ def behaviour_matrix(n_rows: int, n_bins: int) -> np.ndarray:
 
 
 def behaviour_cmap() -> tuple[ListedColormap, BoundaryNorm, list[str]]:
+    """Return category colours for classified behaviours.
+
+    ADAPT HERE when behaviour labels or classification schemes change. Keep the
+    category order consistent across figures that compare the same behaviours.
+    """
+
     labels = list(BEHAVIOUR_COLOURS)
     cmap = ListedColormap([BEHAVIOUR_COLOURS[label] for label in labels])
     norm = BoundaryNorm(np.arange(-0.5, len(labels) + 0.5), cmap.N)
@@ -122,6 +251,9 @@ def behaviour_cmap() -> tuple[ListedColormap, BoundaryNorm, list[str]]:
 
 
 def example_behaviour_timeline_tile_plot() -> None:
+    # RECOMMENDATION: Behaviour timeline (tile plot).
+    # ADAPT HERE: replace the simulated one-row behaviour matrix with one real
+    # participant/day/bout sequence. Keep x=time and colour=behaviour category.
     n_bins = 96
     data = behaviour_matrix(1, n_bins)
     cmap, norm, labels = behaviour_cmap()
@@ -139,6 +271,9 @@ def example_behaviour_timeline_tile_plot() -> None:
 
 
 def example_behaviour_by_time_heatmap() -> None:
+    # RECOMMENDATION: Behaviour-by-time heatmap.
+    # ADAPT HERE: replace the simulated matrix with real observations x time.
+    # Rows should represent participants/days; columns should remain ordered time.
     data = behaviour_matrix(14, 96)
     cmap, norm, labels = behaviour_cmap()
     fig, ax = plt.subplots(figsize=(9, 4.2))
@@ -155,6 +290,14 @@ def example_behaviour_by_time_heatmap() -> None:
 
 
 def make_composition_over_time() -> pd.DataFrame:
+    """Return simulated behaviour proportions by time of day.
+
+    ADAPT HERE for real compositional temporal summaries:
+    replace the simulated proportions with a dataframe where rows are ordered
+    time points and columns are behaviour parts. Each row should sum to 1, or to
+    100 if percentages are used consistently.
+    """
+
     times = np.arange(0, 24, 1)
     awake = 1 / (1 + np.exp(-(times - 6))) * (1 - 1 / (1 + np.exp(-(times - 22))))
     sleep = np.clip(1 - awake + 0.05 * np.sin(times / 24 * 2 * np.pi), 0.03, 0.92)
@@ -167,6 +310,9 @@ def make_composition_over_time() -> pd.DataFrame:
 
 
 def example_proportion_over_time_profile() -> None:
+    # RECOMMENDATION: Proportion-over-time profile.
+    # ADAPT HERE: replace the simulated proportions with behaviour proportions
+    # calculated for each time point, group, or condition.
     data = make_composition_over_time()
     fig, ax = plt.subplots(figsize=(8, 4.6))
     for behaviour, colour in BEHAVIOUR_COLOURS.items():
@@ -182,6 +328,9 @@ def example_proportion_over_time_profile() -> None:
 
 
 def example_stacked_area_profile() -> None:
+    # RECOMMENDATION: Stacked area profile.
+    # ADAPT HERE: replace ``data`` with compositional behaviour parts over time.
+    # Check that the stacked bands represent a meaningful fixed whole.
     data = make_composition_over_time()
     fig, ax = plt.subplots(figsize=(8, 4.6))
     ax.stackplot(
@@ -202,6 +351,13 @@ def example_stacked_area_profile() -> None:
 
 
 def continuous_time_series(n_series: int = 3) -> tuple[np.ndarray, list[np.ndarray]]:
+    """Return simulated continuous accelerometer metric profiles.
+
+    ADAPT HERE for real continuous signals or epoch-level metrics:
+    replace ``times`` and ``series`` with the ordered time variable and the
+    metric values to be drawn as lines, panels, or heatmap rows.
+    """
+
     times = np.linspace(0, 24, 145)
     series = []
     for idx in range(n_series):
@@ -215,6 +371,9 @@ def continuous_time_series(n_series: int = 3) -> tuple[np.ndarray, list[np.ndarr
 
 
 def example_time_series_line_plot() -> None:
+    # RECOMMENDATION: Time-series line plot.
+    # ADAPT HERE: replace ``times`` and ``series`` with real time and metric
+    # values. Use one line per readable participant, day, group, or condition.
     times, series = continuous_time_series(3)
     fig, ax = plt.subplots(figsize=(8, 4.4))
     for idx, values in enumerate(series):
@@ -229,6 +388,9 @@ def example_time_series_line_plot() -> None:
 
 
 def example_observation_by_time_heatmap() -> None:
+    # RECOMMENDATION: Observation-by-time heatmap.
+    # ADAPT HERE: replace the simulated matrix with real observations x time.
+    # Choose row ordering and colour scale deliberately before interpretation.
     times = np.linspace(0, 24, 96)
     rows = []
     for row in range(24):
@@ -251,6 +413,9 @@ def example_observation_by_time_heatmap() -> None:
 
 
 def example_small_multiple_time_series_plots() -> None:
+    # RECOMMENDATION: Small-multiple time-series plots.
+    # ADAPT HERE: replace the simulated series and panel titles with real
+    # participants, days, groups, or conditions. Keep shared axes for comparison.
     times, series = continuous_time_series(4)
     fig, axes = plt.subplots(2, 2, figsize=(8.5, 5.8), sharex=True, sharey=True)
     for idx, (ax, values) in enumerate(zip(axes.flat, series, strict=True)):
@@ -266,6 +431,9 @@ def example_small_multiple_time_series_plots() -> None:
 
 
 def example_summary_time_profile_with_interval_ribbon() -> None:
+    # RECOMMENDATION: Summary time profile with interval ribbon.
+    # ADAPT HERE: replace ``mean`` and ``interval`` with real summary statistics
+    # and lower/upper uncertainty or variability bounds.
     times = np.linspace(0, 24, 97)
     mean = 48 + 28 * np.exp(-((times - 15) / 5) ** 2) + 8 * np.sin(times / 24 * 2 * np.pi)
     interval = 7 + 3 * np.sin((times - 4) / 24 * 2 * np.pi) ** 2
@@ -282,6 +450,9 @@ def example_summary_time_profile_with_interval_ribbon() -> None:
 
 
 def example_summary_time_profile() -> None:
+    # RECOMMENDATION: Summary time profile.
+    # ADAPT HERE: replace the two simulated profiles with real summaries by
+    # group, day type, or condition; keep colour meanings consistent.
     times = np.linspace(0, 24, 97)
     fig, ax = plt.subplots(figsize=(8, 4.4))
     for idx, label in enumerate(["Weekday", "Weekend day"]):
@@ -298,6 +469,9 @@ def example_summary_time_profile() -> None:
 
 
 def example_empirical_cumulative_distribution_ecdf() -> None:
+    # RECOMMENDATION: Empirical cumulative distribution (ECDF).
+    # ADAPT HERE: replace ``values`` with observed accelerometer metric values.
+    # Keep y as cumulative proportion and explain it for non-technical audiences.
     values = RNG.gamma(shape=5.5, scale=18, size=180)
     values.sort()
     y = np.arange(1, len(values) + 1) / len(values)
@@ -312,6 +486,9 @@ def example_empirical_cumulative_distribution_ecdf() -> None:
 
 
 def example_box_or_violin_plot_with_raw_points() -> None:
+    # RECOMMENDATION: Box or violin plot with raw points.
+    # ADAPT HERE: replace ``groups`` and ``values`` with observed metric values
+    # by category. Reconsider violin layers for very small samples.
     groups = ["Group A", "Group B", "Group C"]
     values = [RNG.normal(65 + idx * 9, 12 + idx * 2, size=45) for idx in range(3)]
     fig, ax = plt.subplots(figsize=(7.6, 4.8))
@@ -334,6 +511,9 @@ def example_box_or_violin_plot_with_raw_points() -> None:
 
 
 def example_faceted_density_or_ecdf_plot() -> None:
+    # RECOMMENDATION: Faceted density or ECDF plot.
+    # ADAPT HERE: replace group labels and values in each panel. Use shared axes
+    # when the aim is direct comparison across panels.
     groups = ["Adults", "Children", "Older adults"]
     fig, axes = plt.subplots(1, 3, figsize=(10, 3.7), sharex=True, sharey=True)
     for idx, (ax, group) in enumerate(zip(axes, groups, strict=True)):
@@ -351,6 +531,9 @@ def example_faceted_density_or_ecdf_plot() -> None:
 
 
 def example_repeated_measures_line_plot() -> None:
+    # RECOMMENDATION: Repeated-measures line plot.
+    # ADAPT HERE: replace ``periods`` and participant-level values with linked
+    # repeated observations. Do not use this for independent groups.
     periods = ["Baseline", "Midpoint", "Follow-up"]
     x = np.arange(len(periods))
     fig, ax = plt.subplots(figsize=(7.6, 4.7))
@@ -374,6 +557,9 @@ def example_repeated_measures_line_plot() -> None:
 
 
 def example_dot_plot_with_summary_and_interval() -> None:
+    # RECOMMENDATION: Dot plot with summary and interval.
+    # ADAPT HERE: replace raw values and the interval calculation with the
+    # summary and interval appropriate to the study.
     groups = ["Low", "Medium", "High"]
     fig, ax = plt.subplots(figsize=(7.6, 4.7))
     for idx, group in enumerate(groups):
@@ -399,6 +585,9 @@ def example_dot_plot_with_summary_and_interval() -> None:
 
 
 def example_dot_plot_of_observed_values() -> None:
+    # RECOMMENDATION: Dot plot of observed values.
+    # ADAPT HERE: replace ``values`` with one observed accelerometer metric per
+    # participant, day, bout, or other unit.
     values = RNG.normal(72, 18, size=70)
     y = RNG.normal(0, 0.04, size=len(values))
     fig, ax = plt.subplots(figsize=(7.2, 2.7))
@@ -414,6 +603,9 @@ def example_dot_plot_of_observed_values() -> None:
 
 
 def example_pie_or_doughnut_chart() -> None:
+    # RECOMMENDATION: Pie or doughnut chart.
+    # ADAPT HERE: replace behaviour parts and percentages. Use this template
+    # mainly for simple general-audience part-whole communication.
     labels = ["Sleep", "Sedentary", "Light PA", "MVPA"]
     values = np.array([35, 40, 20, 5])
     colours = [BEHAVIOUR_COLOURS[label] for label in labels]
@@ -432,6 +624,9 @@ def example_pie_or_doughnut_chart() -> None:
 
 
 def example_100_percent_stacked_bar_chart() -> None:
+    # RECOMMENDATION: 100% stacked bar chart.
+    # ADAPT HERE: replace the rows with groups/time periods/conditions and the
+    # columns with behaviour parts. Each row should sum to 100%.
     groups = ["Group A", "Group B", "Group C"]
     values = np.array([[34, 41, 20, 5], [31, 44, 19, 6], [38, 37, 19, 6]])
     labels = list(BEHAVIOUR_COLOURS)
@@ -449,6 +644,9 @@ def example_100_percent_stacked_bar_chart() -> None:
 
 
 def example_small_multiple_composition_bars() -> None:
+    # RECOMMENDATION: Small-multiple composition bars.
+    # ADAPT HERE: replace panel contexts and composition parts. Keep behaviour
+    # order and colours identical across panels.
     contexts = ["Weekday", "Weekend", "Holiday"]
     values = np.array([[34, 41, 20, 5], [37, 39, 19, 5], [40, 35, 19, 6]])
     labels = list(BEHAVIOUR_COLOURS)
@@ -478,6 +676,9 @@ def ternary_to_xy(parts: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 
 
 def example_ternary_plot() -> None:
+    # RECOMMENDATION: Ternary plot.
+    # ADAPT HERE: replace ``parts`` with exactly three compositional parts that
+    # sum to one. Use a different recommendation for more than three parts.
     parts = RNG.dirichlet([3.2, 4.0, 2.2], size=70)
     x, y = ternary_to_xy(parts)
     fig, ax = plt.subplots(figsize=(6.2, 5.4))
@@ -495,6 +696,9 @@ def example_ternary_plot() -> None:
 
 
 def example_scatter_plot() -> None:
+    # RECOMMENDATION: Scatter plot.
+    # ADAPT HERE: replace ``x`` and ``y`` with paired continuous observed
+    # metrics. Avoid adding model-derived overlays in this toolkit component.
     x = RNG.normal(75, 20, size=90)
     y = 20 + 0.55 * x + RNG.normal(0, 12, size=90)
     fig, ax = plt.subplots(figsize=(6.8, 4.8))
@@ -507,6 +711,13 @@ def example_scatter_plot() -> None:
 
 
 def make_events(n_rows: int = 12) -> list[np.ndarray]:
+    """Return simulated event or bout start times.
+
+    ADAPT HERE for real bout/event data:
+    replace each array with observed event times for one participant, day, or
+    other observation. Use the same time unit that will appear on the x-axis.
+    """
+
     events = []
     for _ in range(n_rows):
         morning = RNG.normal(8.0, 0.9, size=RNG.integers(1, 4))
@@ -517,6 +728,9 @@ def make_events(n_rows: int = 12) -> list[np.ndarray]:
 
 
 def example_event_timeline_or_raster_plot() -> None:
+    # RECOMMENDATION: Event timeline or raster plot.
+    # ADAPT HERE: replace simulated event times with real bout/event times for
+    # each observation. Keep x=time and rows=observations.
     events = make_events(12)
     fig, ax = plt.subplots(figsize=(8.5, 4.6))
     for row, times in enumerate(events, start=1):
@@ -531,6 +745,9 @@ def example_event_timeline_or_raster_plot() -> None:
 
 
 def example_event_raster_or_time_bin_heatmap() -> None:
+    # RECOMMENDATION: Event raster or time-bin heatmap.
+    # ADAPT HERE: replace event times and choose bin width based on the temporal
+    # resolution needed for interpretation.
     events = make_events(16)
     bins = np.arange(0, 25, 1)
     matrix = np.vstack([np.histogram(times, bins=bins)[0] for times in events])
@@ -547,6 +764,9 @@ def example_event_raster_or_time_bin_heatmap() -> None:
 
 
 def example_event_frequency_time_profile() -> None:
+    # RECOMMENDATION: Event-frequency time profile.
+    # ADAPT HERE: replace event times and aggregation bins. Label frequency
+    # units clearly, such as bouts per hour or transitions per 30 minutes.
     events = make_events(60)
     all_events = np.concatenate(events)
     bins = np.arange(0, 25, 1)

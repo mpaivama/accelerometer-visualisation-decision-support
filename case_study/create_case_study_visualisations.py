@@ -8,6 +8,19 @@ weekday-minus-weekend differences, and percentage differences.
 This script is intentionally a worked example, not a comprehensive plotting
 library. The comments flag which sections are specific to the NHANES case study
 and which sections demonstrate reusable checklist-informed plotting choices.
+Recommendation families not required for the NHANES case study are illustrated
+separately in ``examples/generate_mock_visualisation_examples.py``.
+
+How to adapt this code for a different dataset:
+1. Replace the file paths in the "CASE-STUDY-SPECIFIC FILE LOCATIONS" section.
+2. Replace variable names, labels, category orders, and colours in the
+   "CASE-STUDY-SPECIFIC VARIABLE NAMES, LABELS, AND ORDERING" section.
+3. Select the plotting function whose visual mapping is closest to the decision
+   tree recommendation.
+4. Inside that function, replace the metric columns, grouping variables,
+   uncertainty columns, and axis labels marked by "ADAPT HERE" comments.
+5. Keep or revise the checklist-informed defaults, captions, alt text, and
+   notes so they match the new research question and audience.
 """
 
 from __future__ import annotations
@@ -403,8 +416,8 @@ def add_interval_note(fig: plt.Figure, extra: str = "") -> None:
 # translated into a checklist-informed figure. They are not intended to cover
 # every recommendation in the toolkit.
 #
-# For a different decision-tree recommendation, use the closest function as a
-# starting point and adapt:
+# For a different dataset or decision-tree recommendation, use the closest
+# function as a starting point and adapt:
 # - the data table and column names;
 # - the visual mapping named in the recommendation;
 # - labels, units, grouping variables, and category order;

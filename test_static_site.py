@@ -68,7 +68,7 @@ class StaticSiteTests(unittest.TestCase):
         self.assertEqual(data["answer_labels"]["show_variability"]["true"], "Yes")
         self.assertEqual(
             data["answer_labels"]["many_observations"]["false"],
-            "No, individual observations remain readable",
+            "No, individual points or profiles remain readable",
         )
 
     def test_static_path_returns_case_study_like_recommendation(self) -> None:

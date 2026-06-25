@@ -48,14 +48,16 @@ RNG = np.random.default_rng(20260625)
 INK = "#17212b"
 MUTED = "#56636f"
 GRID = "#d9dedb"
-ACCENT = "#176b5b"
-WARM = "#b6613b"
-PALETTE = ["#0072B2", "#E69F00", "#009E73", "#CC79A7", "#56B4E9", "#D55E00"]
+ACCENT = "#0072B2"
+WARM = "#D55E00"
+PALETTE = ["#0072B2", "#E69F00", "#CC79A7", "#56B4E9", "#D55E00", "#6A6A6A"]
+SEQUENTIAL_CMAP = "cividis"
+MOCK_NOTE = "Illustrative example generated from simulated mock data"
 BEHAVIOUR_COLOURS = {
-    "Sleep": "#4C78A8",
-    "Sedentary": "#A0A7B4",
-    "Light PA": "#59A14F",
-    "MVPA": "#E69F00",
+    "Sleep": "#0072B2",
+    "Sedentary": "#8F8F8F",
+    "Light PA": "#E69F00",
+    "MVPA": "#D55E00",
 }
 
 # ============================================================
@@ -72,7 +74,7 @@ RECOMMENDATION_TO_EXAMPLE = {
     },
     "Behaviour-by-time heatmap": {
         "function": "example_behaviour_by_time_heatmap",
-        "adapt": "Replace the observation-by-time behaviour matrix and category colour map.",
+        "adapt": "Replace the participant-day-by-time behaviour matrix and category colour map.",
     },
     "Proportion-over-time profile": {
         "function": "example_proportion_over_time_profile",
@@ -88,7 +90,7 @@ RECOMMENDATION_TO_EXAMPLE = {
     },
     "Observation-by-time heatmap": {
         "function": "example_observation_by_time_heatmap",
-        "adapt": "Replace the observation-by-time metric matrix and choose a meaningful shared colour scale.",
+        "adapt": "Replace the participant-day-by-time metric matrix and choose a meaningful shared colour scale.",
     },
     "Small-multiple time-series plots": {
         "function": "example_small_multiple_time_series_plots",
@@ -148,7 +150,7 @@ RECOMMENDATION_TO_EXAMPLE = {
     },
     "Event timeline or raster plot": {
         "function": "example_event_timeline_or_raster_plot",
-        "adapt": "Replace event times and observation identifiers.",
+        "adapt": "Replace event times and participant, day, bout, or other row identifiers.",
     },
     "Event raster or time-bin heatmap": {
         "function": "example_event_raster_or_time_bin_heatmap",
@@ -193,14 +195,18 @@ def finish_figure(fig: plt.Figure, filename: str) -> None:
     """Save PNG and SVG versions of a generated example."""
 
     FIGURE_DIR.mkdir(parents=True, exist_ok=True)
+    # Reserve a consistent bottom margin for the mock-data note so it does not
+    # collide with axes, tick labels, or bottom legends.
+    fig.subplots_adjust(bottom=max(fig.subplotpars.bottom, 0.22))
     fig.text(
         0.01,
         0.01,
-        "Illustrative example generated from simulated mock data.",
+        MOCK_NOTE,
         ha="left",
         va="bottom",
         fontsize=8,
         color=MUTED,
+        bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.92, "pad": 1.5},
     )
     fig.savefig(FIGURE_DIR / f"{filename}.png", dpi=180, bbox_inches="tight")
     fig.savefig(FIGURE_DIR / f"{filename}.svg", bbox_inches="tight")
@@ -262,29 +268,30 @@ def example_behaviour_timeline_tile_plot() -> None:
     ax.set_title("Behaviour timeline for one selected day")
     ax.set_xlabel("Time of day (hours)")
     ax.set_yticks([0.5])
-    ax.set_yticklabels(["Participant/day"])
+    ax.set_yticklabels(["Participant 01, day 1"])
     ax.set_xticks(np.arange(0, 25, 4))
     handles = [Patch(facecolor=BEHAVIOUR_COLOURS[label], label=label) for label in labels]
-    ax.legend(handles=handles, ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.35))
+    ax.legend(handles=handles, ncol=1, loc="center left", bbox_to_anchor=(1.01, 0.5))
     clean_axis(ax)
     finish_figure(fig, "behaviour_timeline_tile_plot")
 
 
 def example_behaviour_by_time_heatmap() -> None:
     # RECOMMENDATION: Behaviour-by-time heatmap.
-    # ADAPT HERE: replace the simulated matrix with real observations x time.
-    # Rows should represent participants/days; columns should remain ordered time.
+    # ADAPT HERE: replace the simulated matrix with real participant-days x time.
+    # Rows should represent participants, days, bouts, or another defined unit.
     data = behaviour_matrix(14, 96)
     cmap, norm, labels = behaviour_cmap()
     fig, ax = plt.subplots(figsize=(9, 4.2))
     ax.imshow(data, aspect="auto", cmap=cmap, norm=norm, extent=[0, 24, data.shape[0], 0])
-    ax.set_title("Behaviour category by observation and time")
+    ax.set_title("Behaviour category by participant-day and time")
     ax.set_xlabel("Time of day (hours)")
-    ax.set_ylabel("Observation")
+    ax.set_ylabel("Participant-day")
     ax.set_xticks(np.arange(0, 25, 4))
     ax.set_yticks([1, 4, 8, 12])
+    ax.set_yticklabels(["P01 day 1", "P04 day 1", "P08 day 1", "P12 day 1"])
     handles = [Patch(facecolor=BEHAVIOUR_COLOURS[label], label=label) for label in labels]
-    ax.legend(handles=handles, ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.2))
+    ax.legend(handles=handles, ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.12))
     clean_axis(ax)
     finish_figure(fig, "behaviour_by_time_heatmap")
 
@@ -317,12 +324,12 @@ def example_proportion_over_time_profile() -> None:
     fig, ax = plt.subplots(figsize=(8, 4.6))
     for behaviour, colour in BEHAVIOUR_COLOURS.items():
         ax.plot(data.index, data[behaviour] * 100, color=colour, linewidth=2.2, label=behaviour)
-    ax.set_title("Proportion in each behaviour across the day")
+    ax.set_title("Participant-days in each behaviour across the day")
     ax.set_xlabel("Time of day (hours)")
-    ax.set_ylabel("Proportion of observations (%)")
+    ax.set_ylabel("Participant-days in behaviour (%)")
     ax.set_xticks(np.arange(0, 25, 4))
     ax.set_ylim(0, 100)
-    ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.18))
+    ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.12))
     clean_axis(ax)
     finish_figure(fig, "proportion_over_time_profile")
 
@@ -340,12 +347,12 @@ def example_stacked_area_profile() -> None:
         labels=data.columns,
         alpha=0.95,
     )
-    ax.set_title("Daily movement-behaviour composition over time")
+    ax.set_title("Participant-day movement-behaviour composition over time")
     ax.set_xlabel("Time of day (hours)")
-    ax.set_ylabel("Composition of observations (%)")
+    ax.set_ylabel("Participant-days by behaviour (%)")
     ax.set_xticks(np.arange(0, 25, 4))
     ax.set_ylim(0, 100)
-    ax.legend(ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.18))
+    ax.legend(ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.12))
     clean_axis(ax)
     finish_figure(fig, "stacked_area_profile")
 
@@ -378,9 +385,9 @@ def example_time_series_line_plot() -> None:
     fig, ax = plt.subplots(figsize=(8, 4.4))
     for idx, values in enumerate(series):
         ax.plot(times, values, color=PALETTE[idx], linewidth=2, label=f"Day {idx + 1}")
-    ax.set_title("Continuous movement metric over time")
+    ax.set_title("Activity counts across one day")
     ax.set_xlabel("Time of day (hours)")
-    ax.set_ylabel("MIMS-units per minute")
+    ax.set_ylabel("Activity counts per minute")
     ax.set_xticks(np.arange(0, 25, 4))
     ax.legend(loc="upper left")
     clean_axis(ax)
@@ -389,7 +396,7 @@ def example_time_series_line_plot() -> None:
 
 def example_observation_by_time_heatmap() -> None:
     # RECOMMENDATION: Observation-by-time heatmap.
-    # ADAPT HERE: replace the simulated matrix with real observations x time.
+    # ADAPT HERE: replace the simulated matrix with real participant-days x time.
     # Choose row ordering and colour scale deliberately before interpretation.
     times = np.linspace(0, 24, 96)
     rows = []
@@ -401,13 +408,15 @@ def example_observation_by_time_heatmap() -> None:
         rows.append(np.clip(values, 0, None))
     matrix = np.vstack(rows)
     fig, ax = plt.subplots(figsize=(8.5, 5))
-    im = ax.imshow(matrix, aspect="auto", cmap="viridis", extent=[0, 24, matrix.shape[0], 0])
-    ax.set_title("Metric value by observation and time")
+    im = ax.imshow(matrix, aspect="auto", cmap=SEQUENTIAL_CMAP, extent=[0, 24, matrix.shape[0], 0])
+    ax.set_title("Activity counts by participant-day and time")
     ax.set_xlabel("Time of day (hours)")
-    ax.set_ylabel("Observation")
+    ax.set_ylabel("Participant-day")
     ax.set_xticks(np.arange(0, 25, 4))
+    ax.set_yticks([2, 8, 14, 20])
+    ax.set_yticklabels(["P02 day 1", "P08 day 1", "P14 day 1", "P20 day 1"])
     cbar = fig.colorbar(im, ax=ax, pad=0.02)
-    cbar.set_label("MIMS-units per minute")
+    cbar.set_label("Activity counts per minute")
     clean_axis(ax)
     finish_figure(fig, "observation_by_time_heatmap")
 
@@ -424,8 +433,8 @@ def example_small_multiple_time_series_plots() -> None:
         ax.set_xticks(np.arange(0, 25, 6))
         clean_axis(ax)
     fig.supxlabel("Time of day (hours)", fontsize=10)
-    fig.supylabel("MIMS-units per minute", fontsize=10)
-    fig.suptitle("Small-multiple temporal profiles", fontweight="bold", y=0.98)
+    fig.supylabel("Activity counts per minute", fontsize=10)
+    fig.suptitle("Activity-count profiles by participant-day", fontweight="bold", y=0.98)
     fig.tight_layout(rect=[0.03, 0.04, 1, 0.94])
     finish_figure(fig, "small_multiple_time_series_plots")
 
@@ -440,9 +449,9 @@ def example_summary_time_profile_with_interval_ribbon() -> None:
     fig, ax = plt.subplots(figsize=(8, 4.4))
     ax.fill_between(times, mean - interval, mean + interval, color="#A7C7E7", alpha=0.55, label="95% interval")
     ax.plot(times, mean, color="#0072B2", linewidth=2.6, label="Mean")
-    ax.set_title("Summary temporal profile with interval ribbon")
+    ax.set_title("Mean activity-count profile with interval ribbon")
     ax.set_xlabel("Time of day (hours)")
-    ax.set_ylabel("Mean MIMS-units per minute")
+    ax.set_ylabel("Mean activity counts per minute")
     ax.set_xticks(np.arange(0, 25, 4))
     ax.legend(loc="upper left")
     clean_axis(ax)
@@ -459,9 +468,9 @@ def example_summary_time_profile() -> None:
         mean = 50 + 23 * np.exp(-((times - (15 + idx)) / 5) ** 2)
         mean += (5 - idx * 2) * np.sin(times / 24 * 2 * np.pi)
         ax.plot(times, mean, color=PALETTE[idx], linewidth=2.4, label=label)
-    ax.set_title("Summary temporal profiles by discrete period")
+    ax.set_title("Mean activity-count profiles by day type")
     ax.set_xlabel("Time of day (hours)")
-    ax.set_ylabel("Mean MIMS-units per minute")
+    ax.set_ylabel("Mean activity counts per minute")
     ax.set_xticks(np.arange(0, 25, 4))
     ax.legend(loc="upper left")
     clean_axis(ax)
@@ -477,7 +486,7 @@ def example_empirical_cumulative_distribution_ecdf() -> None:
     y = np.arange(1, len(values) + 1) / len(values)
     fig, ax = plt.subplots(figsize=(7.2, 4.4))
     ax.step(values, y, where="post", color=ACCENT, linewidth=2.4)
-    ax.set_title("Empirical cumulative distribution of a derived metric")
+    ax.set_title("Cumulative distribution of participant daily MVPA minutes")
     ax.set_xlabel("Daily MVPA minutes")
     ax.set_ylabel("Cumulative proportion")
     ax.set_ylim(0, 1.02)
@@ -489,7 +498,7 @@ def example_box_or_violin_plot_with_raw_points() -> None:
     # RECOMMENDATION: Box or violin plot with raw points.
     # ADAPT HERE: replace ``groups`` and ``values`` with observed metric values
     # by category. Reconsider violin layers for very small samples.
-    groups = ["Group A", "Group B", "Group C"]
+    groups = ["20-39 years", "40-59 years", "60+ years"]
     values = [RNG.normal(65 + idx * 9, 12 + idx * 2, size=45) for idx in range(3)]
     fig, ax = plt.subplots(figsize=(7.6, 4.8))
     violin = ax.violinplot(values, showmeans=False, showmedians=True)
@@ -501,8 +510,8 @@ def example_box_or_violin_plot_with_raw_points() -> None:
     for idx, group_values in enumerate(values, start=1):
         jitter = RNG.normal(idx, 0.045, size=len(group_values))
         ax.scatter(jitter, group_values, s=14, color=PALETTE[idx - 1], alpha=0.65, edgecolors="none")
-    ax.set_title("Distribution with raw observed values")
-    ax.set_xlabel("Group")
+    ax.set_title("Participant-level daily MVPA minutes by age group")
+    ax.set_xlabel("Age group")
     ax.set_ylabel("Daily MVPA minutes")
     ax.set_xticks(range(1, 4))
     ax.set_xticklabels(groups)
@@ -514,7 +523,7 @@ def example_faceted_density_or_ecdf_plot() -> None:
     # RECOMMENDATION: Faceted density or ECDF plot.
     # ADAPT HERE: replace group labels and values in each panel. Use shared axes
     # when the aim is direct comparison across panels.
-    groups = ["Adults", "Children", "Older adults"]
+    groups = ["Children/adolescents", "Adults", "Older adults"]
     fig, axes = plt.subplots(1, 3, figsize=(10, 3.7), sharex=True, sharey=True)
     for idx, (ax, group) in enumerate(zip(axes, groups, strict=True)):
         values = RNG.gamma(shape=4.5 + idx * 0.5, scale=16 - idx, size=110)
@@ -525,7 +534,7 @@ def example_faceted_density_or_ecdf_plot() -> None:
         ax.set_xlabel("Daily MVPA minutes")
         clean_axis(ax)
     axes[0].set_ylabel("Cumulative proportion")
-    fig.suptitle("Faceted ECDFs for group comparison", fontweight="bold", y=1.02)
+    fig.suptitle("Daily MVPA minutes by sample group", fontweight="bold", y=1.02)
     fig.tight_layout()
     finish_figure(fig, "faceted_density_or_ecdf_plot")
 
@@ -534,7 +543,7 @@ def example_repeated_measures_line_plot() -> None:
     # RECOMMENDATION: Repeated-measures line plot.
     # ADAPT HERE: replace ``periods`` and participant-level values with linked
     # repeated observations. Do not use this for independent groups.
-    periods = ["Baseline", "Midpoint", "Follow-up"]
+    periods = ["Week 0", "Week 6", "Week 12"]
     x = np.arange(len(periods))
     fig, ax = plt.subplots(figsize=(7.6, 4.7))
     records = []
@@ -546,9 +555,9 @@ def example_repeated_measures_line_plot() -> None:
         ax.plot(x, values, color="#9aa3ad", linewidth=1.1, alpha=0.65)
     mean = np.mean(records, axis=0)
     ax.plot(x, mean, color=ACCENT, linewidth=3, marker="o", label="Mean")
-    ax.set_title("Linked repeated measures over discrete periods")
-    ax.set_xlabel("Period")
-    ax.set_ylabel("Daily activity volume")
+    ax.set_title("Participant daily MVPA minutes over repeated assessments")
+    ax.set_xlabel("Assessment period")
+    ax.set_ylabel("Daily MVPA minutes")
     ax.set_xticks(x)
     ax.set_xticklabels(periods)
     ax.legend(loc="upper left")
@@ -560,7 +569,7 @@ def example_dot_plot_with_summary_and_interval() -> None:
     # RECOMMENDATION: Dot plot with summary and interval.
     # ADAPT HERE: replace raw values and the interval calculation with the
     # summary and interval appropriate to the study.
-    groups = ["Low", "Medium", "High"]
+    groups = ["Low activity", "Moderate activity", "High activity"]
     fig, ax = plt.subplots(figsize=(7.6, 4.7))
     for idx, group in enumerate(groups):
         values = RNG.normal(70 + idx * 8, 13, size=38)
@@ -570,13 +579,13 @@ def example_dot_plot_with_summary_and_interval() -> None:
         se = values.std(ddof=1) / sqrt(len(values))
         ci = 1.96 * se
         ax.errorbar(idx, mean, yerr=ci, fmt="o", color=INK, capsize=4, markersize=7, linewidth=1.8)
-    ax.set_title("Observed values with summary and interval")
-    ax.set_xlabel("Group")
+    ax.set_title("Participant MVPA minutes with mean and 95% CI")
+    ax.set_xlabel("Activity group")
     ax.set_ylabel("Daily MVPA minutes")
     ax.set_xticks(range(len(groups)))
     ax.set_xticklabels(groups)
     legend = [
-        Line2D([0], [0], marker="o", color="none", markerfacecolor=MUTED, markersize=6, label="Observed value"),
+        Line2D([0], [0], marker="o", color="none", markerfacecolor=MUTED, markersize=6, label="Participant"),
         Line2D([0], [0], marker="o", color=INK, markerfacecolor=INK, markersize=6, label="Mean and 95% CI"),
     ]
     ax.legend(handles=legend, loc="upper left")
@@ -593,10 +602,10 @@ def example_dot_plot_of_observed_values() -> None:
     fig, ax = plt.subplots(figsize=(7.2, 2.7))
     ax.scatter(values, y, s=22, color=ACCENT, alpha=0.65, edgecolors="white", linewidths=0.3)
     ax.axvline(values.mean(), color=WARM, linewidth=2, label="Mean")
-    ax.set_title("Observed values for one accelerometer metric")
+    ax.set_title("Participant-level daily MVPA minutes")
     ax.set_xlabel("Daily MVPA minutes")
     ax.set_yticks([])
-    ax.set_ylabel("Observations")
+    ax.set_ylabel("Participants\n(jittered)")
     ax.legend(loc="upper left")
     clean_axis(ax)
     finish_figure(fig, "dot_plot_of_observed_values")
@@ -618,7 +627,7 @@ def example_pie_or_doughnut_chart() -> None:
         wedgeprops={"width": 0.42, "edgecolor": "white", "linewidth": 2},
     )
     ax.text(0, 0, "24-hour\ncomposition", ha="center", va="center", fontsize=11, color=INK)
-    ax.set_title("Movement-behaviour composition")
+    ax.set_title("Example 24-hour movement-behaviour composition")
     ax.legend(wedges, [f"{label}: {value}%" for label, value in zip(labels, values, strict=True)], loc="center left", bbox_to_anchor=(1.0, 0.5))
     finish_figure(fig, "pie_or_doughnut_chart")
 
@@ -627,7 +636,7 @@ def example_100_percent_stacked_bar_chart() -> None:
     # RECOMMENDATION: 100% stacked bar chart.
     # ADAPT HERE: replace the rows with groups/time periods/conditions and the
     # columns with behaviour parts. Each row should sum to 100%.
-    groups = ["Group A", "Group B", "Group C"]
+    groups = ["Children/adolescents", "Adults", "Older adults"]
     values = np.array([[34, 41, 20, 5], [31, 44, 19, 6], [38, 37, 19, 6]])
     labels = list(BEHAVIOUR_COLOURS)
     fig, ax = plt.subplots(figsize=(8, 4.3))
@@ -635,10 +644,10 @@ def example_100_percent_stacked_bar_chart() -> None:
     for idx, label in enumerate(labels):
         ax.barh(groups, values[:, idx], left=left, color=BEHAVIOUR_COLOURS[label], label=label)
         left += values[:, idx]
-    ax.set_title("100% stacked movement-behaviour composition")
+    ax.set_title("24-hour movement-behaviour composition by sample group")
     ax.set_xlabel("Proportion of the day (%)")
     ax.set_xlim(0, 100)
-    ax.legend(ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.18))
+    ax.legend(ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.12))
     clean_axis(ax)
     finish_figure(fig, "100_percent_stacked_bar_chart")
 
@@ -647,7 +656,7 @@ def example_small_multiple_composition_bars() -> None:
     # RECOMMENDATION: Small-multiple composition bars.
     # ADAPT HERE: replace panel contexts and composition parts. Keep behaviour
     # order and colours identical across panels.
-    contexts = ["Weekday", "Weekend", "Holiday"]
+    contexts = ["Weekday", "Weekend day", "School holiday"]
     values = np.array([[34, 41, 20, 5], [37, 39, 19, 5], [40, 35, 19, 6]])
     labels = list(BEHAVIOUR_COLOURS)
     fig, axes = plt.subplots(1, 3, figsize=(10, 3.6), sharex=True)
@@ -662,9 +671,9 @@ def example_small_multiple_composition_bars() -> None:
         ax.set_xlabel("% of day")
         clean_axis(ax)
     handles = [Patch(facecolor=BEHAVIOUR_COLOURS[label], label=label) for label in labels]
-    fig.legend(handles=handles, ncol=4, loc="lower center")
-    fig.suptitle("Small-multiple composition bars", fontweight="bold", y=1.0)
-    fig.tight_layout(rect=[0, 0.14, 1, 0.94])
+    fig.legend(handles=handles, ncol=4, loc="lower center", bbox_to_anchor=(0.5, 0.06))
+    fig.suptitle("24-hour movement-behaviour composition by day type", fontweight="bold", y=1.0)
+    fig.tight_layout(rect=[0, 0.18, 1, 0.94])
     finish_figure(fig, "small_multiple_composition_bars")
 
 
@@ -679,17 +688,57 @@ def example_ternary_plot() -> None:
     # RECOMMENDATION: Ternary plot.
     # ADAPT HERE: replace ``parts`` with exactly three compositional parts that
     # sum to one. Use a different recommendation for more than three parts.
-    parts = RNG.dirichlet([3.2, 4.0, 2.2], size=70)
-    x, y = ternary_to_xy(parts)
-    fig, ax = plt.subplots(figsize=(6.2, 5.4))
+    adult_parts = RNG.dirichlet([3.2, 4.1, 1.9], size=45)
+    child_parts = RNG.dirichlet([3.0, 3.4, 2.6], size=45)
+    fig, ax = plt.subplots(figsize=(6.6, 5.8))
     triangle_x = [0, 1, 0.5, 0]
     triangle_y = [0, 0, sqrt(3) / 2, 0]
     ax.plot(triangle_x, triangle_y, color=INK, linewidth=1.2)
-    ax.scatter(x, y, s=28, color=ACCENT, alpha=0.65, edgecolors="white", linewidths=0.4)
-    ax.text(-0.04, -0.04, "Sleep", ha="right", va="top", color=INK)
-    ax.text(1.04, -0.04, "Sedentary", ha="left", va="top", color=INK)
-    ax.text(0.5, sqrt(3) / 2 + 0.04, "Active", ha="center", va="bottom", color=INK)
-    ax.set_title("Three-part movement-behaviour composition")
+
+    for proportion in np.arange(0.2, 1.0, 0.2):
+        sed = np.array([0, 1 - proportion])
+        sleep_line = np.column_stack(
+            [np.full(2, proportion), sed, 1 - proportion - sed]
+        )
+        x_line, y_line = ternary_to_xy(sleep_line)
+        ax.plot(x_line, y_line, color=GRID, linewidth=0.8, zorder=0)
+
+        sleep = np.array([0, 1 - proportion])
+        sedentary_line = np.column_stack(
+            [sleep, np.full(2, proportion), 1 - proportion - sleep]
+        )
+        x_line, y_line = ternary_to_xy(sedentary_line)
+        ax.plot(x_line, y_line, color=GRID, linewidth=0.8, zorder=0)
+
+        sleep = np.array([0, 1 - proportion])
+        active_line = np.column_stack(
+            [sleep, 1 - proportion - sleep, np.full(2, proportion)]
+        )
+        x_line, y_line = ternary_to_xy(active_line)
+        ax.plot(x_line, y_line, color=GRID, linewidth=0.8, zorder=0)
+
+    for parts, label, colour in [
+        (adult_parts, "Adults", PALETTE[0]),
+        (child_parts, "Children/adolescents", PALETTE[1]),
+    ]:
+        x, y = ternary_to_xy(parts)
+        ax.scatter(
+            x,
+            y,
+            s=30,
+            color=colour,
+            alpha=0.7,
+            edgecolors="white",
+            linewidths=0.45,
+            label=label,
+        )
+
+    ax.text(-0.06, -0.04, "Sleep\nproportion", ha="right", va="top", color=INK)
+    ax.text(1.06, -0.04, "Sedentary\nproportion", ha="left", va="top", color=INK)
+    ax.text(0.5, sqrt(3) / 2 + 0.02, "Active\nproportion", ha="center", va="bottom", color=INK)
+    ax.text(0.5, -0.07, "Each point represents one participant-day; gridlines mark 20% steps.", ha="center", va="top", fontsize=8.5, color=MUTED)
+    ax.set_title("Three-part 24-hour movement-behaviour composition", pad=34)
+    ax.legend(loc="upper right", bbox_to_anchor=(1.12, 0.92))
     ax.set_aspect("equal")
     ax.axis("off")
     finish_figure(fig, "ternary_plot")
@@ -703,7 +752,7 @@ def example_scatter_plot() -> None:
     y = 20 + 0.55 * x + RNG.normal(0, 12, size=90)
     fig, ax = plt.subplots(figsize=(6.8, 4.8))
     ax.scatter(x, y, s=32, color=ACCENT, alpha=0.7, edgecolors="white", linewidths=0.4)
-    ax.set_title("Relationship between two observed metrics")
+    ax.set_title("Participant weekday and weekend-day MIMS-units")
     ax.set_xlabel("Weekday MIMS-units (thousands/day)")
     ax.set_ylabel("Weekend-day MIMS-units (thousands/day)")
     clean_axis(ax)
@@ -730,15 +779,17 @@ def make_events(n_rows: int = 12) -> list[np.ndarray]:
 def example_event_timeline_or_raster_plot() -> None:
     # RECOMMENDATION: Event timeline or raster plot.
     # ADAPT HERE: replace simulated event times with real bout/event times for
-    # each observation. Keep x=time and rows=observations.
+    # each participant-day. Keep x=time and rows=participant-days.
     events = make_events(12)
     fig, ax = plt.subplots(figsize=(8.5, 4.6))
     for row, times in enumerate(events, start=1):
         ax.vlines(times, row - 0.38, row + 0.38, color=ACCENT, linewidth=1.6)
-    ax.set_title("Event raster for detected activity bouts")
+    ax.set_title("Detected MVPA bouts by participant-day")
     ax.set_xlabel("Time of day (hours)")
-    ax.set_ylabel("Observation")
+    ax.set_ylabel("Participant-day")
     ax.set_xticks(np.arange(0, 25, 4))
+    ax.set_yticks([1, 4, 8, 12])
+    ax.set_yticklabels(["P01 day 1", "P04 day 1", "P08 day 1", "P12 day 1"])
     ax.set_ylim(0.3, len(events) + 0.7)
     clean_axis(ax)
     finish_figure(fig, "event_timeline_or_raster_plot")
@@ -752,13 +803,25 @@ def example_event_raster_or_time_bin_heatmap() -> None:
     bins = np.arange(0, 25, 1)
     matrix = np.vstack([np.histogram(times, bins=bins)[0] for times in events])
     fig, ax = plt.subplots(figsize=(8.5, 5))
-    im = ax.imshow(matrix, aspect="auto", cmap="YlGnBu", extent=[0, 24, matrix.shape[0], 0])
-    ax.set_title("Time-bin heatmap of event counts")
+    y_edges = np.arange(matrix.shape[0] + 1)
+    im = ax.pcolormesh(
+        bins,
+        y_edges,
+        matrix,
+        cmap=SEQUENTIAL_CMAP,
+        edgecolors="white",
+        linewidth=0.35,
+        shading="flat",
+    )
+    ax.invert_yaxis()
+    ax.set_title("Hourly MVPA-bout counts by participant-day")
     ax.set_xlabel("Time of day (hours)")
-    ax.set_ylabel("Observation")
+    ax.set_ylabel("Participant-day")
     ax.set_xticks(np.arange(0, 25, 4))
+    ax.set_yticks([1, 5, 9, 13])
+    ax.set_yticklabels(["P01 day 1", "P05 day 1", "P09 day 1", "P13 day 1"])
     cbar = fig.colorbar(im, ax=ax, pad=0.02)
-    cbar.set_label("Bouts per hour")
+    cbar.set_label("MVPA bouts per hour")
     clean_axis(ax)
     finish_figure(fig, "event_raster_or_time_bin_heatmap")
 
@@ -775,9 +838,9 @@ def example_event_frequency_time_profile() -> None:
     fig, ax = plt.subplots(figsize=(8, 4.4))
     ax.plot(centers, counts, color=ACCENT, linewidth=2.5, marker="o")
     ax.fill_between(centers, counts, color=ACCENT, alpha=0.18)
-    ax.set_title("Event-frequency profile across the day")
+    ax.set_title("MVPA-bout frequency profile across the day")
     ax.set_xlabel("Time of day (hours)")
-    ax.set_ylabel("Detected bouts per hour")
+    ax.set_ylabel("Detected MVPA bouts per hour")
     ax.set_xticks(np.arange(0, 25, 4))
     clean_axis(ax)
     finish_figure(fig, "event_frequency_time_profile")

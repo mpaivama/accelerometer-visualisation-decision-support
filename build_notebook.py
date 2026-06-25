@@ -147,12 +147,12 @@ Connection to the earlier framework:
   observed values."""
         ),
         nbf.v4.new_markdown_cell(
-            """### 3. What level of observation should be visible? (`display_level`)
+            """### 3. What level of data should be visible? (`display_level`)
 
-- `"individual"`: show one participant, day, bout, or selected observation in
-  detail.
-- `"multiple_observations"`: show participant-level, day-level, bout-level, or
-  other observed values from several units.
+- `"individual"`: show one participant, day, bout, participant-day, or other
+  defined data unit in detail.
+- `"multiple_observations"`: show values or profiles from several participants,
+  days, bouts, participant-days, or other defined units.
 - `"summary"`: show only an aggregate such as a mean, median, proportion, or
   total for the sample or for each comparison level."""
         ),
@@ -160,8 +160,9 @@ Connection to the earlier framework:
             """### 4. Is the visualisation comparing values? (`comparison_focus`)
 
 - `"none"`: there is no explicit comparison; the purpose is to describe one
-  metric, selected observation, signal, distribution, composition, or pattern.
-- `"groups"`: compare **who** the observations come from. Examples: women
+  metric, selected participant/day/bout, signal, distribution, composition, or
+  pattern.
+- `"groups"`: compare **who** the data units come from. Examples: women
   versus men, age groups, or BMI categories.
 - `"time"`: compare **when** the observations were recorded using discrete,
   ordered periods. Examples: weekdays versus weekend days, or baseline versus
@@ -269,7 +270,7 @@ answers = DecisionInputs(
     # Main message the visualisation should communicate
     primary_task="compare_values",
 
-    # Whether individual observations or only summaries should be visible
+    # Whether individual data units or only summaries should be visible
     display_level="summary",
 
     # What is compared and whether observations are linked across levels

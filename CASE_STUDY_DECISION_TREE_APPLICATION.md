@@ -76,7 +76,7 @@ This is the main descriptive comparison in the abstract and Tables 1 and 2.
 | --- | --- | --- |
 | What form do the accelerometer values take? | Derived metric | Daily MIMS-units are numeric summaries derived from raw accelerometer data. |
 | What is the main message the visualisation should communicate? | How much, how often, or how long, and do values differ? | The question is "How much physical activity, and does it differ between weekdays and weekend days?" |
-| What level of observation should be visible? | Summary values only | The paper communicates weighted means, differences, and confidence intervals rather than individual participant values. |
+| What level of data should be visible? | Summary values only | The paper communicates weighted means, differences, and confidence intervals rather than individual participant values. |
 | Is the visualisation comparing values? | Discrete time periods: when? | The central comparison is weekday versus weekend day. |
 | Are the comparison observations independent or linked? | Paired or repeated | The same participants contribute weekday and weekend-day summaries. |
 | Should variability or uncertainty be visible? | Yes | The paper reports 95% confidence intervals. |
@@ -128,7 +128,7 @@ comparison, with weekday/weekend shown through colour, position, or faceting.
 | --- | --- | --- |
 | What form do the accelerometer values take? | Derived metric | Weighted mean daily MIMS-units are derived accelerometer summaries. |
 | What is the main message the visualisation should communicate? | How much, how often, or how long, and do values differ? | The goal is to compare "how much" physical activity across categories. |
-| What level of observation should be visible? | Summary values only | The visualisation would show weighted means and 95% confidence intervals. |
+| What level of data should be visible? | Summary values only | The visualisation would show weighted means and 95% confidence intervals. |
 | Is the visualisation comparing values? | Groups: who? | The main visual grouping is age, gender, ethnicity, education, poverty, marital status, or weight status. |
 | Are the comparison observations independent or linked? | Independent | Subgroup categories are treated as independent comparison levels. |
 | Should variability or uncertainty be visible? | Yes | 95% confidence intervals are part of the reported descriptive output. |
@@ -170,7 +170,7 @@ This corresponds to the difference column in Tables 1 and 2.
 | --- | --- | --- |
 | What form do the accelerometer values take? | Derived metric | The weekday-minus-weekend value is a derived accelerometer metric calculated from daily MIMS-units. |
 | What is the main message the visualisation should communicate? | How much, how often, or how long, and do values differ? | The task is to compare the size of the weekday-weekend difference across subgroups. |
-| What level of observation should be visible? | Summary values only | The paper reports one difference estimate and interval per subgroup category. |
+| What level of data should be visible? | Summary values only | The paper reports one difference estimate and interval per subgroup category. |
 | Is the visualisation comparing values? | Groups: who? | The comparison is across subgroup categories. |
 | Are the comparison observations independent or linked? | Independent | Subgroup categories are independent comparison levels. |
 | Should variability or uncertainty be visible? | Yes | The difference estimates include 95% confidence intervals. |
@@ -221,7 +221,7 @@ tables.
 | --- | --- | --- |
 | What form do the accelerometer values take? | Derived metric | Percentage difference is calculated from MIMS-unit summaries. |
 | What is the main message the visualisation should communicate? | How much, how often, or how long, and do values differ? | The task compares relative difference size across groups. |
-| What level of observation should be visible? | Summary values only | One percentage is reported per subgroup category. |
+| What level of data should be visible? | Summary values only | One percentage is reported per subgroup category. |
 | Is the visualisation comparing values? | Groups: who? | The percentages are compared across subgroup categories. |
 | Are the comparison observations independent or linked? | Independent | Subgroup categories are independent. |
 | Should variability or uncertainty be visible? | No | The published percentage values do not have uncertainty intervals. |

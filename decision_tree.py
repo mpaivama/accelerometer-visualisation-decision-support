@@ -65,8 +65,9 @@ INVALID_VALUE_HINTS = {
         "Choose the option that best describes the main message of the visualisation."
     ),
     "display_level": (
-        "Choose whether the visualisation should show one observation, multiple "
-        "observations, or summary values only."
+        "Choose whether the visualisation should show one defined data unit "
+        "(for example a participant, day, or bout), multiple units, or summary "
+        "values only."
     ),
     "comparison_focus": (
         "Use 'none' for no comparison, 'groups' for who is compared, 'time' for "
@@ -101,8 +102,8 @@ DISPLAY_LABELS = {
         "event_pattern": "Event pattern",
     },
     "display_level": {
-        "individual": "One selected observation",
-        "multiple_observations": "Multiple observed values",
+        "individual": "One selected unit",
+        "multiple_observations": "Multiple participants, days, or bouts",
         "summary": "Summary values only",
     },
     "comparison_focus": {
@@ -426,7 +427,7 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
             "One row per observation with paired values for two continuous variables."
         ),
         "case_study_adaptation_points": [
-            "Replace the hexbin layer with points when the number of observations is readable.",
+            "Replace the hexbin layer with points when the number of data units is readable.",
             "Use transparency or small markers if mild overplotting remains.",
             "Avoid adding trend lines unless they represent a clearly described descriptive summary rather than a model result.",
         ],
@@ -445,7 +446,7 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
         ),
         "case_study_adaptation_points": [
             "Add raw points behind the summary marker using jitter or transparency.",
-            "Keep the summary marker visually distinct from individual observations.",
+            "Keep the summary marker visually distinct from individual data units.",
             "State whether intervals show uncertainty around the summary or variability in observations.",
         ],
         "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
@@ -777,13 +778,14 @@ def _visual_mapping(visualisation: str) -> str:
             "participant/day, and colour encodes the classified behaviour at each time."
         ),
         "Behaviour-by-time heatmap": (
-            "Rows represent observations, columns represent time, and colour encodes "
+            "Rows represent participants, participant-days, bouts, or another "
+            "defined observation unit; columns represent time, and colour encodes "
             "behaviour category."
         ),
         "Proportion-over-time profile": (
             "The x-axis represents time, the y-axis represents the proportion of "
-            "observations in each behaviour category, and lines or panels separate "
-            "behaviours or comparison groups."
+            "participants, days, or other observed units in each behaviour "
+            "category, and lines or panels separate behaviours or comparison groups."
         ),
         "Stacked area profile": (
             "The x-axis represents time, the stacked coloured bands represent behaviour "
@@ -794,8 +796,9 @@ def _visual_mapping(visualisation: str) -> str:
             "each line represents a participant, day, group, or condition."
         ),
         "Observation-by-time heatmap": (
-            "Rows represent observations (participants or days), columns represent time, "
-            "and colour encodes the metric value."
+            "Rows represent participants, participant-days, bouts, or another "
+            "defined observation unit; columns represent time, and colour encodes "
+            "the metric value."
         ),
         "Small-multiple time-series plots": (
             "Each panel contains a time-series plot with time on the x-axis and the "
@@ -817,11 +820,13 @@ def _visual_mapping(visualisation: str) -> str:
         ),
         "Empirical cumulative distribution (ECDF)": (
             "The x-axis represents the metric value and the y-axis represents the "
-            "cumulative proportion of observations at or below that value."
+            "cumulative proportion of participants, days, bouts, or other observed "
+            "units at or below that value."
         ),
         "Box or violin plot with raw points": (
             "Categories are shown on one axis, metric values on the other; the box or "
-            "violin shows the distribution and points show individual observations."
+            "violin shows the distribution and points show individual participants, "
+            "days, bouts, or other observed units."
         ),
         "Faceted density or ECDF plot": (
             "Each panel represents a group, time point, or condition; the x-axis shows "
@@ -841,8 +846,8 @@ def _visual_mapping(visualisation: str) -> str:
         ),
         "Dot plot with summary and interval": (
             "Categories are shown on one axis and metric values on the other; raw points "
-            "show observations, a marker shows the summary, and an interval shows "
-            "variability or uncertainty."
+            "show participants, days, bouts, or other observed units, a marker shows "
+            "the summary, and an interval shows variability or uncertainty."
         ),
         "Dot plot of observed values": (
             "The metric value is shown on one axis and each point represents one "
@@ -877,28 +882,32 @@ def _visual_mapping(visualisation: str) -> str:
         ),
         "Ternary plot": (
             "The three triangle axes represent three compositional parts, and each point "
-            "represents one observation's balance across those parts."
+            "represents one participant, day, bout, or other defined unit's balance "
+            "across those parts."
         ),
         "Hexbin or two-dimensional density plot": (
             "One axis represents the accelerometer metric and the other represents the "
             "second continuous variable; colour intensity represents the number or "
-            "density of observations in each bin."
+            "density of paired data units in each bin."
         ),
         "Scatter plot": (
             "One axis represents the accelerometer metric, the other represents the "
-            "second continuous variable, and each point represents one paired observation."
+            "second continuous variable, and each point represents one paired "
+            "participant-, day-, bout-, or period-level value."
         ),
         "Event timeline or raster plot": (
-            "Time is shown on the x-axis, rows represent observations or event types, "
-            "and marks or coloured segments show when events occur."
+            "Time is shown on the x-axis, rows represent participants, participant-days, "
+            "bouts, or event types, and marks or coloured segments show when events occur."
         ),
         "Event raster or time-bin heatmap": (
-            "Rows represent observations, columns represent time bins, and marks or "
-            "colour intensity encode event presence or frequency."
+            "Rows represent participants, participant-days, bouts, or another defined "
+            "observation unit; columns represent time bins, and marks or colour "
+            "intensity encode event presence or frequency."
         ),
         "Event-frequency time profile": (
             "The x-axis represents time or time bins, the y-axis represents event "
-            "frequency or rate, and the line or bars summarise events across observations."
+            "frequency or rate, and the line or bars summarise events across "
+            "participants, days, bouts, or other observed units."
         ),
     }
 

@@ -305,7 +305,10 @@ class DecisionTreeTests(unittest.TestCase):
         )
         recommendation = result.recommendations[0]
         self.assertEqual(recommendation.visualisation, "Observation-by-time heatmap")
-        self.assertIn("Rows represent observations", recommendation.visual_mapping)
+        self.assertIn(
+            "Rows represent participants, participant-days, bouts",
+            recommendation.visual_mapping,
+        )
         self.assertIn("columns represent time", recommendation.visual_mapping)
         self.assertIn("colour encodes the metric value", recommendation.visual_mapping)
 

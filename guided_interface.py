@@ -134,24 +134,27 @@ QUESTIONS: dict[str, dict[str, Any]] = {
         ],
     },
     "display_level": {
-        "title": "What level of observation should be visible?",
-        "help": "Choose what the reader should be able to see directly.",
+        "title": "What level of data should be visible?",
+        "help": (
+            "Choose what the reader should be able to see directly: one "
+            "defined unit, multiple units, or summaries only."
+        ),
         "type": "choice",
         "options": [
             {
                 "value": "individual",
-                "label": "One selected observation",
+                "label": "One selected unit",
                 "description": (
-                    "Show one participant, day, bout, or selected observation in "
-                    "detail."
+                    "Show one participant, day, bout, participant-day, or other "
+                    "defined unit in detail."
                 ),
             },
             {
                 "value": "multiple_observations",
-                "label": "Multiple observed values",
+                "label": "Multiple participants, days, or bouts",
                 "description": (
                     "Show values or profiles from several participants, days, "
-                    "bouts, or other units."
+                    "bouts, participant-days, or other defined units."
                 ),
             },
             {
@@ -168,7 +171,7 @@ QUESTIONS: dict[str, dict[str, Any]] = {
         "title": "Is the visualisation comparing values?",
         "help": (
             "Choose no explicit comparison when the goal is to describe one "
-            "metric, observation, distribution, composition, or pattern without "
+            "metric, selected unit, distribution, composition, or pattern without "
             "contrasting groups, time periods, or conditions."
         ),
         "type": "choice",
@@ -177,7 +180,7 @@ QUESTIONS: dict[str, dict[str, Any]] = {
                 "value": "none",
                 "label": "No explicit comparison",
                 "description": (
-                    "Describe one metric, selected observation, signal, "
+                    "Describe one metric, selected participant/day/bout, signal, "
                     "distribution, composition, or pattern."
                 ),
             },
@@ -185,7 +188,7 @@ QUESTIONS: dict[str, dict[str, Any]] = {
                 "value": "groups",
                 "label": "Groups: who?",
                 "description": (
-                    "Compare who observations come from, such as age groups, "
+                    "Compare who the data units come from, such as age groups, "
                     "women and men, or BMI categories."
                 ),
             },
@@ -269,8 +272,8 @@ QUESTIONS: dict[str, dict[str, Any]] = {
         "options": [
             {
                 "value": False,
-                "label": "No, individual observations remain readable",
-                "description": "Keep a display that shows individual points or profiles.",
+                "label": "No, individual points or profiles remain readable",
+                "description": "Keep a display that shows individual units clearly.",
             },
             {
                 "value": True,

@@ -321,12 +321,33 @@ def build_static_data() -> dict[str, Any]:
     }
 
 
+def copy_example_figures() -> None:
+    """Copy recommendation example images into the generated static site."""
+
+    figure_roots = [
+        ROOT / "examples" / "figures",
+        ROOT / "case_study" / "figures",
+    ]
+
+    for source_dir in figure_roots:
+        if not source_dir.exists():
+            continue
+        relative_dir = source_dir.relative_to(ROOT)
+        target_dir = DOCS_DIR / relative_dir
+        if target_dir.exists():
+            shutil.rmtree(target_dir)
+        target_dir.mkdir(parents=True, exist_ok=True)
+        for figure_path in sorted(source_dir.glob("*.png")):
+            shutil.copyfile(figure_path, target_dir / figure_path.name)
+
+
 def write_static_site() -> None:
     """Write the static site files into ``docs/``."""
 
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     for filename in ("index.html", "app.js", "styles.css"):
         shutil.copyfile(TEMPLATE_DIR / filename, DOCS_DIR / filename)
+    copy_example_figures()
 
     data = build_static_data()
     data_js = "window.DECISION_TREE_DATA = "

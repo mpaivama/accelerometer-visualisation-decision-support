@@ -151,6 +151,15 @@ class DecisionReportTests(unittest.TestCase):
                 "recommendation_cautions": [
                     rec.caution or "" for rec in result.recommendations
                 ],
+                "recommendation_example_images": [
+                    rec.example_image_file or "" for rec in result.recommendations
+                ],
+                "recommendation_example_sources": [
+                    rec.example_source or "" for rec in result.recommendations
+                ],
+                "recommendation_example_code_files": [
+                    rec.example_code_file or "" for rec in result.recommendations
+                ],
                 "representative_combination_id": "C000001",
                 "representative_decision_path": " | ".join(result.decision_path),
                 "example_inputs": {

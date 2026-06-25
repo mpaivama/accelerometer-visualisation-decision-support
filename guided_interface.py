@@ -19,6 +19,12 @@ from decision_tree import DecisionInputs, recommend_visualisations
 
 ROOT = Path(__file__).resolve().parent
 STATIC_DIR = ROOT / "guided_interface"
+SERVABLE_FIGURE_PREFIXES = ("/examples/figures/", "/case_study/figures/")
+FIGURE_CONTENT_TYPES = {
+    ".png": "image/png",
+    ".svg": "image/svg+xml; charset=utf-8",
+    ".pdf": "application/pdf",
+}
 
 
 QUESTIONS: dict[str, dict[str, Any]] = {
@@ -540,6 +546,10 @@ class GuidedInterfaceHandler(BaseHTTPRequestHandler):
         if path == "/":
             path = "/index.html"
 
+        if path.startswith(SERVABLE_FIGURE_PREFIXES):
+            self._send_figure(path)
+            return
+
         static_files = {
             "/index.html": ("index.html", "text/html; charset=utf-8"),
             "/app.js": ("app.js", "text/javascript; charset=utf-8"),
@@ -551,6 +561,32 @@ class GuidedInterfaceHandler(BaseHTTPRequestHandler):
 
         filename, content_type = static_files[path]
         content = (STATIC_DIR / filename).read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
+
+    def _send_figure(self, path: str) -> None:
+        """Serve example figures while keeping the local server narrowly scoped."""
+
+        figure_path = (ROOT / path.lstrip("/")).resolve()
+        try:
+            figure_path.relative_to(ROOT)
+        except ValueError:
+            self.send_error(404)
+            return
+
+        if not figure_path.is_file():
+            self.send_error(404)
+            return
+
+        content_type = FIGURE_CONTENT_TYPES.get(figure_path.suffix.lower())
+        if content_type is None:
+            self.send_error(404)
+            return
+
+        content = figure_path.read_bytes()
         self.send_response(200)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(content)))

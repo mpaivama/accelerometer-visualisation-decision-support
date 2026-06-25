@@ -5,8 +5,9 @@ decision-making in accelerometer-based movement behaviour research.
 
 The toolkit helps researchers choose an appropriate visualisation family for
 direct displays of accelerometer metrics, understand the reasoning behind the
-recommendation, and inspect a worked implementation example using NHANES
-2011-2014 accelerometer data.
+recommendation, inspect a visual example, and adapt implementation code. Some
+examples use the NHANES 2011-2014 worked case-study outputs, while others use
+small simulated datasets to illustrate visual structure.
 
 It is deliberately not a comprehensive plotting package, and it does not cover
 model coefficients, adjusted predictions, predicted values, or other
@@ -20,14 +21,15 @@ fully fit a study context.
 
 ## Toolkit Components
 
-The repository currently contains five connected pieces:
+The repository currently contains six connected pieces:
 
 1. **Decision tree recommendation engine**
 
    `decision_tree.py` asks about the data form, visual task, display level,
    comparison structure, variability, audience, and temporal context. It returns
    ranked visualisation recommendations with visual mappings, rationale,
-   cautions, adaptation notes, and checklist-informed design notes.
+   cautions, adaptation notes, example figures, and checklist-informed design
+   notes.
 
 2. **Guided interface**
 
@@ -53,10 +55,16 @@ The repository currently contains five connected pieces:
    `checklist/` contains the current checklist draft used to refine the
    case-study figures and to document checklist-informed design choices.
 
+6. **Illustrative visual examples**
+
+   `examples/` contains simulated visual examples for recommendation families
+   that were not directly implemented in the NHANES case study. Each example is
+   generated from a minimal mock dataset inside the plotting function.
+
 The decision tree includes a recommendation-to-example registry. When a
 recommendation is returned, the output tells the user whether the case study
-contains a direct worked example, a related worked example, or general example
-code that can be adapted.
+contains a direct worked example, whether a related case-study example is
+available, or whether the visual example was generated from simulated mock data.
 
 ## What The Decision Tree Asks
 
@@ -74,6 +82,7 @@ It returns ranked visualisation recommendations with:
 
 - the recommended visualisation family;
 - the intended visual mapping;
+- a visual example and source label;
 - the rationale for the recommendation;
 - when the recommendation is most appropriate;
 - cautions and adaptation notes;
@@ -103,6 +112,7 @@ CASE_STUDY_DECISION_TREE_APPLICATION.md
                                   First worked application of the decision tree
 case_study/                        NHANES worked example code, figures, and
                                   reproducibility notes
+examples/                          Simulated example figures and generator code
 checklist/                         Checklist component of the toolkit
 decision_report/                   Small generated audit artifacts
 figures/                           Architecture figure and caption
@@ -155,8 +165,9 @@ http://127.0.0.1:8765
 Press `Control-C` in the terminal to stop the server.
 
 The interface output includes implementation guidance. For each recommendation,
-it indicates whether the worked case study contains a direct example, a related
-example, or general code that can be adapted.
+it shows a visual example, identifies whether the example uses NHANES case-study
+data or simulated mock data, and indicates whether the worked case study
+contains a direct or related example.
 
 ## Static GitHub Pages Site
 
@@ -177,7 +188,29 @@ docs/
 
 Do not edit `docs/data.js` by hand. It is generated from `decision_tree.py` and
 `guided_interface.py`. If the decision tree or guided questions change, rerun
-`python3 build_static_site.py` and commit the updated `docs/` files.
+`python3 build_static_site.py` and commit the updated `docs/` files. The build
+also copies the PNG example figures needed by the static interface into `docs/`.
+
+## Visual Examples
+
+Recommendation outputs include one example image per visualisation family.
+
+Examples with `NHANES case-study data` were generated from the reproduced
+case-study outputs in `case_study/`. Examples with `Simulated mock data` were
+generated only to show the intended visual mapping and should not be interpreted
+as real accelerometer data or as evidence that the design has been formally
+tested.
+
+To regenerate the simulated examples:
+
+```bash
+python3 examples/generate_mock_visualisation_examples.py
+```
+
+The simulated examples are a preliminary implementation layer. A future version
+could replace or extend them with additional real-world case studies after the
+recommendations and checklist-informed designs have been refined and tested in
+more contexts.
 
 The repository also includes a GitHub Actions workflow:
 

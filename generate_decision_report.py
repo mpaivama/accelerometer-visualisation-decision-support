@@ -17,6 +17,10 @@ from dataclasses import asdict, fields
 from itertools import product
 from pathlib import Path
 
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill
+from openpyxl.utils import get_column_letter
+
 from decision_tree import (
     ALLOWED_VALUES,
     DecisionInputs,
@@ -37,6 +41,7 @@ VALIDATION_CSV = REPORT_DIR / "validation_examples.csv"
 SUMMARY_JSON = REPORT_DIR / "report_summary.json"
 WORKBOOK_JSON = REPORT_DIR / "workbook_data.json"
 METHODOLOGY_MD = ROOT / "Decision_tree_full_report.md"
+WORKBOOK_XLSX = ROOT / "Decision_tree_full_report.xlsx"
 
 INPUT_FIELDS = [field.name for field in fields(DecisionInputs)]
 RECOMMENDATION_FIELDS = [field.name for field in fields(Recommendation)]
@@ -80,6 +85,9 @@ RECOMMENDATION_SET_HEADERS = [
     "recommendation_rationales",
     "recommendation_use_when",
     "recommendation_cautions",
+    "recommendation_example_images",
+    "recommendation_example_sources",
+    "recommendation_example_code_files",
     "representative_combination_id",
     "representative_decision_path",
     *[f"example_{field}" for field in INPUT_FIELDS],
@@ -240,6 +248,15 @@ def recommendation_set_rows(recommendation_sets):
                 "recommendation_rationales": " | ".join(record["recommendation_rationales"]),
                 "recommendation_use_when": " | ".join(record["recommendation_use_when"]),
                 "recommendation_cautions": " | ".join(record["recommendation_cautions"]),
+                "recommendation_example_images": " | ".join(
+                    record["recommendation_example_images"]
+                ),
+                "recommendation_example_sources": " | ".join(
+                    record["recommendation_example_sources"]
+                ),
+                "recommendation_example_code_files": " | ".join(
+                    record["recommendation_example_code_files"]
+                ),
                 "representative_combination_id": record["representative_combination_id"],
                 "representative_decision_path": record["representative_decision_path"],
                 **example_inputs,
@@ -374,6 +391,126 @@ def markdown_table(headers, rows):
             "| " + " | ".join(markdown_escape(value) for value in values) + " |"
         )
     return "\n".join(lines)
+
+
+def _normalise_excel_value(value):
+    """Return a scalar value suitable for writing to an Excel cell."""
+
+    if isinstance(value, (list, tuple, set)):
+        return " | ".join(str(item) for item in value)
+    if isinstance(value, dict):
+        return json.dumps(value, ensure_ascii=False, sort_keys=True)
+    return value
+
+
+def _write_excel_sheet(workbook, title, headers, rows):
+    """Write one tabular sheet with simple filtering and readable widths."""
+
+    sheet = workbook.create_sheet(title=title[:31])
+    sheet.append(headers)
+    header_fill = PatternFill("solid", fgColor="DCEFE9")
+    for cell in sheet[1]:
+        cell.font = Font(bold=True)
+        cell.fill = header_fill
+
+    for row in rows:
+        sheet.append([_normalise_excel_value(row.get(header, "")) for header in headers])
+
+    sheet.freeze_panes = "A2"
+    sheet.auto_filter.ref = sheet.dimensions
+
+    for column_cells in sheet.columns:
+        column_letter = get_column_letter(column_cells[0].column)
+        max_length = max(
+            len(str(cell.value)) if cell.value is not None else 0
+            for cell in column_cells[:200]
+        )
+        sheet.column_dimensions[column_letter].width = min(max(max_length + 2, 12), 55)
+
+
+def write_excel_workbook(workbook_data):
+    """Write the companion Excel workbook from the same report data."""
+
+    workbook = Workbook()
+    workbook.remove(workbook.active)
+
+    summary_rows = []
+    summary_rows.append({"section": "Report metrics", "item": "", "value": ""})
+    summary_rows.extend(
+        {
+            "section": "Report metrics",
+            "item": row["report_metric"],
+            "value": row["count"],
+        }
+        for row in workbook_data["summary_metric_rows"]
+    )
+    summary_rows.append({"section": "Valid combinations by primary task", "item": "", "value": ""})
+    summary_rows.extend(
+        {
+            "section": "Valid combinations by primary task",
+            "item": row["primary_task"],
+            "value": row["valid_combinations"],
+        }
+        for row in workbook_data["task_rows"]
+    )
+    summary_rows.append({"section": "Recommendation frequency", "item": "", "value": ""})
+    summary_rows.extend(
+        {
+            "section": "Recommendation frequency",
+            "item": row["recommendation_name"],
+            "value": row["frequency"],
+        }
+        for row in workbook_data["recommendation_frequency_rows"]
+    )
+    summary_rows.append({"section": "How to use this report", "item": "", "value": ""})
+    summary_rows.extend(
+        {
+            "section": "How to use this report",
+            "item": row["section"],
+            "value": row["description"],
+        }
+        for row in workbook_data["how_to_use_rows"]
+    )
+
+    _write_excel_sheet(workbook, "Summary", ["section", "item", "value"], summary_rows)
+    _write_excel_sheet(
+        workbook,
+        "Parameters",
+        ["parameter", "values_enumerated", "enumeration_type", "interpretation"],
+        workbook_data["parameter_rows"],
+    )
+    _write_excel_sheet(
+        workbook,
+        "Valid Combinations",
+        workbook_data["valid_headers"],
+        workbook_data["valid_rows"],
+    )
+    _write_excel_sheet(
+        workbook,
+        "Recommendations Long",
+        workbook_data["long_headers"],
+        workbook_data["long_rows"],
+    )
+    _write_excel_sheet(
+        workbook,
+        "Recommendation Sets",
+        workbook_data["recommendation_set_headers"],
+        workbook_data["recommendation_set_rows"],
+    )
+    _write_excel_sheet(
+        workbook,
+        "Validation Examples",
+        workbook_data["validation_headers"],
+        workbook_data["validation_rows"],
+    )
+    _write_excel_sheet(
+        workbook,
+        "Rejected Reasons",
+        ["reason", "count"],
+        workbook_data["rejected_reason_rows"],
+    )
+
+    workbook.save(WORKBOOK_XLSX)
 
 
 def write_markdown_report(workbook_data):
@@ -641,6 +778,15 @@ def main():
                 "recommendation_cautions": [
                     rec.caution or "" for rec in result.recommendations
                 ],
+                "recommendation_example_images": [
+                    rec.example_image_file or "" for rec in result.recommendations
+                ],
+                "recommendation_example_sources": [
+                    rec.example_source or "" for rec in result.recommendations
+                ],
+                "recommendation_example_code_files": [
+                    rec.example_code_file or "" for rec in result.recommendations
+                ],
                 "representative_combination_id": combination_id,
                 "representative_decision_path": " | ".join(result.decision_path),
                 "example_inputs": input_values,
@@ -760,6 +906,7 @@ def main():
     }
     SUMMARY_JSON.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     WORKBOOK_JSON.write_text(json.dumps(workbook_data), encoding="utf-8")
+    write_excel_workbook(workbook_data)
     write_markdown_report(workbook_data)
 
     print(json.dumps(summary, indent=2))

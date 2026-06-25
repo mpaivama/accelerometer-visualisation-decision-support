@@ -20,9 +20,9 @@ const resultsBackButton = document.querySelector("#results-back-button");
 const resultsResetButton = document.querySelector("#results-reset-button");
 
 const displayText = {
-  direct_example_available: "direct example available",
-  related_example_available: "related example available",
-  general_example_available: "general example available",
+  direct_example_available: "direct case-study example available",
+  related_example_available: "related case-study example available",
+  general_example_available: "simulated example available",
   signpost_only: "signpost only",
 };
 
@@ -170,6 +170,39 @@ function addDetailList(card, label, items) {
   card.append(container);
 }
 
+function addExampleFigure(card, recommendation) {
+  if (!recommendation.example_image_file) return;
+
+  const figure = document.createElement("figure");
+  const image = document.createElement("img");
+  const caption = document.createElement("figcaption");
+  const captionLead = document.createElement("strong");
+  const imageLink = document.createElement("a");
+
+  figure.className = "example-figure";
+  image.src = recommendation.example_image_file;
+  image.alt = `${recommendation.visualisation} visual example`;
+  image.loading = "lazy";
+
+  captionLead.textContent = "Visual example. ";
+  caption.append(captionLead);
+  if (recommendation.example_source) {
+    caption.append(document.createTextNode(`Source: ${recommendation.example_source}. `));
+  }
+  if (recommendation.example_source_note) {
+    caption.append(document.createTextNode(recommendation.example_source_note));
+  }
+  imageLink.href = recommendation.example_image_file;
+  imageLink.target = "_blank";
+  imageLink.rel = "noreferrer";
+  imageLink.textContent = "Open image";
+  caption.append(document.createTextNode(" "));
+  caption.append(imageLink);
+
+  figure.append(image, caption);
+  card.append(figure);
+}
+
 function renderList(elementId, items) {
   const list = document.querySelector(elementId);
   list.replaceChildren();
@@ -196,13 +229,14 @@ async function renderResults() {
     rank.textContent = recommendation.rank;
     title.textContent = recommendation.visualisation;
     card.append(rank, title);
+    addExampleFigure(card, recommendation);
     addDetail(card, "Visual mapping", recommendation.visual_mapping);
     addDetail(card, "Why", recommendation.rationale);
     addDetail(card, "Use when", recommendation.use_when);
     addDetail(card, "Caution", recommendation.caution);
     addDetail(card, "How to adapt code later", recommendation.adaptation_guidance);
-    addDetail(card, "Worked example status", recommendation.implementation_status);
-    addDetail(card, "Worked example note", recommendation.implementation_note);
+    addDetail(card, "Example status", recommendation.implementation_status);
+    addDetail(card, "Example note", recommendation.implementation_note);
     addDetail(card, "Example code file", recommendation.example_code_file);
     addDetailList(card, "Direct worked examples", recommendation.direct_case_study_examples);
     addDetailList(card, "Related worked examples", recommendation.related_case_study_examples);

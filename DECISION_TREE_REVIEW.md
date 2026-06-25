@@ -25,9 +25,10 @@ The decision tree is intended for visualising:
   mean values, rates, or proportions;
 - movement-behaviour compositions whose parts form a meaningful fixed whole.
 
-The output is a recommendation, not a finished figure. Each recommendation now
-describes what the visualisation is, what it should look like, why it is suitable,
-when to use it, and what cautions or adaptation notes apply.
+The output is a recommendation, not a fully automated plotting system. Each
+recommendation now describes what the visualisation is, what it should look like,
+why it is suitable, when to use it, what cautions or adaptation notes apply, and
+where to inspect an example visual structure.
 
 ## Current input structure
 
@@ -61,9 +62,12 @@ Each recommendation contains:
 | `use_when` | Conditions under which the recommendation is most appropriate. |
 | `caution` | Interpretation, readability, or design risks. |
 | `adaptation_guidance` | Signposting for where a plotting template would need to be adapted. |
-| `implementation_status` | Indicates whether the worked case study contains a direct example, a related example, or only general adaptable example code. |
-| `implementation_note` | Explains how closely the worked case-study code matches the recommendation. |
-| `example_code_file` | Points to the case-study plotting script that users can inspect or adapt. |
+| `implementation_status` | Indicates whether a direct case-study example, related case-study example, or simulated example is available. |
+| `implementation_note` | Explains how closely the available example matches the recommendation. |
+| `example_image_file` | Points to the PNG visual example displayed in the interface. |
+| `example_source` | States whether the example uses NHANES case-study data or simulated mock data. |
+| `example_source_note` | Explains the interpretation and limitations of the example source. |
+| `example_code_file` | Points to the case-study plotting script or simulated-example generator that users can inspect or adapt. |
 | `direct_case_study_examples` | Lists figures or functions that directly implement the recommendation. |
 | `related_case_study_examples` | Lists figures or functions with a related visual structure. |
 | `data_required` | Describes the data structure needed to produce the recommended visualisation. |
@@ -97,9 +101,10 @@ in this order:
 | Use when | `use_when` | The situation in which this recommendation is most appropriate. |
 | Caution | `caution` | Risks, interpretive limitations, or readability issues to consider. |
 | How to adapt code later | `adaptation_guidance` | Which visual mappings or plotting layers would need to change in a plotting template. |
-| Worked example status | `implementation_status` | Whether the current NHANES worked case study contains a direct example, a related example, or only general adaptable code. |
-| Worked example note | `implementation_note` | A short explanation of the relationship between the recommendation and the worked example. |
-| Example code file | `example_code_file` | Where to find the case-study plotting code. |
+| Visual example | `example_image_file`, `example_source`, `example_source_note` | A visual example of the recommended structure, labelled as NHANES case-study data or simulated mock data. |
+| Example status | `implementation_status` | Whether a direct case-study example, related case-study example, or simulated example is available. |
+| Example note | `implementation_note` | A short explanation of the relationship between the recommendation and the available example. |
+| Example code file | `example_code_file` | Where to find the code that generated the case-study or simulated example. |
 | Direct worked examples | `direct_case_study_examples` | Case-study figures/functions that directly implement the recommendation, where available. |
 | Related worked examples | `related_case_study_examples` | Case-study figures/functions that can be used as a starting point when the exact recommendation is not implemented. |
 | Data needed | `data_required` | The minimum data structure the user would need to prepare. |
@@ -111,8 +116,14 @@ This means the final output does four things for each recommendation:
 - names the recommended visualisation;
 - specifies the intended visual structure;
 - explains why and when it should be used;
-- signposts how the user could begin implementing it from the worked-example
-  plotting code.
+- signposts how the user could begin implementing it from the worked-example or
+  simulated-example plotting code.
+
+Visual examples based on the NHANES worked case study use reproduced real-data
+outputs from the selected paper. Visual examples based on simulated mock data
+are included only to demonstrate visual mapping and provide a coding starting
+point; they do not imply that the design has been formally tested for
+effectiveness.
 
 ### Decision path
 

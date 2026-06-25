@@ -210,7 +210,9 @@ class DecisionTreeTests(unittest.TestCase):
         self.assertIn("Visual mapping:", output)
         self.assertIn("Why:", output)
         self.assertIn("Adaptation:", output)
-        self.assertIn("Worked example status: general example available", output)
+        self.assertIn("Example status: simulated example available", output)
+        self.assertIn("Example figure:", output)
+        self.assertIn("Example source: Simulated mock data", output)
         self.assertIn("Example code file:", output)
         self.assertIn("Checklist aspects to review:", output)
         self.assertIn("DESIGN NOTES", output)
@@ -244,6 +246,8 @@ class DecisionTreeTests(unittest.TestCase):
         recommendation = result.recommendations[0]
         self.assertEqual(recommendation.visualisation, "Time-series line plot")
         self.assertEqual(recommendation.implementation_status, "general_example_available")
+        self.assertTrue(recommendation.example_image_file)
+        self.assertEqual(recommendation.example_source, "Simulated mock data")
         self.assertTrue(recommendation.related_case_study_examples)
         self.assertIn("not implemented", recommendation.implementation_note)
 

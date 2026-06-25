@@ -1,5 +1,6 @@
 matplotlib
 nbformat
 numpy
+openpyxl
 pandas
 tabulate

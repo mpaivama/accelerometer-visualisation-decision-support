@@ -3,8 +3,8 @@
 The decision engine selects visualisation families. It does not generate plots.
 Model coefficients, adjusted predictions, and other model-derived results are
 deliberately outside its scope.
-Plotting templates for the worked case study can later be linked to individual
-recommendations through the ``implementation_status`` field.
+Plotting templates and visual examples are linked to individual recommendations
+through implementation and example metadata fields.
 """
 
 from dataclasses import dataclass, field
@@ -126,10 +126,10 @@ DISPLAY_LABELS = {
         "not_applicable": "Not applicable",
     },
     "implementation_status": {
-        "direct_example_available": "direct example available",
-        "related_example_available": "related example available",
-        "general_example_available": "general example available",
-        "signpost_only": "Signpost only",
+        "direct_example_available": "direct case-study example available",
+        "related_example_available": "related case-study example available",
+        "general_example_available": "simulated example available",
+        "signpost_only": "signpost only",
     },
 }
 
@@ -171,6 +171,9 @@ class Recommendation:
     adaptation_guidance: str | None = None
     implementation_status: str = "signpost_only"
     implementation_note: str | None = None
+    example_image_file: str | None = None
+    example_source: str | None = None
+    example_source_note: str | None = None
     example_code_file: str | None = None
     direct_case_study_examples: list[str] = field(default_factory=list)
     related_case_study_examples: list[str] = field(default_factory=list)
@@ -194,6 +197,8 @@ CASE_STUDY_EXAMPLE_CODE_FILE = (
     "Case study/scripts/create_case_study_visualisations.py in the shared Use cases folder."
 )
 
+MOCK_EXAMPLE_CODE_FILE = "examples/generate_mock_visualisation_examples.py"
+
 CASE_STUDY_EXAMPLES = {
     "paired_overall": (
         "Figure 1 / plot_overall_weekday_weekend(): paired summary "
@@ -215,11 +220,67 @@ CASE_STUDY_EXAMPLES = {
         "Figure 7 / plot_weekday_weekend_relationship(): hexbin density display "
         "for many paired continuous observations."
     ),
+    "summary_dot": (
+        "Figure 8 / plot_percentage_difference_summary_dot(): summary dot plot "
+        "for percentage weekday-weekend differences."
+    ),
+    "bar_alternative": (
+        "Figure 9 / plot_percentage_difference_bar_alternative(): conditional "
+        "bar-chart example for percentage differences."
+    ),
     "helpers": (
         "Shared helpers in create_case_study_visualisations.py: "
         "apply_plot_style(), clean_axis(), configure_x_axis(), save_figure(), "
         "and write_figure_notes()."
     ),
+}
+
+CASE_STUDY_EXAMPLE_IMAGES = {
+    "paired_overall": "case_study/figures/figure_01_overall_weekday_weekend_mims.png",
+    "point_range": "case_study/figures/figure_02_difference_by_subgroup_adults.png",
+    "distribution": "case_study/figures/figure_06_individual_difference_distribution.png",
+    "hexbin": "case_study/figures/figure_07_weekday_weekend_relationship.png",
+    "summary_dot": "case_study/figures/figure_08_percentage_difference_summary_dot.png",
+    "bar_alternative": "case_study/figures/figure_09_percentage_difference_bar_alternative.png",
+}
+
+CASE_STUDY_EXAMPLE_SOURCE = "NHANES case-study data"
+CASE_STUDY_EXAMPLE_SOURCE_NOTE = (
+    "This visual example was generated from the reproduced NHANES 2011-2014 "
+    "worked case-study outputs."
+)
+
+MOCK_EXAMPLE_SOURCE = "Simulated mock data"
+MOCK_EXAMPLE_SOURCE_NOTE = (
+    "This visual example uses a small synthetic dataset created only to show the "
+    "intended visual structure. It is not evidence that the design has been "
+    "tested for effectiveness."
+)
+
+MOCK_EXAMPLE_IMAGES = {
+    "100% stacked bar chart": "examples/figures/100_percent_stacked_bar_chart.png",
+    "Behaviour timeline (tile plot)": "examples/figures/behaviour_timeline_tile_plot.png",
+    "Behaviour-by-time heatmap": "examples/figures/behaviour_by_time_heatmap.png",
+    "Box or violin plot with raw points": "examples/figures/box_or_violin_plot_with_raw_points.png",
+    "Dot plot of observed values": "examples/figures/dot_plot_of_observed_values.png",
+    "Dot plot with summary and interval": "examples/figures/dot_plot_with_summary_and_interval.png",
+    "Empirical cumulative distribution (ECDF)": "examples/figures/empirical_cumulative_distribution_ecdf.png",
+    "Event raster or time-bin heatmap": "examples/figures/event_raster_or_time_bin_heatmap.png",
+    "Event timeline or raster plot": "examples/figures/event_timeline_or_raster_plot.png",
+    "Event-frequency time profile": "examples/figures/event_frequency_time_profile.png",
+    "Faceted density or ECDF plot": "examples/figures/faceted_density_or_ecdf_plot.png",
+    "Observation-by-time heatmap": "examples/figures/observation_by_time_heatmap.png",
+    "Pie or doughnut chart": "examples/figures/pie_or_doughnut_chart.png",
+    "Proportion-over-time profile": "examples/figures/proportion_over_time_profile.png",
+    "Repeated-measures line plot": "examples/figures/repeated_measures_line_plot.png",
+    "Scatter plot": "examples/figures/scatter_plot.png",
+    "Small-multiple composition bars": "examples/figures/small_multiple_composition_bars.png",
+    "Small-multiple time-series plots": "examples/figures/small_multiple_time_series_plots.png",
+    "Stacked area profile": "examples/figures/stacked_area_profile.png",
+    "Summary time profile": "examples/figures/summary_time_profile.png",
+    "Summary time profile with interval ribbon": "examples/figures/summary_time_profile_with_interval_ribbon.png",
+    "Ternary plot": "examples/figures/ternary_plot.png",
+    "Time-series line plot": "examples/figures/time_series_line_plot.png",
 }
 
 DEFAULT_CHECKLIST_ASPECTS = [
@@ -242,6 +303,9 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
             CASE_STUDY_EXAMPLES["paired_overall"],
             CASE_STUDY_EXAMPLES["paired_panels"],
         ],
+        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["paired_overall"],
+        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
+        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
         "data_required": (
             "One row per paired level, group, or subgroup, with estimate and "
             "optional lower/upper interval columns."
@@ -264,6 +328,9 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
             "with uncertainty intervals."
         ),
         "direct_case_study_examples": [CASE_STUDY_EXAMPLES["point_range"]],
+        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["point_range"],
+        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
+        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
         "data_required": (
             "One row per category or subgroup, with a summary estimate and lower/"
             "upper interval columns."
@@ -286,6 +353,9 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
             "distribution of participant-level accelerometer metrics."
         ),
         "direct_case_study_examples": [CASE_STUDY_EXAMPLES["distribution"]],
+        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["distribution"],
+        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
+        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
         "data_required": (
             "Participant-level or observation-level metric values, optionally with "
             "a grouping variable for panels."
@@ -308,6 +378,9 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
             "observations where a standard scatterplot would overplot."
         ),
         "direct_case_study_examples": [CASE_STUDY_EXAMPLES["hexbin"]],
+        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["hexbin"],
+        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
+        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
         "data_required": (
             "One row per observation with two paired continuous variables; at "
             "least one should be a direct accelerometer-derived metric."
@@ -378,17 +451,40 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
         "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
     },
     "Summary dot plot": {
-        "implementation_status": "related_example_available",
+        "implementation_status": "direct_example_available",
         "implementation_note": (
-            "The exact no-interval summary dot plot is not implemented, but the "
-            "point-range example can be adapted by removing the interval layer."
+            "A worked case-study example is available for summary percentage "
+            "differences when the relative difference is useful as secondary "
+            "descriptive context."
         ),
-        "related_case_study_examples": [CASE_STUDY_EXAMPLES["point_range"]],
+        "direct_case_study_examples": [CASE_STUDY_EXAMPLES["summary_dot"]],
+        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["summary_dot"],
+        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
+        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
         "data_required": "One summary value per category or subgroup.",
         "case_study_adaptation_points": [
-            "Remove the interval layer and make clear why uncertainty or variability is not shown.",
-            "Use direct labels when there are few summary values.",
-            "Keep the original metric units on the axis.",
+            "Replace percentage weekday-weekend difference with the selected summary metric.",
+            "Use direct labels when there are few summary values and uncertainty is not central.",
+            "Make clear why uncertainty or variability is not shown.",
+        ],
+        "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
+    },
+    "Bar chart": {
+        "implementation_status": "direct_example_available",
+        "implementation_note": (
+            "A worked case-study example is available as a conditional bar-chart "
+            "alternative. Use this only when magnitude from a meaningful zero is "
+            "the main message and uncertainty is not central."
+        ),
+        "direct_case_study_examples": [CASE_STUDY_EXAMPLES["bar_alternative"]],
+        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["bar_alternative"],
+        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
+        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
+        "data_required": "One summary value per category, group, or subgroup.",
+        "case_study_adaptation_points": [
+            "Replace percentage weekday-weekend difference with a metric that has a meaningful zero.",
+            "Use bars only when the filled length supports the intended message.",
+            "Prefer point-range or dot-based summaries when uncertainty or interval estimates are central.",
         ],
         "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
     },
@@ -606,12 +702,12 @@ def _implementation_metadata(visualisation: str) -> dict:
         metadata = {
             "implementation_status": "general_example_available",
             "implementation_note": (
-                "This exact visualisation is not implemented in the worked case "
-                "study. The case-study plotting script still provides adaptable "
-                "examples of data preparation, visual mapping, checklist-informed "
-                "design defaults, accessible colour, captions, alt text, and "
-                "multi-format export. Use the closest visual mapping as a starting "
-                "point rather than building from a blank script."
+                "This exact visualisation is not implemented in the NHANES "
+                "worked case study, so the visual example uses simulated data. "
+                "The case-study plotting script still provides adaptable "
+                "examples of data preparation, checklist-informed design "
+                "defaults, accessible colour, captions, alt text, and "
+                "multi-format export."
             ),
             "related_case_study_examples": [CASE_STUDY_EXAMPLES["helpers"]],
             "data_required": (
@@ -627,9 +723,21 @@ def _implementation_metadata(visualisation: str) -> dict:
             "checklist_aspects_to_review": DEFAULT_CHECKLIST_ASPECTS,
         }
 
+    if visualisation in MOCK_EXAMPLE_IMAGES and not metadata.get("example_image_file"):
+        metadata["example_image_file"] = MOCK_EXAMPLE_IMAGES[visualisation]
+        metadata["example_source"] = MOCK_EXAMPLE_SOURCE
+        metadata["example_source_note"] = MOCK_EXAMPLE_SOURCE_NOTE
+        metadata.setdefault("example_code_file", MOCK_EXAMPLE_CODE_FILE)
+
     metadata.setdefault("implementation_status", "general_example_available")
     metadata.setdefault("implementation_note", None)
-    metadata.setdefault("example_code_file", CASE_STUDY_EXAMPLE_CODE_FILE)
+    metadata.setdefault("example_image_file", None)
+    metadata.setdefault("example_source", None)
+    metadata.setdefault("example_source_note", None)
+    if metadata.get("example_source") == MOCK_EXAMPLE_SOURCE:
+        metadata.setdefault("example_code_file", MOCK_EXAMPLE_CODE_FILE)
+    else:
+        metadata.setdefault("example_code_file", CASE_STUDY_EXAMPLE_CODE_FILE)
     metadata.setdefault("direct_case_study_examples", [])
     metadata.setdefault("related_case_study_examples", [])
     metadata.setdefault("data_required", None)
@@ -1383,11 +1491,17 @@ def format_result(result: DecisionResult) -> str:
         if rec.adaptation_guidance:
             lines.append(f"   Adaptation: {rec.adaptation_guidance}")
         lines.append(
-            f"   Worked example status: "
+            f"   Example status: "
             f"{display_label('implementation_status', rec.implementation_status)}"
         )
         if rec.implementation_note:
-            lines.append(f"   Worked example note: {rec.implementation_note}")
+            lines.append(f"   Example note: {rec.implementation_note}")
+        if rec.example_image_file:
+            lines.append(f"   Example figure: {rec.example_image_file}")
+        if rec.example_source:
+            lines.append(f"   Example source: {rec.example_source}")
+        if rec.example_source_note:
+            lines.append(f"   Example source note: {rec.example_source_note}")
         if rec.example_code_file:
             lines.append(f"   Example code file: {rec.example_code_file}")
         if rec.direct_case_study_examples:

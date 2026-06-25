@@ -369,6 +369,39 @@ h1 {
   font-weight: 500;
 }
 
+.example-figure {
+  overflow: hidden;
+  margin: 0 0 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fbfaf7;
+}
+
+.example-figure img {
+  display: block;
+  width: 100%;
+  max-height: 430px;
+  object-fit: contain;
+  background: #fff;
+}
+
+.example-figure figcaption {
+  margin: 0;
+  padding: 11px 13px 13px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.example-figure figcaption strong {
+  color: var(--accent-dark);
+}
+
+.example-figure figcaption a {
+  color: var(--accent-dark);
+  font-weight: 750;
+}
+
 .recommendation-detail {
   margin-bottom: 11px;
 }

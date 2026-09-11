@@ -1,0 +1,13 @@
+decision_point,visible_interface_states,option_pairs_compared,option_pairs_changing_recommendation_detail,option_pairs_changing_recommendation_detail_percent,option_pairs_changing_chart_names,option_pairs_changing_chart_names_percent,option_pairs_changing_design_notes,option_pairs_changing_design_notes_percent,option_pairs_changing_complete_output,option_pairs_changing_complete_output_percent,states_with_recommendation_detail_change,states_with_recommendation_detail_change_percent,states_with_complete_output_change,states_with_complete_output_change_percent
+data_form,1,6,4,66.7,4,66.7,0,0.0,4,66.7,1,100.0,1,100.0
+primary_task,4,40,40,100.0,40,100.0,28,70.0,40,100.0,4,100.0,4,100.0
+display_level,20,56,36,64.3,36,64.3,0,0.0,36,64.3,12,60.0,12,60.0
+comparison_focus,58,348,90,25.9,90,25.9,348,100.0,348,100.0,30,51.7,58,100.0
+comparison_structure,174,174,36,20.7,36,20.7,0,0.0,36,20.7,36,20.7,36,20.7
+show_variability,322,322,30,9.3,30,9.3,322,100.0,322,100.0,30,9.3,322,100.0
+many_observations,224,224,112,50.0,112,50.0,0,0.0,112,50.0,112,50.0,112,50.0
+target_audience,952,952,84,8.8,84,8.8,952,100.0,952,100.0,84,8.8,952,100.0
+temporal_context,1904,5712,0,0.0,0,0.0,5712,100.0,5712,100.0,0,0.0,1904,100.0
+n_overlaid_series,2016,6048,1344,22.2,1344,22.2,6048,100.0,6048,100.0,672,33.3,2016,100.0
+n_comparison_levels,4176,4176,432,10.3,432,10.3,0,0.0,432,10.3,432,10.3,432,10.3
+n_compositional_parts,720,2160,720,33.3,720,33.3,0,0.0,720,33.3,360,50.0,360,50.0

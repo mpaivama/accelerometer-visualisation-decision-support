@@ -1,0 +1,11 @@
+{
+  "valid_combinations": 15360,
+  "unique_displayed_decision_paths": 940,
+  "distinct_recommendation_outputs": 30,
+  "displayed_path_output_memberships": 1356,
+  "ambiguous_displayed_decision_paths": 356,
+  "mean_displayed_paths_per_output": 31.3,
+  "median_paths_per_output": 40.0,
+  "min_paths_per_output": 4,
+  "max_paths_per_output": 162
+}

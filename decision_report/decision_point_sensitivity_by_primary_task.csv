@@ -1,0 +1,73 @@
+primary_task,decision_point,valid_counterfactual_comparisons,invalid_counterfactual_comparisons,recommendation_detail_change_count,recommendation_detail_change_percent,chart_name_change_count,chart_name_change_percent,design_note_change_count,design_note_change_percent,complete_output_change_count,complete_output_change_percent,baseline_combinations_with_valid_counterfactual,baseline_combinations_with_recommendation_detail_change,baseline_recommendation_detail_change_percent,interpretation
+compare_values,data_form,4320,0,0,0.0,0,0.0,0,0.0,0,0.0,1440,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+compare_values,primary_task,4080,3120,4080,100.0,4080,100.0,0,0.0,4080,100.0,1440,1440,100.0,Functionally contributes to recommendation selection in the current logic.
+compare_values,display_level,2880,0,864,30.0,864,30.0,0,0.0,864,30.0,1440,576,40.0,Functionally contributes to recommendation selection in the current logic.
+compare_values,comparison_focus,2592,1728,0,0.0,0,0.0,2592,100.0,2592,100.0,1296,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+compare_values,comparison_structure,0,2880,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+compare_values,show_variability,1440,0,192,13.3,192,13.3,1440,100.0,1440,100.0,1440,192,13.3,Functionally contributes to recommendation selection in the current logic.
+compare_values,many_observations,0,1440,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+compare_values,target_audience,1440,0,0,0.0,0,0.0,1440,100.0,1440,100.0,1440,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+compare_values,temporal_context,2880,0,0,0.0,0,0.0,2880,100.0,2880,100.0,1440,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+compare_values,n_overlaid_series,0,2880,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+compare_values,n_comparison_levels,864,2016,864,100.0,864,100.0,0,0.0,864,100.0,864,864,100.0,Functionally contributes to recommendation selection in the current logic.
+compare_values,n_compositional_parts,0,4320,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+composition,data_form,2160,4320,0,0.0,0,0.0,0,0.0,0,0.0,2160,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+composition,primary_task,0,10800,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+composition,display_level,4320,0,0,0.0,0,0.0,0,0.0,0,0.0,2160,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+composition,comparison_focus,3888,2592,0,0.0,0,0.0,3888,100.0,3888,100.0,1944,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+composition,comparison_structure,0,4320,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+composition,show_variability,2160,0,0,0.0,0,0.0,2160,100.0,2160,100.0,2160,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+composition,many_observations,0,2160,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+composition,target_audience,2160,0,2160,100.0,2160,100.0,2160,100.0,2160,100.0,2160,2160,100.0,Functionally contributes to recommendation selection in the current logic.
+composition,temporal_context,4320,0,0,0.0,0,0.0,4320,100.0,4320,100.0,2160,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+composition,n_overlaid_series,0,4320,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+composition,n_comparison_levels,1296,3024,0,0.0,0,0.0,0,0.0,0,0.0,1296,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+composition,n_compositional_parts,4320,2160,1440,33.3,1440,33.3,0,0.0,1440,33.3,2160,1080,50.0,Functionally contributes to recommendation selection in the current logic.
+distribution,data_form,2160,0,0,0.0,0,0.0,0,0.0,0,0.0,720,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+distribution,primary_task,2400,1200,2400,100.0,2400,100.0,0,0.0,2400,100.0,720,720,100.0,Functionally contributes to recommendation selection in the current logic.
+distribution,display_level,1440,0,0,0.0,0,0.0,0,0.0,0,0.0,720,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+distribution,comparison_focus,1296,864,0,0.0,0,0.0,1296,100.0,1296,100.0,648,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+distribution,comparison_structure,0,1440,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+distribution,show_variability,0,720,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+distribution,many_observations,0,720,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+distribution,target_audience,720,0,0,0.0,0,0.0,720,100.0,720,100.0,720,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+distribution,temporal_context,1440,0,0,0.0,0,0.0,1440,100.0,1440,100.0,720,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+distribution,n_overlaid_series,0,1440,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+distribution,n_comparison_levels,432,1008,0,0.0,0,0.0,0,0.0,0,0.0,432,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+distribution,n_compositional_parts,0,2160,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+event_pattern,data_form,4320,0,0,0.0,0,0.0,0,0.0,0,0.0,1440,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+event_pattern,primary_task,4080,3120,4080,100.0,4080,100.0,0,0.0,4080,100.0,1440,1440,100.0,Functionally contributes to recommendation selection in the current logic.
+event_pattern,display_level,2880,0,2880,100.0,2880,100.0,0,0.0,2880,100.0,1440,1440,100.0,Functionally contributes to recommendation selection in the current logic.
+event_pattern,comparison_focus,2592,1728,0,0.0,0,0.0,2592,100.0,2592,100.0,1296,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+event_pattern,comparison_structure,0,2880,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+event_pattern,show_variability,1440,0,0,0.0,0,0.0,1440,100.0,1440,100.0,1440,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+event_pattern,many_observations,0,1440,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+event_pattern,target_audience,1440,0,0,0.0,0,0.0,1440,100.0,1440,100.0,1440,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+event_pattern,temporal_context,2880,0,0,0.0,0,0.0,2880,100.0,2880,100.0,1440,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+event_pattern,n_overlaid_series,0,2880,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+event_pattern,n_comparison_levels,864,2016,0,0.0,0,0.0,0,0.0,0,0.0,864,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+event_pattern,n_compositional_parts,0,4320,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+relationship,data_form,960,1920,0,0.0,0,0.0,0,0.0,0,0.0,960,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+relationship,primary_task,2160,2640,2160,100.0,2160,100.0,0,0.0,2160,100.0,960,960,100.0,Functionally contributes to recommendation selection in the current logic.
+relationship,display_level,960,960,0,0.0,0,0.0,0,0.0,0,0.0,960,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+relationship,comparison_focus,1728,1152,0,0.0,0,0.0,1728,100.0,1728,100.0,864,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+relationship,comparison_structure,0,1920,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+relationship,show_variability,960,0,0,0.0,0,0.0,960,100.0,960,100.0,960,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+relationship,many_observations,960,0,960,100.0,960,100.0,0,0.0,960,100.0,960,960,100.0,Functionally contributes to recommendation selection in the current logic.
+relationship,target_audience,960,0,0,0.0,0,0.0,960,100.0,960,100.0,960,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+relationship,temporal_context,1920,0,0,0.0,0,0.0,1920,100.0,1920,100.0,960,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+relationship,n_overlaid_series,0,1920,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+relationship,n_comparison_levels,576,1344,0,0.0,0,0.0,0,0.0,0,0.0,576,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+relationship,n_compositional_parts,0,2880,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+temporal_pattern,data_form,25920,0,17280,66.7,17280,66.7,0,0.0,17280,66.7,8640,8640,100.0,Functionally contributes to recommendation selection in the current logic.
+temporal_pattern,primary_task,4560,38640,4560,100.0,4560,100.0,0,0.0,4560,100.0,1920,1920,100.0,Functionally contributes to recommendation selection in the current logic.
+temporal_pattern,display_level,17280,0,12960,75.0,12960,75.0,0,0.0,12960,75.0,8640,6480,75.0,Functionally contributes to recommendation selection in the current logic.
+temporal_pattern,comparison_focus,15552,10368,0,0.0,0,0.0,15552,100.0,15552,100.0,7776,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+temporal_pattern,comparison_structure,0,17280,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+temporal_pattern,show_variability,8640,0,720,8.3,720,8.3,8640,100.0,8640,100.0,8640,720,8.3,Functionally contributes to recommendation selection in the current logic.
+temporal_pattern,many_observations,8640,0,2880,33.3,2880,33.3,0,0.0,2880,33.3,8640,2880,33.3,Functionally contributes to recommendation selection in the current logic.
+temporal_pattern,target_audience,8640,0,0,0.0,0,0.0,8640,100.0,8640,100.0,8640,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+temporal_pattern,temporal_context,17280,0,0,0.0,0,0.0,17280,100.0,17280,100.0,8640,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+temporal_pattern,n_overlaid_series,17280,0,3840,22.2,3840,22.2,17280,100.0,17280,100.0,8640,2880,33.3,Functionally contributes to recommendation selection in the current logic.
+temporal_pattern,n_comparison_levels,5184,12096,0,0.0,0,0.0,0,0.0,0,0.0,5184,0,0.0,Low recommendation sensitivity in the current logic; review whether the field mainly supports documentation or future branches.
+temporal_pattern,n_compositional_parts,0,25920,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.

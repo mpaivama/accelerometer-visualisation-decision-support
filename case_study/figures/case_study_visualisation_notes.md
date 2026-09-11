@@ -10,15 +10,16 @@ The estimates are direct accelerometer-derived metrics from the reproduced case-
 
 **Files:** figure_01_overall_weekday_weekend_mims.png, figure_01_overall_weekday_weekend_mims.pdf, figure_01_overall_weekday_weekend_mims.svg
 
-**Caption:** Weighted mean daily MIMS-units on weekdays and weekend days for adults and children/adolescents. Points show estimates, horizontal intervals show 95% confidence intervals, and connecting lines emphasise the paired day-type comparison.
+**Caption:** Weighted mean daily MIMS-units on weekdays and weekend days for adults and children/adolescents. Points show estimates, horizontal intervals show 95% confidence intervals, and text labels report the descriptive weekday-minus-weekend difference. No statistical significance marker is shown.
 
-**Alt text:** Dumbbell plot comparing weekday and weekend-day physical activity. Both adults and children/adolescents have higher weighted mean MIMS-units on weekdays than on weekend days, with a larger absolute difference among children/adolescents.
+**Alt text:** Paired point-range plot comparing weekday and weekend-day physical activity. Both adults and children/adolescents have higher weighted mean MIMS-units on weekdays than on weekend days, with a larger absolute difference among children/adolescents.
 
 **Checklist-informed design choices:**
 
-- Uses a familiar paired/dumbbell layout for the comparison.
+- Uses a paired summary display for the comparison without adding a separate difference reference line.
 - Places weekday and weekend-day values close together to reduce divided attention.
 - Labels the plotted estimates directly because the figure has few values.
+- Reports descriptive weekday-minus-weekend differences as text rather than encoding them as a third plotted quantity.
 - Shows uncertainty with 95% confidence intervals and defines the interval meaning.
 - Uses a colour-vision-deficiency friendly two-colour palette.
 
@@ -62,16 +63,16 @@ The estimates are direct accelerometer-derived metrics from the reproduced case-
 
 **Files:** figure_04_weekday_weekend_means_by_subgroup_adults.png, figure_04_weekday_weekend_means_by_subgroup_adults.pdf, figure_04_weekday_weekend_means_by_subgroup_adults.svg
 
-**Caption:** Weighted mean daily MIMS-units on weekdays and weekend days by subgroup for Adults 20+. Points show estimates, horizontal intervals show 95% confidence intervals, and connecting grey lines keep the weekday/weekend comparison visually paired within each subgroup. Panel colours identify subgroup domains.
+**Caption:** Weighted mean daily MIMS-units on weekdays and weekend days by subgroup for Adults 20+. Points show estimates and horizontal intervals show 95% confidence intervals. Panel colours identify subgroup domains.
 
-**Alt text:** Panelled dumbbell plots of weekday and weekend-day MIMS-units for Adults 20+. The paired points allow each subgroup's weekday and weekend-day estimates to be compared directly.
+**Alt text:** Panelled paired point-range plots of weekday and weekend-day MIMS-units for Adults 20+. The paired points and intervals allow each subgroup's weekday and weekend-day estimates to be compared directly.
 
 **Checklist-informed design choices:**
 
 - Separates subgroup domains into panels to reduce visual crowding.
 - Shows x-axis tick labels and axis meaning on every panel.
 - Uses dotted minor gridlines to improve value readability without adding a label to every point.
-- Adds a grey connector legend to explain the weekday-weekend gap line.
+- Avoids adding a separate difference connector so mean estimates, intervals, and statistical annotations remain visually distinct.
 - Uses domain-specific colour accents to distinguish subgroup variables.
 - Uses consistent weekday/weekend colours across all panels and figures.
 - Keeps legends and explanatory notes close to the plotted values.
@@ -81,16 +82,16 @@ The estimates are direct accelerometer-derived metrics from the reproduced case-
 
 **Files:** figure_05_weekday_weekend_means_by_subgroup_children_adolescents.png, figure_05_weekday_weekend_means_by_subgroup_children_adolescents.pdf, figure_05_weekday_weekend_means_by_subgroup_children_adolescents.svg
 
-**Caption:** Weighted mean daily MIMS-units on weekdays and weekend days by subgroup for Children/adolescents 6-19. Points show estimates, horizontal intervals show 95% confidence intervals, and connecting grey lines keep the weekday/weekend comparison visually paired within each subgroup. Panel colours identify subgroup domains.
+**Caption:** Weighted mean daily MIMS-units on weekdays and weekend days by subgroup for Children/adolescents 6-19. Points show estimates and horizontal intervals show 95% confidence intervals. Panel colours identify subgroup domains.
 
-**Alt text:** Panelled dumbbell plots of weekday and weekend-day MIMS-units for Children/adolescents 6-19. The paired points allow each subgroup's weekday and weekend-day estimates to be compared directly.
+**Alt text:** Panelled paired point-range plots of weekday and weekend-day MIMS-units for Children/adolescents 6-19. The paired points and intervals allow each subgroup's weekday and weekend-day estimates to be compared directly.
 
 **Checklist-informed design choices:**
 
 - Separates subgroup domains into panels to reduce visual crowding.
 - Shows x-axis tick labels and axis meaning on every panel.
 - Uses dotted minor gridlines to improve value readability without adding a label to every point.
-- Adds a grey connector legend to explain the weekday-weekend gap line.
+- Avoids adding a separate difference connector so mean estimates, intervals, and statistical annotations remain visually distinct.
 - Uses domain-specific colour accents to distinguish subgroup variables.
 - Uses consistent weekday/weekend colours across all panels and figures.
 - Keeps legends and explanatory notes close to the plotted values.

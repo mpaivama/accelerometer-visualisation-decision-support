@@ -778,9 +778,9 @@ def _visual_mapping(visualisation: str) -> str:
             "participant/day, and colour encodes the classified behaviour at each time."
         ),
         "Behaviour-by-time heatmap": (
-            "Rows represent participants, participant-days, bouts, or another "
-            "defined observation unit; columns represent time, and colour encodes "
-            "behaviour category."
+            "Rows represent explicitly labelled participant-days, participants, "
+            "bouts, or another defined unit; columns represent ordered time bins, "
+            "and colour encodes behaviour category."
         ),
         "Proportion-over-time profile": (
             "The x-axis represents time, the y-axis represents the proportion of "
@@ -796,9 +796,9 @@ def _visual_mapping(visualisation: str) -> str:
             "each line represents a participant, day, group, or condition."
         ),
         "Observation-by-time heatmap": (
-            "Rows represent participants, participant-days, bouts, or another "
-            "defined observation unit; columns represent time, and colour encodes "
-            "the metric value."
+            "Rows represent explicitly labelled participant-days, participants, "
+            "bouts, or another defined unit; columns represent ordered time bins, "
+            "and colour encodes the metric value."
         ),
         "Small-multiple time-series plots": (
             "Each panel contains a time-series plot with time on the x-axis and the "
@@ -900,9 +900,9 @@ def _visual_mapping(visualisation: str) -> str:
             "bouts, or event types, and marks or coloured segments show when events occur."
         ),
         "Event raster or time-bin heatmap": (
-            "Rows represent participants, participant-days, bouts, or another defined "
-            "observation unit; columns represent time bins, and marks or colour "
-            "intensity encode event presence or frequency."
+            "Rows represent explicitly labelled participant-days, participants, "
+            "bouts, or another defined unit; columns represent time bins, and marks "
+            "or colour intensity encode event presence or frequency."
         ),
         "Event-frequency time profile": (
             "The x-axis represents time or time bins, the y-axis represents event "

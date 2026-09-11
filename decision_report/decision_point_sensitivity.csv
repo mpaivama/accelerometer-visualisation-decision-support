@@ -1,0 +1,13 @@
+decision_point,valid_counterfactual_comparisons,invalid_counterfactual_comparisons,recommendation_detail_change_count,recommendation_detail_change_percent,chart_name_change_count,chart_name_change_percent,design_note_change_count,design_note_change_percent,complete_output_change_count,complete_output_change_percent,baseline_combinations_with_valid_counterfactual,baseline_combinations_with_recommendation_detail_change,baseline_recommendation_detail_change_percent,interpretation
+data_form,39840,6240,17280,43.4,17280,43.4,0,0.0,17280,43.4,15360,8640,56.2,Functionally contributes to recommendation selection in the current logic.
+primary_task,17280,59520,17280,100.0,17280,100.0,0,0.0,17280,100.0,6480,6480,100.0,Functionally contributes to recommendation selection in the current logic.
+display_level,29760,960,16704,56.1,16704,56.1,0,0.0,16704,56.1,15360,8496,55.3,Functionally contributes to recommendation selection in the current logic.
+comparison_focus,27648,18432,0,0.0,0,0.0,27648,100.0,27648,100.0,13824,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+comparison_structure,0,30720,0,0.0,0,0.0,0,0.0,0,0.0,0,0,0.0,No valid strict one-field counterfactuals because this field is structurally coupled with another required field.
+show_variability,14640,720,912,6.2,912,6.2,14640,100.0,14640,100.0,14640,912,6.2,Functionally contributes to recommendation selection in the current logic.
+many_observations,9600,5760,3840,40.0,3840,40.0,0,0.0,3840,40.0,9600,3840,40.0,Functionally contributes to recommendation selection in the current logic.
+target_audience,15360,0,2160,14.1,2160,14.1,15360,100.0,15360,100.0,15360,2160,14.1,Functionally contributes to recommendation selection in the current logic.
+temporal_context,30720,0,0,0.0,0,0.0,30720,100.0,30720,100.0,15360,0,0.0,"Does not change the recommendation card, but does change design notes or other full-output guidance."
+n_overlaid_series,17280,13440,3840,22.2,3840,22.2,17280,100.0,17280,100.0,8640,2880,33.3,Functionally contributes to recommendation selection in the current logic.
+n_comparison_levels,9216,21504,864,9.4,864,9.4,0,0.0,864,9.4,9216,864,9.4,Functionally contributes to recommendation selection in the current logic.
+n_compositional_parts,4320,41760,1440,33.3,1440,33.3,0,0.0,1440,33.3,2160,1080,50.0,Functionally contributes to recommendation selection in the current logic.

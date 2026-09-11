@@ -306,10 +306,10 @@ class DecisionTreeTests(unittest.TestCase):
         recommendation = result.recommendations[0]
         self.assertEqual(recommendation.visualisation, "Observation-by-time heatmap")
         self.assertIn(
-            "Rows represent participants, participant-days, bouts",
+            "Rows represent explicitly labelled participant-days, participants, bouts",
             recommendation.visual_mapping,
         )
-        self.assertIn("columns represent time", recommendation.visual_mapping)
+        self.assertIn("columns represent ordered time bins", recommendation.visual_mapping)
         self.assertIn("colour encodes the metric value", recommendation.visual_mapping)
 
     def test_compare_values_allows_no_explicit_comparison(self):

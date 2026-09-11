@@ -449,13 +449,6 @@ def plot_overall_weekday_weekend(summary: pd.DataFrame) -> dict:
         weekday = rows[rows["metric"] == METRIC_WEEKDAY].iloc[0]
         weekend = rows[rows["metric"] == METRIC_WEEKEND].iloc[0]
         y = y_positions[sample]
-        ax.plot(
-            [weekend["estimate"], weekday["estimate"]],
-            [y, y],
-            color="#BDBDBD",
-            linewidth=3.2,
-            zorder=1,
-        )
         draw_horizontal_ci(
             ax,
             weekday["estimate"],
@@ -521,7 +514,6 @@ def plot_overall_weekday_weekend(summary: pd.DataFrame) -> dict:
     legend = [
         Line2D([0], [0], marker="o", color="none", markerfacecolor=DESIGN.weekday, markeredgecolor="white", markersize=8, label="Weekday"),
         Line2D([0], [0], marker="s", color="none", markerfacecolor=DESIGN.weekend, markeredgecolor="white", markersize=8, label="Weekend day"),
-        Line2D([0], [0], color="#BDBDBD", linewidth=3.2, label="Weekday-weekend gap"),
     ]
     fig.suptitle(
         "Weekday and weekend-day physical activity by sample",
@@ -540,7 +532,7 @@ def plot_overall_weekday_weekend(summary: pd.DataFrame) -> dict:
     add_interval_note(
         fig,
         (
-            f"The x-axis is zoomed to highlight paired differences and starts at "
+            f"The x-axis is zoomed to make the paired day-type estimates readable and starts at "
             f"{formatted_value(ax.get_xlim()[0])} MIMS-units, not zero; values are shown in the original metric units."
         ),
     )
@@ -553,17 +545,19 @@ def plot_overall_weekday_weekend(summary: pd.DataFrame) -> dict:
         "caption": (
             "Weighted mean daily MIMS-units on weekdays and weekend days for adults and "
             "children/adolescents. Points show estimates, horizontal intervals show 95% "
-            "confidence intervals, and connecting lines emphasise the paired day-type comparison."
+            "confidence intervals, and text labels report the descriptive weekday-minus-weekend "
+            "difference. No statistical significance marker is shown."
         ),
         "alt_text": (
-            "Dumbbell plot comparing weekday and weekend-day physical activity. Both adults "
+            "Paired point-range plot comparing weekday and weekend-day physical activity. Both adults "
             "and children/adolescents have higher weighted mean MIMS-units on weekdays than "
             "on weekend days, with a larger absolute difference among children/adolescents."
         ),
         "checklist_notes": [
-            "Uses a familiar paired/dumbbell layout for the comparison.",
+            "Uses a paired summary display for the comparison without adding a separate difference reference line.",
             "Places weekday and weekend-day values close together to reduce divided attention.",
             "Labels the plotted estimates directly because the figure has few values.",
+            "Reports descriptive weekday-minus-weekend differences as text rather than encoding them as a third plotted quantity.",
             "Shows uncertainty with 95% confidence intervals and defines the interval meaning.",
             "Uses a colour-vision-deficiency friendly two-colour palette.",
         ],
@@ -759,13 +753,6 @@ def plot_weekday_weekend_means_by_sample(summary: pd.DataFrame, sample: str) -> 
                 continue
             weekday = weekday.iloc[0]
             weekend = weekend.iloc[0]
-            ax.plot(
-                [weekend["estimate"], weekday["estimate"]],
-                [yi, yi],
-                color="#C7C7C7",
-                linewidth=3.0,
-                zorder=1,
-            )
             draw_horizontal_ci(
                 ax,
                 weekday["estimate"],
@@ -810,7 +797,6 @@ def plot_weekday_weekend_means_by_sample(summary: pd.DataFrame, sample: str) -> 
     legend = [
         Line2D([0], [0], marker="o", color="none", markerfacecolor=DESIGN.weekday, markeredgecolor="white", markersize=7.5, label="Weekday"),
         Line2D([0], [0], marker="s", color="none", markerfacecolor=DESIGN.weekend, markeredgecolor="white", markersize=7.5, label="Weekend day"),
-        Line2D([0], [0], color="#C7C7C7", linewidth=3.0, label="Weekday-weekend gap"),
     ]
     fig.legend(
         handles=legend,
@@ -834,19 +820,18 @@ def plot_weekday_weekend_means_by_sample(summary: pd.DataFrame, sample: str) -> 
         "files": paths,
         "caption": (
             f"Weighted mean daily MIMS-units on weekdays and weekend days by subgroup for {sample}. "
-            "Points show estimates, horizontal intervals show 95% confidence intervals, and connecting "
-            "grey lines keep the weekday/weekend comparison visually paired within each subgroup. "
+            "Points show estimates and horizontal intervals show 95% confidence intervals. "
             "Panel colours identify subgroup domains."
         ),
         "alt_text": (
-            f"Panelled dumbbell plots of weekday and weekend-day MIMS-units for {sample}. "
-            "The paired points allow each subgroup's weekday and weekend-day estimates to be compared directly."
+            f"Panelled paired point-range plots of weekday and weekend-day MIMS-units for {sample}. "
+            "The paired points and intervals allow each subgroup's weekday and weekend-day estimates to be compared directly."
         ),
         "checklist_notes": [
             "Separates subgroup domains into panels to reduce visual crowding.",
             "Shows x-axis tick labels and axis meaning on every panel.",
             "Uses dotted minor gridlines to improve value readability without adding a label to every point.",
-            "Adds a grey connector legend to explain the weekday-weekend gap line.",
+            "Avoids adding a separate difference connector so mean estimates, intervals, and statistical annotations remain visually distinct.",
             "Uses domain-specific colour accents to distinguish subgroup variables.",
             "Uses consistent weekday/weekend colours across all panels and figures.",
             "Keeps legends and explanatory notes close to the plotted values.",

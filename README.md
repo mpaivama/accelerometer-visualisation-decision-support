@@ -21,7 +21,7 @@ fully fit a study context.
 
 ## Toolkit Components
 
-The repository currently contains six connected pieces:
+The repository currently contains seven connected pieces:
 
 1. **Decision tree recommendation engine**
 
@@ -44,18 +44,25 @@ The repository currently contains six connected pieces:
    generated from the Python decision tree, so users can run the recommender
    without installing Python while the repository keeps one source of truth.
 
-4. **Worked case-study implementation**
+4. **Decision-tree reports and structural audit**
+
+   `generate_decision_report.py` generates the exhaustive decision-equivalent
+   recommendation report. `analyse_decision_tree_structure.py` audits how
+   displayed decision paths are distributed across recommendation outputs and
+   how sensitive each decision point is to changes in user inputs.
+
+5. **Worked case-study implementation**
 
    `case_study/` contains reproducible code and outputs for the NHANES
    2011-2014 worked example. It demonstrates how selected decision-tree
    recommendations can be translated into checklist-informed figures.
 
-5. **Visualisation checklist**
+6. **Visualisation checklist**
 
    `checklist/` contains the current checklist draft used to refine the
    case-study figures and to document checklist-informed design choices.
 
-6. **Illustrative visual examples**
+7. **Illustrative visual examples**
 
    `examples/` contains simulated visual examples for recommendation families
    that were not directly implemented in the NHANES case study. Each example is
@@ -103,11 +110,18 @@ build_static_site.py              Static GitHub Pages generator
 static_site_templates/             Templates copied into the generated site
 docs/                              Generated static recommender site
 generate_decision_report.py        Exhaustive decision-report generator
+analyse_decision_tree_structure.py Structural audit of path concentration and
+                                  decision-point sensitivity
 make_decision_tree_architecture_figure.py
                                   Script for the architecture figure
 Toolkit_operationalisation_v1.ipynb
                                   Notebook demonstration of the decision tree
 DECISION_TREE_REVIEW.md            Current human-readable review of the tree
+DECISION_TREE_STRUCTURE_AUDIT.md   Current path-distribution and sensitivity
+                                  audit summary
+SUPPLEMENTARY_DECISION_TREE_STRUCTURE_AUDIT.md
+                                  Manuscript-facing supplement text for the
+                                  structural audit
 CASE_STUDY_DECISION_TREE_APPLICATION.md
                                   First worked application of the decision tree
 case_study/                        NHANES worked example code, figures, and
@@ -271,7 +285,7 @@ case_study/figures/case_study_visualisation_notes.md
 
 ## Reports
 
-To regenerate the decision-tree audit outputs:
+To regenerate the full decision-tree report outputs:
 
 ```bash
 python3 generate_decision_report.py
@@ -290,17 +304,32 @@ decision_report/recommendation_sets.csv
 It contains one row per distinct ordered recommendation output, making it easier
 to review the end points of the decision tree.
 
+To regenerate the structural audit:
+
+```bash
+python3 analyse_decision_tree_structure.py
+```
+
+The structural audit reports how many displayed decision paths lead to each
+recommendation output, identifies displayed paths that map to more than one
+output, and estimates how often each decision point changes either the
+recommendation card or the full user-facing output. This helps distinguish
+chart-selection decisions from design, refinement, and documentation questions.
+It also writes `SUPPLEMENTARY_DECISION_TREE_STRUCTURE_AUDIT.md`, a
+manuscript-facing version of the audit that can be used as supplementary
+material.
+
 ## Tests
 
 Run:
 
 ```bash
-python3 -m unittest test_decision_tree.py test_guided_interface.py test_decision_report.py test_static_site.py -v
+python3 -m unittest test_decision_tree.py test_guided_interface.py test_decision_report.py test_static_site.py test_decision_tree_structure_audit.py -v
 ```
 
 The tests check recommendation logic, validation messages, interface branching,
-report-generation assumptions, and whether the generated static site data is
-up to date with the current Python source.
+report-generation assumptions, structural-audit assumptions, and whether the
+generated static site data is up to date with the current Python source.
 
 ## Optional Dependencies
 

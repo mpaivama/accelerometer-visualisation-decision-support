@@ -74,7 +74,7 @@ RECOMMENDATION_TO_EXAMPLE = {
     },
     "Behaviour-by-time heatmap": {
         "function": "example_behaviour_by_time_heatmap",
-        "adapt": "Replace the participant-day-by-time behaviour matrix and category colour map.",
+        "adapt": "Replace the labelled participant-day-by-time behaviour matrix and category colour map.",
     },
     "Proportion-over-time profile": {
         "function": "example_proportion_over_time_profile",
@@ -279,19 +279,42 @@ def example_behaviour_timeline_tile_plot() -> None:
 def example_behaviour_by_time_heatmap() -> None:
     # RECOMMENDATION: Behaviour-by-time heatmap.
     # ADAPT HERE: replace the simulated matrix with real participant-days x time.
-    # Rows should represent participants, days, bouts, or another defined unit.
-    data = behaviour_matrix(14, 96)
+    # Rows should be explicitly labelled participant-days, participants, bouts,
+    # or another unit that is meaningful for the research question.
+    n_participants = 4
+    n_days = 3
+    n_bins = 96
+    row_labels = [
+        f"P{participant:02d} day {day}"
+        for participant in range(1, n_participants + 1)
+        for day in range(1, n_days + 1)
+    ]
+    data = behaviour_matrix(len(row_labels), n_bins)
+    x_edges = np.linspace(0, 24, n_bins + 1)
+    y_edges = np.arange(len(row_labels) + 1)
     cmap, norm, labels = behaviour_cmap()
-    fig, ax = plt.subplots(figsize=(9, 4.2))
-    ax.imshow(data, aspect="auto", cmap=cmap, norm=norm, extent=[0, 24, data.shape[0], 0])
-    ax.set_title("Behaviour category by participant-day and time")
-    ax.set_xlabel("Time of day (hours)")
-    ax.set_ylabel("Participant-day")
+    fig, ax = plt.subplots(figsize=(9.2, 5.0))
+    ax.pcolormesh(
+        x_edges,
+        y_edges,
+        data,
+        cmap=cmap,
+        norm=norm,
+        shading="flat",
+        edgecolors="white",
+        linewidth=0.08,
+    )
+    ax.invert_yaxis()
+    ax.set_title("Behaviour category across repeated participant-days")
+    ax.set_xlabel("Time of day (hours; 15-min bins)")
+    ax.set_ylabel("Participant and day")
     ax.set_xticks(np.arange(0, 25, 4))
-    ax.set_yticks([1, 4, 8, 12])
-    ax.set_yticklabels(["P01 day 1", "P04 day 1", "P08 day 1", "P12 day 1"])
+    ax.set_yticks(np.arange(len(row_labels)) + 0.5)
+    ax.set_yticklabels(row_labels)
+    for separator in range(n_days, len(row_labels), n_days):
+        ax.axhline(separator, color="white", linewidth=1.4)
     handles = [Patch(facecolor=BEHAVIOUR_COLOURS[label], label=label) for label in labels]
-    ax.legend(handles=handles, ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.12))
+    ax.legend(handles=handles, ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.15))
     clean_axis(ax)
     finish_figure(fig, "behaviour_by_time_heatmap")
 

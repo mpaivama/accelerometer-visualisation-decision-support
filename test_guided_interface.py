@@ -131,7 +131,7 @@ class GuidedInterfaceTests(unittest.TestCase):
         self.assertEqual(response["inputs"]["comparison_structure"], "not_applicable")
 
     def test_incomplete_flow_gives_plain_language_prompt(self):
-        with self.assertRaisesRegex(ValueError, "Please answer: Who is the target audience"):
+        with self.assertRaisesRegex(ValueError, "Please answer: Who needs to understand the figure"):
             build_inputs(
                 {
                     "data_form": "derived_metric",

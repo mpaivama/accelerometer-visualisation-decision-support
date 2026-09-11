@@ -64,11 +64,11 @@ class StaticSiteTests(unittest.TestCase):
             if question["field"] == "n_overlaid_series"
             for option in question["options"]
         ]
-        self.assertIn("More than 6 series", numeric_labels)
+        self.assertIn("More than 6 lines or profiles", numeric_labels)
         self.assertEqual(data["answer_labels"]["show_variability"]["true"], "Yes")
         self.assertEqual(
             data["answer_labels"]["many_observations"]["false"],
-            "No, individual points or profiles remain readable",
+            "No, still readable",
         )
 
     def test_static_path_returns_case_study_like_recommendation(self) -> None:

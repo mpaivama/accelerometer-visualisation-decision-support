@@ -65,7 +65,7 @@
     "comparison_focus='groups' means a comparison is being made. Set comparison_structure='independent' or comparison_structure='paired_repeated'.": 4608,
     "comparison_focus='none' is valid and means there is no comparison. For this choice, also set comparison_structure='not_applicable'.": 4608,
     "comparison_focus='time' means a comparison is being made. Set comparison_structure='independent' or comparison_structure='paired_repeated'.": 4608,
-    "comparison_structure='paired_repeated' requires at least two linked comparison levels. Set n_comparison_levels to 2 or greater.": 4608
+    "comparison_structure='paired_repeated' requires at least two matched categories or time points. Set n_comparison_levels to 2 or greater.": 4608
   },
   "enumeration_domains": {
     "data_form": [
@@ -134,14 +134,14 @@
   },
   "representative_numeric_values": {
     "n_overlaid_series": {
-      "1": "Represents 1-3 overlaid temporal series: no layout warning.",
-      "4": "Represents 4-6 overlaid temporal series: readability warning.",
-      "7": "Represents more than 6 series: split/filter/summarise recommendation."
+      "1": "Represents 1-3 lines or profiles in one panel: no layout warning.",
+      "4": "Represents 4-6 lines or profiles in one panel: readability warning.",
+      "7": "Represents more than 6 lines or profiles in one panel: split, filter, or summarise."
     },
     "n_comparison_levels": {
       "1": "Used when the comparison is not paired or repeated.",
-      "2": "Represents exactly two linked levels: paired, slope, or dumbbell display.",
-      "3": "Represents more than two linked levels: repeated-measures line plot."
+      "2": "Represents exactly two matched categories or time points: paired, slope, or dumbbell display.",
+      "3": "Represents more than two matched categories or time points: repeated-measures line plot."
     },
     "n_compositional_parts": {
       "null": "Used when the primary task is not composition.",

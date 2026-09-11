@@ -39,14 +39,14 @@ ALLOWED_VALUES = {
 # fields and accepted values automatically.
 REPORT_REPRESENTATIVE_VALUES = {
     "n_overlaid_series": {
-        1: "Represents 1-3 overlaid temporal series: no layout warning.",
-        4: "Represents 4-6 overlaid temporal series: readability warning.",
-        7: "Represents more than 6 series: split/filter/summarise recommendation.",
+        1: "Represents 1-3 lines or profiles in one panel: no layout warning.",
+        4: "Represents 4-6 lines or profiles in one panel: readability warning.",
+        7: "Represents more than 6 lines or profiles in one panel: split, filter, or summarise.",
     },
     "n_comparison_levels": {
         1: "Used when the comparison is not paired or repeated.",
-        2: "Represents exactly two linked levels: paired, slope, or dumbbell display.",
-        3: "Represents more than two linked levels: repeated-measures line plot.",
+        2: "Represents exactly two matched categories or time points: paired, slope, or dumbbell display.",
+        3: "Represents more than two matched categories or time points: repeated-measures line plot.",
     },
     "n_compositional_parts": {
         None: "Used when the primary task is not composition.",
@@ -88,49 +88,49 @@ INVALID_VALUE_HINTS = {
 
 DISPLAY_LABELS = {
     "data_form": {
-        "continuous_signal": "Continuous signal",
-        "classified_behaviour": "Classified behaviour",
-        "derived_metric": "Derived metric",
-        "composition": "Movement-behaviour composition",
+        "continuous_signal": "Activity values over time",
+        "classified_behaviour": "Behaviour categories over time",
+        "derived_metric": "Summary measure",
+        "composition": "Time split across behaviours",
     },
     "primary_task": {
-        "temporal_pattern": "Temporal pattern",
-        "distribution": "Distribution",
-        "compare_values": "How much, how often, or how long / compare values",
-        "composition": "Composition",
-        "relationship": "Relationship",
-        "event_pattern": "Event pattern",
+        "temporal_pattern": "When does it happen or change?",
+        "distribution": "How spread out are the values?",
+        "compare_values": "How much, how often, or how long, and does it differ?",
+        "composition": "How is time divided across behaviours?",
+        "relationship": "Do two measured variables vary together?",
+        "event_pattern": "When and how often do bouts or events occur?",
     },
     "display_level": {
-        "individual": "One selected unit",
+        "individual": "One participant, day, or bout",
         "multiple_observations": "Multiple participants, days, or bouts",
-        "summary": "Summary values only",
+        "summary": "Group summaries only",
     },
     "comparison_focus": {
-        "none": "No explicit comparison",
-        "groups": "Groups",
-        "time": "Discrete time periods",
-        "conditions": "Conditions",
+        "none": "No direct comparison",
+        "groups": "Participant groups",
+        "time": "Time periods",
+        "conditions": "Study conditions or contexts",
     },
     "comparison_structure": {
-        "independent": "Independent",
-        "paired_repeated": "Paired or repeated",
+        "independent": "Different records",
+        "paired_repeated": "Matched or repeated records",
         "not_applicable": "Not applicable",
     },
     "target_audience": {
-        "technical": "Technical audience",
-        "general": "General audience",
+        "technical": "Scientific or technical readers",
+        "general": "Broader or non-specialist readers",
     },
     "temporal_context": {
-        "full_24h": "Complete 24-hour day",
+        "full_24h": "Full 24-hour day",
         "wake_time": "Waking time only",
-        "not_applicable": "Not applicable",
+        "not_applicable": "Not tied to full-day or waking-time",
     },
     "implementation_status": {
-        "direct_example_available": "direct case-study example available",
+        "direct_example_available": "case-study example available",
         "related_example_available": "related case-study example available",
         "general_example_available": "simulated example available",
-        "signpost_only": "signpost only",
+        "signpost_only": "guidance only",
     },
 }
 
@@ -689,8 +689,8 @@ def validate_inputs(inputs: DecisionInputs) -> None:
         and inputs.n_comparison_levels < 2
     ):
         raise ValueError(
-            "comparison_structure='paired_repeated' requires at least two linked "
-            "comparison levels. Set n_comparison_levels to 2 or greater."
+            "comparison_structure='paired_repeated' requires at least two matched "
+            "categories or time points. Set n_comparison_levels to 2 or greater."
         )
 
 
@@ -1154,7 +1154,7 @@ def _compare_values(inputs: DecisionInputs, recs: list[Recommendation]) -> None:
                 "remain visible but the aim is not to compare groups, time periods, "
                 "or conditions.",
                 "If the main message is distribution shape, spread, or unusual values, "
-                "choose distribution as the main visual task instead.",
+                "choose a distribution-focused figure instead.",
             )
         else:
             if inputs.show_variability:
@@ -1412,15 +1412,16 @@ def _design_notes(inputs: DecisionInputs) -> list[str]:
 
     if inputs.primary_task == "temporal_pattern" and inputs.n_overlaid_series > 6:
         notes.append(
-            f"Layout guidance: do not place all {inputs.n_overlaid_series} temporal "
-            "series in one panel. Split them into small multiples, filter to the "
-            "series relevant to the research question, or show a meaningful summary."
+            f"Layout guidance: do not place all {inputs.n_overlaid_series} lines or "
+            "profiles in one panel. Split them into small multiples, filter to the "
+            "records relevant to the research question, or show a meaningful summary."
         )
     elif inputs.primary_task == "temporal_pattern" and inputs.n_overlaid_series >= 4:
         notes.append(
-            f"Layout guidance: {inputs.n_overlaid_series} overlaid temporal series may become "
-            "difficult to distinguish. Use direct labels and check overlap; split "
-            "into small multiples if the shared panel is not immediately readable."
+            f"Layout guidance: {inputs.n_overlaid_series} lines or profiles in one "
+            "panel may become difficult to distinguish. Use direct labels and check "
+            "overlap; split into small multiples if the shared panel is not "
+            "immediately readable."
         )
 
     if inputs.target_audience == "general":
@@ -1467,7 +1468,9 @@ def recommend_visualisations(inputs: DecisionInputs) -> DecisionResult:
             f"Temporal series intended for one panel: {inputs.n_overlaid_series}"
         )
     if inputs.comparison_structure == "paired_repeated":
-        decision_path.append(f"Linked comparison levels: {inputs.n_comparison_levels}")
+        decision_path.append(
+            f"Matched categories or time points: {inputs.n_comparison_levels}"
+        )
     if inputs.primary_task == "composition":
         decision_path.append(f"Compositional parts: {inputs.n_compositional_parts}")
 
@@ -1482,29 +1485,29 @@ def recommend_visualisations(inputs: DecisionInputs) -> DecisionResult:
 def format_result(result: DecisionResult) -> str:
     """Format a decision result for readable notebook or console output."""
 
-    lines = ["DECISION PATH"]
+    lines = ["YOUR DECISION PATH"]
     lines.extend(f"- {item}" for item in result.decision_path)
-    lines.append("\nRECOMMENDED VISUALISATIONS")
+    lines.append("\nRECOMMENDED FIGURES")
 
     for index, rec in enumerate(result.recommendations, start=1):
         lines.extend(
             [
                 f"\n{index}. {rec.visualisation} [{rec.rank}]",
-                f"   Visual mapping: {rec.visual_mapping}",
-                f"   Why: {rec.rationale}",
-                f"   Use when: {rec.use_when}",
+                f"   What the plot shows: {rec.visual_mapping}",
+                f"   Why this plot: {rec.rationale}",
+                f"   Best used when: {rec.use_when}",
             ]
         )
         if rec.caution:
-            lines.append(f"   Caution: {rec.caution}")
+            lines.append(f"   Watch out for: {rec.caution}")
         if rec.adaptation_guidance:
-            lines.append(f"   Adaptation: {rec.adaptation_guidance}")
+            lines.append(f"   Code starting point: {rec.adaptation_guidance}")
         lines.append(
-            f"   Example status: "
+            f"   Example available: "
             f"{display_label('implementation_status', rec.implementation_status)}"
         )
         if rec.implementation_note:
-            lines.append(f"   Example note: {rec.implementation_note}")
+            lines.append(f"   About this example: {rec.implementation_note}")
         if rec.example_image_file:
             lines.append(f"   Example figure: {rec.example_image_file}")
         if rec.example_source:
@@ -1514,24 +1517,24 @@ def format_result(result: DecisionResult) -> str:
         if rec.example_code_file:
             lines.append(f"   Example code file: {rec.example_code_file}")
         if rec.direct_case_study_examples:
-            lines.append("   Direct worked example(s):")
+            lines.append("   Case-study code examples:")
             lines.extend(
                 f"      - {example}" for example in rec.direct_case_study_examples
             )
         if rec.related_case_study_examples:
-            lines.append("   Related worked example(s):")
+            lines.append("   Related case-study code:")
             lines.extend(
                 f"      - {example}" for example in rec.related_case_study_examples
             )
         if rec.data_required:
             lines.append(f"   Data needed: {rec.data_required}")
         if rec.case_study_adaptation_points:
-            lines.append("   Adapt in the worked example:")
+            lines.append("   Main code changes:")
             lines.extend(
                 f"      - {point}" for point in rec.case_study_adaptation_points
             )
         if rec.checklist_aspects_to_review:
-            lines.append("   Checklist aspects to review:")
+            lines.append("   Checklist reminders:")
             lines.extend(
                 f"      - {aspect}" for aspect in rec.checklist_aspects_to_review
             )

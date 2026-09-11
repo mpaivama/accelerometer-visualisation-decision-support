@@ -44,18 +44,35 @@ REPOSITORY_URL = (
 # hand-coded decision engine.
 NUMBER_OPTION_LABELS = {
     "n_overlaid_series": {
-        1: "1 to 3 series",
-        4: "4 to 6 series",
-        7: "More than 6 series",
+        1: "1 to 3 lines or profiles",
+        4: "4 to 6 lines or profiles",
+        7: "More than 6 lines or profiles",
     },
     "n_comparison_levels": {
-        2: "Exactly 2 linked levels",
-        3: "More than 2 linked levels",
+        2: "2 matched categories or time points",
+        3: "More than 2 matched categories or time points",
     },
     "n_compositional_parts": {
-        2: "2 parts",
-        3: "3 parts",
-        4: "More than 3 parts",
+        2: "2 behaviour parts",
+        3: "3 behaviour parts",
+        4: "More than 3 behaviour parts",
+    },
+}
+
+NUMBER_OPTION_DESCRIPTIONS = {
+    "n_overlaid_series": {
+        1: "Usually readable in one panel.",
+        4: "May still work, but check whether the lines or profiles overlap.",
+        7: "Likely to become crowded; consider splitting, filtering, or summarising.",
+    },
+    "n_comparison_levels": {
+        2: "Example: weekday and weekend values from the same participants.",
+        3: "Example: baseline, midpoint, and follow-up for the same participants.",
+    },
+    "n_compositional_parts": {
+        2: "Example: time sedentary and time active.",
+        3: "Example: sleep, sedentary behaviour, and physical activity.",
+        4: "Example: sleep, sedentary behaviour, LPA, and MVPA.",
     },
 }
 
@@ -90,7 +107,10 @@ def _number_options(field: str, question: dict[str, Any]) -> list[dict[str, Any]
             {
                 "value": value,
                 "label": NUMBER_OPTION_LABELS[field].get(value, str(value)),
-                "description": description,
+                "description": NUMBER_OPTION_DESCRIPTIONS.get(field, {}).get(
+                    value,
+                    description,
+                ),
             }
         )
 
@@ -148,14 +168,17 @@ def _static_result(answers: dict[str, Any]) -> dict[str, Any]:
     if answers.get("n_overlaid_series") == 4:
         result["design_notes"] = [
             note.replace(
-                "4 overlaid temporal series",
-                "4 to 6 overlaid temporal series",
+                "4 lines or profiles in one panel",
+                "4 to 6 lines or profiles in one panel",
             )
             for note in result["design_notes"]
         ]
     elif answers.get("n_overlaid_series") == 7:
         result["design_notes"] = [
-            note.replace("all 7 temporal series", "more than 6 temporal series")
+            note.replace(
+                "all 7 lines or profiles in one panel",
+                "more than 6 lines or profiles in one panel",
+            )
             for note in result["design_notes"]
         ]
 

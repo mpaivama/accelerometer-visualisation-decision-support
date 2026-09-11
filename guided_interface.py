@@ -29,124 +29,125 @@ FIGURE_CONTENT_TYPES = {
 
 QUESTIONS: dict[str, dict[str, Any]] = {
     "data_form": {
-        "title": "What form do the accelerometer values take?",
+        "title": "What kind of accelerometer measure are you plotting?",
         "help": (
-            "Choose based on the values that will actually appear in the "
-            "visualisation, rather than only on how the data were collected."
+            "Choose the measure as it will appear in the figure, not only how "
+            "it was collected or processed."
         ),
         "type": "choice",
         "options": [
             {
                 "value": "continuous_signal",
-                "label": "Continuous signal",
+                "label": "Activity values over time",
                 "description": (
-                    "Ordered numeric measurements retained across time. "
-                    "Examples: raw triaxial acceleration; epoch-level ENMO, "
-                    "MIMS, or activity counts."
+                    "Numeric values measured repeatedly across time. Examples: "
+                    "raw acceleration, ENMO, MIMS-units, or activity counts by "
+                    "epoch or minute."
                 ),
             },
             {
                 "value": "classified_behaviour",
-                "label": "Classified behaviour",
+                "label": "Behaviour categories over time",
                 "description": (
-                    "Each epoch or interval is assigned to a behaviour, posture, "
-                    "or intensity category. Examples: sleep/sedentary/LPA/MVPA; "
-                    "sitting/standing/stepping."
+                    "Each epoch or time bin is assigned to a behaviour, posture, "
+                    "or intensity category. Examples: sleep, sedentary behaviour, "
+                    "LPA, MVPA; sitting, standing, stepping."
                 ),
             },
             {
                 "value": "derived_metric",
-                "label": "Derived metric",
+                "label": "Summary measure",
                 "description": (
-                    "A numeric summary calculated for a participant, day, bout, "
-                    "or period. Examples: daily steps; MVPA minutes; number or "
-                    "median duration of sedentary bouts."
+                    "A calculated value for a participant, day, bout, group, or "
+                    "period. Examples: steps/day, MVPA minutes/day, number of "
+                    "sedentary bouts, median bout duration."
                 ),
             },
             {
                 "value": "composition",
-                "label": "Movement-behaviour composition",
+                "label": "Time split across behaviours",
                 "description": (
-                    "Two or more behaviour parts interpreted together and "
-                    "constrained to a fixed whole. Examples: minutes or "
-                    "proportions of the day in sleep, sedentary behaviour, LPA, "
-                    "and MVPA."
+                    "Two or more behaviour parts treated as one whole. Examples: "
+                    "minutes or percentage of the 24-hour day in sleep, sedentary "
+                    "behaviour, LPA, and MVPA."
                 ),
             },
         ],
     },
     "primary_task": {
-        "title": "What is the main message the visualisation should communicate?",
+        "title": "What do you want the figure to show?",
         "help": (
-            "Choose the primary visual task. Closely related research questions "
-            "may require running the decision tree more than once."
+            "Choose the main research question for this figure. If one study has "
+            "several questions, run the tool once for each figure or message."
         ),
         "type": "choice",
         "options": [
             {
                 "value": "temporal_pattern",
-                "label": "When, or how does it change over time?",
+                "label": "When does it happen or change?",
                 "description": (
-                    "Show the timing, sequence, or changing level of a signal or "
-                    "behaviour across ordered time."
+                    "Show timing, sequence, or changes in activity values or "
+                    "behaviour categories across ordered time."
                 ),
             },
             {
                 "value": "distribution",
-                "label": "How are the observed values distributed?",
+                "label": "How spread out are the values?",
                 "description": (
-                    "Show spread, skewness, unusual values, or the distribution "
-                    "of metrics such as bout duration."
+                    "Show spread, skewness, unusual values, or the full "
+                    "distribution of measures such as MVPA minutes/day or bout "
+                    "duration."
                 ),
             },
             {
                 "value": "compare_values",
-                "label": "How much, how often, or how long, and do values differ?",
+                "label": "How much, how often, or how long, and does it differ?",
                 "description": (
-                    "Compare accelerometer metrics across groups, discrete time "
-                    "points, or conditions."
+                    "Compare accelerometer measures across participant groups, "
+                    "time periods, or study conditions."
                 ),
             },
             {
                 "value": "composition",
-                "label": "How important is each behaviour in relation to the others?",
+                "label": "How is time divided across behaviours?",
                 "description": (
-                    "Show how movement behaviours divide a fixed period such as "
-                    "the 24-hour day."
+                    "Show how sleep, sedentary behaviour, LPA, MVPA, or other "
+                    "behaviours make up a fixed period such as the 24-hour day."
                 ),
             },
             {
                 "value": "relationship",
-                "label": "Is the metric related to another continuous measure?",
+                "label": "Do two measured variables vary together?",
                 "description": (
-                    "Directly show paired observed values. This is descriptive "
-                    "and does not display model results."
+                    "Plot paired values directly, such as an accelerometer metric "
+                    "against another continuous measured variable. This is not "
+                    "for model coefficients or adjusted predictions."
                 ),
             },
             {
                 "value": "event_pattern",
-                "label": "How often and when do bouts or events occur?",
+                "label": "When and how often do bouts or events occur?",
                 "description": (
-                    "Show the frequency, timing, or sequence of bouts, "
-                    "transitions, or events."
+                    "Show the timing, frequency, or sequence of bouts, transitions, "
+                    "or other events."
                 ),
             },
         ],
     },
     "display_level": {
-        "title": "What level of data should be visible?",
+        "title": "What should the reader be able to see?",
         "help": (
-            "Choose what the reader should be able to see directly: one "
-            "defined unit, multiple units, or summaries only."
+            "Decide whether the figure should show one detailed example, many "
+            "individual records, or summaries only."
         ),
         "type": "choice",
         "options": [
             {
                 "value": "individual",
-                "label": "One selected unit",
+                "label": "One participant, day, or bout",
                 "description": (
-                    "Show one participant, day, bout, participant-day, or other "
-                    "defined unit in detail."
+                    "Show one selected participant, day, bout, participant-day, "
+                    "or other single record in detail."
                 ),
             },
             {
@@ -154,93 +155,93 @@ QUESTIONS: dict[str, dict[str, Any]] = {
                 "label": "Multiple participants, days, or bouts",
                 "description": (
                     "Show values or profiles from several participants, days, "
-                    "bouts, participant-days, or other defined units."
+                    "bouts, participant-days, or other records."
                 ),
             },
             {
                 "value": "summary",
-                "label": "Summary values only",
+                "label": "Group summaries only",
                 "description": (
-                    "Show only an aggregate such as a mean, median, proportion, "
-                    "or total."
+                    "Show means, medians, proportions, totals, or other summaries "
+                    "rather than individual records."
                 ),
             },
         ],
     },
     "comparison_focus": {
-        "title": "Is the visualisation comparing values?",
+        "title": "Are you comparing the measure across categories or periods?",
         "help": (
-            "Choose no explicit comparison when the goal is to describe one "
-            "metric, selected unit, distribution, composition, or pattern without "
-            "contrasting groups, time periods, or conditions."
+            "Choose no direct comparison if the figure only describes one measure, "
+            "one selected record, one distribution, one composition, or one event "
+            "pattern."
         ),
         "type": "choice",
         "options": [
             {
                 "value": "none",
-                "label": "No explicit comparison",
+                "label": "No direct comparison",
                 "description": (
-                    "Describe one metric, selected participant/day/bout, signal, "
-                    "distribution, composition, or pattern."
+                    "Describe one measure, selected participant/day/bout, signal, "
+                    "distribution, composition, or event pattern."
                 ),
             },
             {
                 "value": "groups",
-                "label": "Groups: who?",
+                "label": "Participant groups",
                 "description": (
-                    "Compare who the data units come from, such as age groups, "
-                    "women and men, or BMI categories."
+                    "Compare groups such as age bands, women and men, BMI "
+                    "categories, clinical groups, or countries."
                 ),
             },
             {
                 "value": "time",
-                "label": "Discrete time periods: when?",
+                "label": "Time periods",
                 "description": (
-                    "Compare periods such as weekdays and weekends, or baseline "
-                    "and follow-up."
+                    "Compare periods such as weekdays and weekends, seasons, or "
+                    "baseline and follow-up."
                 ),
             },
             {
                 "value": "conditions",
-                "label": "Conditions: under which context?",
+                "label": "Study conditions or contexts",
                 "description": (
-                    "Compare settings or protocols such as intervention/control "
-                    "conditions or activity contexts."
+                    "Compare intervention/control conditions, protocols, settings, "
+                    "device placements, or activity contexts."
                 ),
             },
         ],
     },
     "comparison_structure": {
-        "title": "Are the comparison observations independent or linked?",
+        "title": "Are the same participants or days present in each comparison?",
         "help": (
-            "This question is shown only because you selected an explicit "
-            "comparison."
+            "This appears only after you choose a comparison. It separates "
+            "independent groups from matched or repeated measurements."
         ),
         "type": "choice",
         "options": [
             {
                 "value": "independent",
-                "label": "Independent",
+                "label": "No, different records",
                 "description": (
-                    "Observations in one comparison level do not correspond "
-                    "one-to-one with observations in another."
+                    "Records in one category do not match one-to-one with records "
+                    "in another. Example: different participants in each group."
                 ),
             },
             {
                 "value": "paired_repeated",
-                "label": "Paired or repeated",
+                "label": "Yes, matched or repeated records",
                 "description": (
-                    "The same participant, day, or other unit contributes to two "
-                    "or more comparison levels."
+                    "The same participant, day, or other record contributes to "
+                    "two or more categories. Example: weekday and weekend values "
+                    "from the same participants."
                 ),
             },
         ],
     },
     "show_variability": {
-        "title": "Should variability or uncertainty be visible?",
+        "title": "Do you need to show variation or uncertainty?",
         "help": (
-            "A distribution task always shows variability, so this question is "
-            "automatically skipped for that task."
+            "For distribution figures this is built in, so the question is skipped."
         ),
         "type": "choice",
         "options": [
@@ -248,109 +249,123 @@ QUESTIONS: dict[str, dict[str, Any]] = {
                 "value": True,
                 "label": "Yes",
                 "description": (
-                    "Show raw variation, a distribution layer, or a clearly "
-                    "defined interval."
+                    "Show individual variation, a distribution, or an interval "
+                    "such as SD, IQR, SE, or 95% CI."
                 ),
             },
             {
                 "value": False,
                 "label": "No",
                 "description": (
-                    "A summary-only display is sufficient and omitting "
-                    "variability can be justified."
+                    "Use a simpler summary figure only if variation or uncertainty "
+                    "is not central, not available, or deliberately outside scope."
                 ),
             },
         ],
     },
     "many_observations": {
-        "title": "Are there too many observations or profiles to show clearly?",
+        "title": "Would individual points or profiles overlap too much?",
         "help": (
-            "There is no universal sample-size threshold. Answer yes when points "
-            "or temporal profiles would substantially overlap."
+            "There is no fixed sample-size cutoff. Answer yes if the figure would "
+            "be hard to read because too many points, lines, or profiles sit on "
+            "top of each other."
         ),
         "type": "choice",
         "options": [
             {
                 "value": False,
-                "label": "No, individual points or profiles remain readable",
-                "description": "Keep a display that shows individual units clearly.",
+                "label": "No, still readable",
+                "description": "Individual values or profiles can still be seen clearly.",
             },
             {
                 "value": True,
-                "label": "Yes, substantial overlap is likely",
+                "label": "Yes, too crowded",
                 "description": (
-                    "Consider a heatmap or density-based display instead of "
-                    "overplotting."
+                    "Consider heatmaps, density displays, faceting, or summaries "
+                    "instead of plotting every point or line in one panel."
                 ),
             },
         ],
     },
     "target_audience": {
-        "title": "Who is the target audience?",
-        "help": "This affects explanation and specialist-alternative guidance.",
+        "title": "Who needs to understand the figure?",
+        "help": (
+            "This affects how much explanation is needed and whether a simpler "
+            "alternative should be considered."
+        ),
         "type": "choice",
         "options": [
             {
                 "value": "technical",
-                "label": "Technical audience",
-                "description": "Statistically or methodologically trained readers.",
+                "label": "Scientific or technical readers",
+                "description": "Readers familiar with research methods or accelerometer data.",
             },
             {
                 "value": "general",
-                "label": "General audience",
+                "label": "Broader or non-specialist readers",
                 "description": (
-                    "Non-specialist, practitioner, policy, or public audiences."
+                    "Practitioner, policy, public, or mixed audiences who may need "
+                    "more explanation."
                 ),
             },
         ],
     },
     "temporal_context": {
-        "title": "What period does the metric represent?",
-        "help": "Choose the period the displayed values describe.",
+        "title": "What time window does the measure summarise?",
+        "help": "Choose the time window represented by the values in the figure.",
         "type": "choice",
         "options": [
             {
                 "value": "full_24h",
-                "label": "The complete 24-hour day",
-                "description": "Sleep, non-wear, and missing time must be explained.",
+                "label": "The full 24-hour day",
+                "description": (
+                    "Includes the whole day. Explain how sleep, non-wear, and "
+                    "missing time were handled."
+                ),
             },
             {
                 "value": "wake_time",
                 "label": "Waking time only",
-                "description": "The method used to identify wake time must be explained.",
+                "description": (
+                    "Excludes sleep or uses a waking-time window. Explain how "
+                    "waking time was defined."
+                ),
             },
             {
                 "value": "not_applicable",
-                "label": "Neither applies",
-                "description": "The metric is not specifically a full-day or wake-time value.",
+                "label": "Not tied to full-day or waking-time",
+                "description": (
+                    "Use this when the measure is not specifically a 24-hour or "
+                    "waking-time summary."
+                ),
             },
         ],
     },
     "n_overlaid_series": {
-        "title": "How many temporal series are intended to share one panel?",
+        "title": "How many lines or profiles would share one panel?",
         "help": (
-            "Count distinct participant, group, condition, or day profiles drawn "
-            "together, not observations, variables, or panels."
+            "Count visible participant, group, condition, or day profiles drawn "
+            "together. Do not count variables in the dataset or separate panels."
         ),
         "type": "number",
         "minimum": 1,
         "placeholder": "For example, 2",
     },
     "n_comparison_levels": {
-        "title": "How many linked comparison levels are there?",
+        "title": "How many matched categories or time points are being compared?",
         "help": (
-            "Count linked groups, time points, or conditions. For example, "
-            "weekday/weekend = 2; baseline/midpoint/follow-up = 3."
+            "Count linked levels for the same records. Example: weekday/weekend "
+            "= 2; baseline/midpoint/follow-up = 3."
         ),
         "type": "number",
         "minimum": 2,
         "placeholder": "For example, 2",
     },
     "n_compositional_parts": {
-        "title": "How many movement-behaviour parts form the composition?",
+        "title": "How many behaviours make up the whole?",
         "help": (
-            "Count the behaviours that make up the fixed whole, not observations "
-            "or the proportion values themselves."
+            "Count the behaviour parts, not participants or percentage values. "
+            "Example: sleep, sedentary behaviour, LPA, and MVPA = 4."
         ),
         "type": "number",
         "minimum": 2,

@@ -19,11 +19,23 @@ examples. Users are encouraged to treat the tool as part of an iterative
 development process and to suggest refinements where the recommendations do not
 fully fit a study context.
 
-The software is distributed under the MIT License. See `LICENSE`. The
-reconstructed outputs from the published-study application and extended data
-have their own licensing
-statements in `application_to_a_published_study/outputs/README.md` and `extended_data/README.md`,
-respectively.
+## Licensing within the archived release
+
+This repository and its archived Zenodo release contain materials distributed
+under different licences:
+
+| Material | Location | Licence |
+|---|---|---|
+| Software, tests, and software documentation | Repository generally, except for the directories identified below | MIT License; see `LICENSE` |
+| Reconstructed and derived data supporting the application to a published study | `application_to_a_published_study/outputs/` | CC0 1.0, to the extent that the authors hold rights in these files; see the directory README |
+| Manuscript extended data | `extended_data/` | CC BY 4.0, unless otherwise indicated within an individual file; see the directory README |
+
+Raw NHANES source files are not redistributed in this repository. The CC0
+dedication for reconstructed and derived files does not alter any terms or
+conditions applying to the original NHANES source data. When citing or reusing
+material from the combined archive, apply the licence associated with the
+relevant file or directory rather than treating the complete archive as
+MIT-licensed.
 
 ## Toolkit Components
 

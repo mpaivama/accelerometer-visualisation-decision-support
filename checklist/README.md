@@ -3,8 +3,8 @@
 This folder contains the checklist component of the toolkit.
 
 `Checklist.docx` is the current checklist draft used to guide the design of the
-case-study visualisations. The checklist principles are implemented in the
-worked example through choices such as explicit metric units, accessible colour,
+published-study application visualisations. The checklist principles are implemented in the
+published-study application through choices such as explicit metric units, accessible colour,
 direct labels, appropriate uncertainty annotations, panelled layouts, captions,
 and alt text.
 

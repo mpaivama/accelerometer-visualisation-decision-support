@@ -19,7 +19,7 @@ from decision_tree import DecisionInputs, recommend_visualisations
 
 ROOT = Path(__file__).resolve().parent
 STATIC_DIR = ROOT / "guided_interface"
-SERVABLE_FIGURE_PREFIXES = ("/examples/figures/", "/case_study/figures/")
+SERVABLE_FIGURE_PREFIXES = ("/examples/figures/", "/application_to_a_published_study/figures/")
 FIGURE_CONTENT_TYPES = {
     ".png": "image/png",
     ".svg": "image/svg+xml; charset=utf-8",

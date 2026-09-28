@@ -2,7 +2,7 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: Accelerometer data visualisation decision support toolkit
+title: LABDA visualisation decision-support toolkit
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
@@ -10,13 +10,36 @@ type: software
 authors:
   - given-names: Marian
     family-names: Marchiori
-    email: marianmarchiori@hotmail.com
+    email: mmarchiori@health.sdu.dk
     orcid: 'https://orcid.org/0000-0002-8849-1291'
+  - given-names: Gaia
+    family-names: Segantin
+  - given-names: Josef
+    family-names: Heidler
+  - given-names: Rayane
+    family-names: Haddadj
+  - given-names: Xin
+    family-names: Zheng
+  - given-names: Morten
+    family-names: Kjærgaard
+  - given-names: Jasper
+    family-names: Schipperijn
 repository-code: >-
   https://github.com/mpaivama/accelerometer-visualisation-decision-support
+url: >-
+  https://mpaivama.github.io/accelerometer-visualisation-decision-support/
 abstract: >-
-  This repository contains a preliminary toolkit to support
-  visualisation decision-making in accelerometer-based
-  movement behaviour research.
-version: '0.1'
-date-released: '2026-06-23'
+  An open-source toolkit supporting transparent and reproducible visualisation
+  decision-making for accelerometer-based 24/7 movement behaviour data. It
+  includes a rule-based decision tree, guided web interface, visualisation
+  checklist, report generator, structural-audit code, reusable plotting code,
+  an application to a published NHANES study, simulated visualisation examples, documentation,
+  and tests.
+version: '1.0.0'
+license: MIT
+keywords:
+  - accelerometry
+  - movement behaviour
+  - data visualisation
+  - decision support
+  - physical activity

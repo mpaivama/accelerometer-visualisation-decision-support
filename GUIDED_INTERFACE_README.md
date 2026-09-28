@@ -12,7 +12,7 @@ The interface is deliberately small:
 - It sends the completed answers to the existing tested Python decision engine
   in `decision_tree.py`.
 - It displays a visual example for each recommendation and labels whether the
-  example uses NHANES case-study data or simulated mock data.
+  example uses data reconstructed for the published-study application or simulated mock data.
 - It does not generate plots and does not cover model-result visualisation.
 
 ## How to Run It
@@ -38,8 +38,8 @@ To stop the interface, return to the terminal and press `Control-C`.
 - `guided_interface/styles.css`: visual styling.
 - `guided_interface/app.js`: browser-side interaction.
 - `examples/figures/`: simulated visual examples used by recommendation
-  outputs when the NHANES case study does not contain a direct example.
-- `case_study/figures/`: NHANES worked case-study examples used by
+  outputs when the NHANES application to a published study does not contain a direct example.
+- `application_to_a_published_study/figures/`: NHANES application to a published study examples used by
   recommendation outputs where available.
 - `test_guided_interface.py`: tests for branch logic and recommendation calls.
 
@@ -59,7 +59,7 @@ The build also copies the example PNG files used by the static interface.
 ## Visual Examples
 
 The visual examples are intended as starting points, not as a comprehensive
-plotting library. Real-data examples come from the NHANES worked case study.
+plotting library. Real-data examples come from the NHANES application to a published study.
 Simulated examples are generated from small mock datasets in:
 
 ```text

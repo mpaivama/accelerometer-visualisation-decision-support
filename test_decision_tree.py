@@ -32,8 +32,8 @@ class DecisionTreeTests(unittest.TestCase):
         self.assertIn("Bar chart", names)
         point_range = result.recommendations[0]
         self.assertEqual(point_range.implementation_status, "direct_example_available")
-        self.assertTrue(point_range.direct_case_study_examples)
-        self.assertIn("plot_difference_by_sample", point_range.direct_case_study_examples[0])
+        self.assertTrue(point_range.direct_published_study_application_examples)
+        self.assertIn("plot_difference_by_sample", point_range.direct_published_study_application_examples[0])
 
     def test_paired_two_condition_comparison_recommends_paired_dots(self):
         result = names(
@@ -65,7 +65,7 @@ class DecisionTreeTests(unittest.TestCase):
         self.assertIn("summary paired/dumbbell", recommendation.caution)
         self.assertIn("summary estimates are available", recommendation.adaptation_guidance)
         self.assertEqual(recommendation.implementation_status, "direct_example_available")
-        self.assertTrue(recommendation.direct_case_study_examples)
+        self.assertTrue(recommendation.direct_published_study_application_examples)
 
     def test_continuous_relationship_recommends_scatterplot(self):
         result = names(
@@ -92,7 +92,7 @@ class DecisionTreeTests(unittest.TestCase):
         )
         recommendation = result.recommendations[0]
         self.assertEqual(recommendation.implementation_status, "direct_example_available")
-        self.assertIn("plot_weekday_weekend_relationship", recommendation.direct_case_study_examples[0])
+        self.assertIn("plot_weekday_weekend_relationship", recommendation.direct_published_study_application_examples[0])
 
     def test_summary_without_variability_recommends_summary_dots(self):
         result = names(
@@ -234,8 +234,8 @@ class DecisionTreeTests(unittest.TestCase):
         recommendation = result.recommendations[0]
         self.assertEqual(recommendation.visualisation, "Scatter plot")
         self.assertEqual(recommendation.implementation_status, "related_example_available")
-        self.assertTrue(recommendation.related_case_study_examples)
-        self.assertIn("hexbin", recommendation.related_case_study_examples[0].lower())
+        self.assertTrue(recommendation.related_published_study_application_examples)
+        self.assertIn("hexbin", recommendation.related_published_study_application_examples[0].lower())
 
     def test_general_example_guidance_is_available_for_unimplemented_recommendation(self):
         result = recommend_visualisations(
@@ -250,7 +250,7 @@ class DecisionTreeTests(unittest.TestCase):
         self.assertEqual(recommendation.implementation_status, "general_example_available")
         self.assertTrue(recommendation.example_image_file)
         self.assertEqual(recommendation.example_source, "Simulated mock data")
-        self.assertTrue(recommendation.related_case_study_examples)
+        self.assertTrue(recommendation.related_published_study_application_examples)
         self.assertIn("not implemented", recommendation.implementation_note)
 
     def test_each_primary_task_generates_a_recommendation(self):

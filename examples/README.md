@@ -1,7 +1,7 @@
 # Visual Example Figures
 
 This folder contains illustrative examples for recommendation outputs that are
-not directly covered by the NHANES worked case study.
+not directly covered by the NHANES application to a published study.
 
 The examples are deliberately small and transparent. Each plotting function in
 `generate_mock_visualisation_examples.py` creates the minimal simulated data
@@ -30,12 +30,12 @@ python3 examples/generate_mock_visualisation_examples.py
 ```
 
 The generated figures are linked from the decision-tree outputs through
-`decision_tree.py`. Recommendations implemented in the NHANES worked case study
-link to real case-study figures instead of simulated examples.
+`decision_tree.py`. Recommendations implemented in the NHANES application to a published study
+link to real published-study application figures instead of simulated examples.
 
 ## Future Development
 
 A future version of the toolkit could replace simulated examples with additional
-real-world case studies after recommendations and checklist-informed design
+real-world applications to published studies after recommendations and checklist-informed design
 choices have been tested across more datasets, metrics, audiences, and research
 questions.

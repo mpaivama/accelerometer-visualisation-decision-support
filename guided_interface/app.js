@@ -20,8 +20,8 @@ const resultsBackButton = document.querySelector("#results-back-button");
 const resultsResetButton = document.querySelector("#results-reset-button");
 
 const displayText = {
-  direct_example_available: "case-study example available",
-  related_example_available: "related case-study example available",
+  direct_example_available: "published-study application example available",
+  related_example_available: "related published-study application example available",
   general_example_available: "simulated example available",
   signpost_only: "guidance only",
 };
@@ -238,10 +238,10 @@ async function renderResults() {
     addDetail(card, "Example available", recommendation.implementation_status);
     addDetail(card, "About this example", recommendation.implementation_note);
     addDetail(card, "Example code", recommendation.example_code_file);
-    addDetailList(card, "Case-study code examples", recommendation.direct_case_study_examples);
-    addDetailList(card, "Related case-study code", recommendation.related_case_study_examples);
+    addDetailList(card, "Published-study application code examples", recommendation.direct_published_study_application_examples);
+    addDetailList(card, "Related published-study application code", recommendation.related_published_study_application_examples);
     addDetail(card, "Data to prepare", recommendation.data_required);
-    addDetailList(card, "Main code changes", recommendation.case_study_adaptation_points);
+    addDetailList(card, "Main code changes", recommendation.published_study_application_adaptation_points);
     addDetailList(card, "Checklist reminders", recommendation.checklist_aspects_to_review);
     recommendationList.append(card);
   });

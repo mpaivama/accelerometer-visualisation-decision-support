@@ -310,7 +310,7 @@ Each recommendation includes:
 - a caution;
 - adaptation guidance showing which mappings a future plotting template would
   need changed; and
-- an implementation status, currently `signpost_only` until case-study plotting
+- an implementation status, currently `signpost_only` until published-study application plotting
   templates are developed."""
         ),
         nbf.v4.new_code_cell(
@@ -327,9 +327,9 @@ except (ValueError, TypeError) as error:
 
 The recommendation is a starting point for an analytically appropriate display.
 The later checklist-informed plotting code will implement formatting and design
-principles for the visualisations selected for the worked case study.
+principles for the visualisations selected for the application to a published study.
 
-Recommendations outside that case-study scope will remain signposts with
+Recommendations outside that published-study application scope will remain signposts with
 adaptation guidance rather than fully implemented plotting functions."""
         ),
     ]

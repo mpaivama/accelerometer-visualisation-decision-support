@@ -2,7 +2,7 @@
 
 These figures use small simulated datasets created inside each plotting
 function. They are intended to show the visual structure of recommendation
-families that are not directly implemented in the NHANES worked case study.
+families that are not directly implemented in the NHANES application to a published study.
 They are not validation evidence for comprehension or effectiveness.
 
 How to adapt this script for real data:

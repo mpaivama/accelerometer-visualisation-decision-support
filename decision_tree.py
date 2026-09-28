@@ -127,8 +127,8 @@ DISPLAY_LABELS = {
         "not_applicable": "Not tied to full-day or waking-time",
     },
     "implementation_status": {
-        "direct_example_available": "case-study example available",
-        "related_example_available": "related case-study example available",
+        "direct_example_available": "published-study application example available",
+        "related_example_available": "related published-study application example available",
         "general_example_available": "simulated example available",
         "signpost_only": "guidance only",
     },
@@ -176,10 +176,10 @@ class Recommendation:
     example_source: str | None = None
     example_source_note: str | None = None
     example_code_file: str | None = None
-    direct_case_study_examples: list[str] = field(default_factory=list)
-    related_case_study_examples: list[str] = field(default_factory=list)
+    direct_published_study_application_examples: list[str] = field(default_factory=list)
+    related_published_study_application_examples: list[str] = field(default_factory=list)
     data_required: str | None = None
-    case_study_adaptation_points: list[str] = field(default_factory=list)
+    published_study_application_adaptation_points: list[str] = field(default_factory=list)
     checklist_aspects_to_review: list[str] = field(default_factory=list)
 
 
@@ -193,14 +193,14 @@ class DecisionResult:
     design_notes: list[str] = field(default_factory=list)
 
 
-CASE_STUDY_EXAMPLE_CODE_FILE = (
-    "case_study/create_case_study_visualisations.py in the repository; "
-    "Case study/scripts/create_case_study_visualisations.py in the shared Use cases folder."
+PUBLISHED_STUDY_APPLICATION_EXAMPLE_CODE_FILE = (
+    "application_to_a_published_study/create_published_study_application_visualisations.py in the repository; "
+    "Application to a published study/scripts/create_published_study_application_visualisations.py in the shared Use cases folder."
 )
 
 MOCK_EXAMPLE_CODE_FILE = "examples/generate_mock_visualisation_examples.py"
 
-CASE_STUDY_EXAMPLES = {
+PUBLISHED_STUDY_APPLICATION_EXAMPLES = {
     "paired_overall": (
         "Figure 1 / plot_overall_weekday_weekend(): paired summary "
         "weekday-versus-weekend MIMS estimates."
@@ -230,25 +230,25 @@ CASE_STUDY_EXAMPLES = {
         "bar-chart example for percentage differences."
     ),
     "helpers": (
-        "Shared helpers in create_case_study_visualisations.py: "
+        "Shared helpers in create_published_study_application_visualisations.py: "
         "apply_plot_style(), clean_axis(), configure_x_axis(), save_figure(), "
         "and write_figure_notes()."
     ),
 }
 
-CASE_STUDY_EXAMPLE_IMAGES = {
-    "paired_overall": "case_study/figures/figure_01_overall_weekday_weekend_mims.png",
-    "point_range": "case_study/figures/figure_02_difference_by_subgroup_adults.png",
-    "distribution": "case_study/figures/figure_06_individual_difference_distribution.png",
-    "hexbin": "case_study/figures/figure_07_weekday_weekend_relationship.png",
-    "summary_dot": "case_study/figures/figure_08_percentage_difference_summary_dot.png",
-    "bar_alternative": "case_study/figures/figure_09_percentage_difference_bar_alternative.png",
+PUBLISHED_STUDY_APPLICATION_EXAMPLE_IMAGES = {
+    "paired_overall": "application_to_a_published_study/figures/figure_01_overall_weekday_weekend_mims.png",
+    "point_range": "application_to_a_published_study/figures/figure_02_difference_by_subgroup_adults.png",
+    "distribution": "application_to_a_published_study/figures/figure_06_individual_difference_distribution.png",
+    "hexbin": "application_to_a_published_study/figures/figure_07_weekday_weekend_relationship.png",
+    "summary_dot": "application_to_a_published_study/figures/figure_08_percentage_difference_summary_dot.png",
+    "bar_alternative": "application_to_a_published_study/figures/figure_09_percentage_difference_bar_alternative.png",
 }
 
-CASE_STUDY_EXAMPLE_SOURCE = "NHANES case-study data"
-CASE_STUDY_EXAMPLE_SOURCE_NOTE = (
+PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE = "Data reconstructed for the published-study application"
+PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE_NOTE = (
     "This visual example was generated from the reproduced NHANES 2011-2014 "
-    "worked case-study outputs."
+    "outputs used in the application to a published study."
 )
 
 MOCK_EXAMPLE_SOURCE = "Simulated mock data"
@@ -292,26 +292,26 @@ DEFAULT_CHECKLIST_ASPECTS = [
     "Write a caption and alt text that explain the visual mapping.",
 ]
 
-CASE_STUDY_IMPLEMENTATION_REGISTRY = {
+PUBLISHED_STUDY_APPLICATION_IMPLEMENTATION_REGISTRY = {
     "Paired dot plot or slope chart": {
         "implementation_status": "direct_example_available",
         "implementation_note": (
-            "A worked case-study example is available for paired summary "
+            "A application to a published study example is available for paired summary "
             "accelerometer metrics. Use it as the primary starting point when the "
             "decision tree recommends a two-level paired comparison."
         ),
-        "direct_case_study_examples": [
-            CASE_STUDY_EXAMPLES["paired_overall"],
-            CASE_STUDY_EXAMPLES["paired_panels"],
+        "direct_published_study_application_examples": [
+            PUBLISHED_STUDY_APPLICATION_EXAMPLES["paired_overall"],
+            PUBLISHED_STUDY_APPLICATION_EXAMPLES["paired_panels"],
         ],
-        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["paired_overall"],
-        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
-        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
+        "example_image_file": PUBLISHED_STUDY_APPLICATION_EXAMPLE_IMAGES["paired_overall"],
+        "example_source": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE,
+        "example_source_note": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE_NOTE,
         "data_required": (
             "One row per paired level, group, or subgroup, with estimate and "
             "optional lower/upper interval columns."
         ),
-        "case_study_adaptation_points": [
+        "published_study_application_adaptation_points": [
             "Replace weekday/weekend labels with the paired levels or conditions.",
             "Replace MIMS-units with the selected accelerometer metric and units.",
             "Use summary connectors only for linked summary estimates; avoid implying participant-level trajectories when individual trajectories are not plotted.",
@@ -325,18 +325,18 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
     "Point-range plot": {
         "implementation_status": "direct_example_available",
         "implementation_note": (
-            "A worked case-study example is available for summary comparisons "
+            "A application to a published study example is available for summary comparisons "
             "with uncertainty intervals."
         ),
-        "direct_case_study_examples": [CASE_STUDY_EXAMPLES["point_range"]],
-        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["point_range"],
-        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
-        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
+        "direct_published_study_application_examples": [PUBLISHED_STUDY_APPLICATION_EXAMPLES["point_range"]],
+        "example_image_file": PUBLISHED_STUDY_APPLICATION_EXAMPLE_IMAGES["point_range"],
+        "example_source": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE,
+        "example_source_note": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE_NOTE,
         "data_required": (
             "One row per category or subgroup, with a summary estimate and lower/"
             "upper interval columns."
         ),
-        "case_study_adaptation_points": [
+        "published_study_application_adaptation_points": [
             "Replace subgroup domains and category order with those relevant to the research question.",
             "Replace weekday-minus-weekend MIMS-units with the selected summary metric.",
             "Define whether intervals are confidence intervals, standard errors, or another quantity.",
@@ -350,18 +350,18 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
     "Histogram or density plot": {
         "implementation_status": "direct_example_available",
         "implementation_note": (
-            "A worked case-study example is available for displaying the "
+            "A application to a published study example is available for displaying the "
             "distribution of participant-level accelerometer metrics."
         ),
-        "direct_case_study_examples": [CASE_STUDY_EXAMPLES["distribution"]],
-        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["distribution"],
-        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
-        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
+        "direct_published_study_application_examples": [PUBLISHED_STUDY_APPLICATION_EXAMPLES["distribution"]],
+        "example_image_file": PUBLISHED_STUDY_APPLICATION_EXAMPLE_IMAGES["distribution"],
+        "example_source": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE,
+        "example_source_note": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE_NOTE,
         "data_required": (
             "Participant-level or observation-level metric values, optionally with "
             "a grouping variable for panels."
         ),
-        "case_study_adaptation_points": [
+        "published_study_application_adaptation_points": [
             "Replace the participant-level difference variable with the metric whose distribution should be shown.",
             "Choose histogram bin width or density smoothing deliberately and report any trimming.",
             "Use filled area or another clear distribution encoding when distribution shape is the message.",
@@ -375,18 +375,18 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
     "Hexbin or two-dimensional density plot": {
         "implementation_status": "direct_example_available",
         "implementation_note": (
-            "A worked case-study example is available for many paired continuous "
+            "A application to a published study example is available for many paired continuous "
             "observations where a standard scatterplot would overplot."
         ),
-        "direct_case_study_examples": [CASE_STUDY_EXAMPLES["hexbin"]],
-        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["hexbin"],
-        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
-        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
+        "direct_published_study_application_examples": [PUBLISHED_STUDY_APPLICATION_EXAMPLES["hexbin"]],
+        "example_image_file": PUBLISHED_STUDY_APPLICATION_EXAMPLE_IMAGES["hexbin"],
+        "example_source": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE,
+        "example_source_note": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE_NOTE,
         "data_required": (
             "One row per observation with two paired continuous variables; at "
             "least one should be a direct accelerometer-derived metric."
         ),
-        "case_study_adaptation_points": [
+        "published_study_application_adaptation_points": [
             "Replace weekday and weekend-day MIMS variables with the two continuous variables to compare.",
             "Choose bin size or density settings deliberately and describe the colour scale.",
             "Use a reference line only when it has a meaningful interpretation for the variables.",
@@ -404,11 +404,11 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
             "shows the same small-multiple distribution logic and checklist "
             "treatment."
         ),
-        "related_case_study_examples": [CASE_STUDY_EXAMPLES["distribution"]],
+        "related_published_study_application_examples": [PUBLISHED_STUDY_APPLICATION_EXAMPLES["distribution"]],
         "data_required": (
             "Observation-level metric values and a grouping variable for facets."
         ),
-        "case_study_adaptation_points": [
+        "published_study_application_adaptation_points": [
             "Replace the filled histogram layer with a density curve or ECDF layer.",
             "Keep shared axes across facets when visual comparison is intended.",
             "Explain density or cumulative proportion in plain language when needed.",
@@ -422,11 +422,11 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
             "closely related relationship example. Use a scatter layer instead "
             "of hexbin when overplotting is not a concern."
         ),
-        "related_case_study_examples": [CASE_STUDY_EXAMPLES["hexbin"]],
+        "related_published_study_application_examples": [PUBLISHED_STUDY_APPLICATION_EXAMPLES["hexbin"]],
         "data_required": (
             "One row per observation with paired values for two continuous variables."
         ),
-        "case_study_adaptation_points": [
+        "published_study_application_adaptation_points": [
             "Replace the hexbin layer with points when the number of data units is readable.",
             "Use transparency or small markers if mild overplotting remains.",
             "Avoid adding trend lines unless they represent a clearly described descriptive summary rather than a model result.",
@@ -440,11 +440,11 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
             "point-range example shows the summary and interval layer. Add raw "
             "points when individual observations are available."
         ),
-        "related_case_study_examples": [CASE_STUDY_EXAMPLES["point_range"]],
+        "related_published_study_application_examples": [PUBLISHED_STUDY_APPLICATION_EXAMPLES["point_range"]],
         "data_required": (
             "Observation-level values plus group summary estimates and intervals."
         ),
-        "case_study_adaptation_points": [
+        "published_study_application_adaptation_points": [
             "Add raw points behind the summary marker using jitter or transparency.",
             "Keep the summary marker visually distinct from individual data units.",
             "State whether intervals show uncertainty around the summary or variability in observations.",
@@ -454,16 +454,16 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
     "Summary dot plot": {
         "implementation_status": "direct_example_available",
         "implementation_note": (
-            "A worked case-study example is available for summary percentage "
+            "A application to a published study example is available for summary percentage "
             "differences when the relative difference is useful as secondary "
             "descriptive context."
         ),
-        "direct_case_study_examples": [CASE_STUDY_EXAMPLES["summary_dot"]],
-        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["summary_dot"],
-        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
-        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
+        "direct_published_study_application_examples": [PUBLISHED_STUDY_APPLICATION_EXAMPLES["summary_dot"]],
+        "example_image_file": PUBLISHED_STUDY_APPLICATION_EXAMPLE_IMAGES["summary_dot"],
+        "example_source": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE,
+        "example_source_note": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE_NOTE,
         "data_required": "One summary value per category or subgroup.",
-        "case_study_adaptation_points": [
+        "published_study_application_adaptation_points": [
             "Replace percentage weekday-weekend difference with the selected summary metric.",
             "Use direct labels when there are few summary values and uncertainty is not central.",
             "Make clear why uncertainty or variability is not shown.",
@@ -473,16 +473,16 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
     "Bar chart": {
         "implementation_status": "direct_example_available",
         "implementation_note": (
-            "A worked case-study example is available as a conditional bar-chart "
+            "A application to a published study example is available as a conditional bar-chart "
             "alternative. Use this only when magnitude from a meaningful zero is "
             "the main message and uncertainty is not central."
         ),
-        "direct_case_study_examples": [CASE_STUDY_EXAMPLES["bar_alternative"]],
-        "example_image_file": CASE_STUDY_EXAMPLE_IMAGES["bar_alternative"],
-        "example_source": CASE_STUDY_EXAMPLE_SOURCE,
-        "example_source_note": CASE_STUDY_EXAMPLE_SOURCE_NOTE,
+        "direct_published_study_application_examples": [PUBLISHED_STUDY_APPLICATION_EXAMPLES["bar_alternative"]],
+        "example_image_file": PUBLISHED_STUDY_APPLICATION_EXAMPLE_IMAGES["bar_alternative"],
+        "example_source": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE,
+        "example_source_note": PUBLISHED_STUDY_APPLICATION_EXAMPLE_SOURCE_NOTE,
         "data_required": "One summary value per category, group, or subgroup.",
-        "case_study_adaptation_points": [
+        "published_study_application_adaptation_points": [
             "Replace percentage weekday-weekend difference with a metric that has a meaningful zero.",
             "Use bars only when the filled length supports the intended message.",
             "Prefer point-range or dot-based summaries when uncertainty or interval estimates are central.",
@@ -495,9 +495,9 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
             "The exact box/violin plot is not implemented, but Figure 6 provides "
             "the closest participant-level distribution example."
         ),
-        "related_case_study_examples": [CASE_STUDY_EXAMPLES["distribution"]],
+        "related_published_study_application_examples": [PUBLISHED_STUDY_APPLICATION_EXAMPLES["distribution"]],
         "data_required": "Observation-level values and the category or group being compared.",
-        "case_study_adaptation_points": [
+        "published_study_application_adaptation_points": [
             "Replace the histogram layer with a box, violin, and/or raw-point layer.",
             "Use raw points when sample size and overlap allow.",
             "Avoid violin layers for very small samples.",
@@ -511,13 +511,13 @@ CASE_STUDY_IMPLEMENTATION_REGISTRY = {
             "Figure 6 provides the closest participant-level observed-value "
             "example and checklist treatment."
         ),
-        "related_case_study_examples": [CASE_STUDY_EXAMPLES["distribution"]],
+        "related_published_study_application_examples": [PUBLISHED_STUDY_APPLICATION_EXAMPLES["distribution"]],
         "data_required": (
             "One observed accelerometer metric value per participant, day, bout, "
             "or other unit."
         ),
-        "case_study_adaptation_points": [
-            "Replace the case-study difference metric with the single metric whose values should be displayed.",
+        "published_study_application_adaptation_points": [
+            "Replace the published-study application difference metric with the single metric whose values should be displayed.",
             "Use one position axis for the metric value and jitter or transparency when points overlap.",
             "Add a clearly distinct summary marker only if a summary is part of the intended message.",
         ],
@@ -695,28 +695,28 @@ def validate_inputs(inputs: DecisionInputs) -> None:
 
 
 def _implementation_metadata(visualisation: str) -> dict:
-    """Return case-study example guidance for a recommendation."""
+    """Return published-study application example guidance for a recommendation."""
 
-    if visualisation in CASE_STUDY_IMPLEMENTATION_REGISTRY:
-        metadata = CASE_STUDY_IMPLEMENTATION_REGISTRY[visualisation].copy()
+    if visualisation in PUBLISHED_STUDY_APPLICATION_IMPLEMENTATION_REGISTRY:
+        metadata = PUBLISHED_STUDY_APPLICATION_IMPLEMENTATION_REGISTRY[visualisation].copy()
     else:
         metadata = {
             "implementation_status": "general_example_available",
             "implementation_note": (
                 "This exact visualisation is not implemented in the NHANES "
-                "worked case study, so the visual example uses simulated data. "
-                "The case-study plotting script still provides adaptable "
+                "application to a published study, so the visual example uses simulated data. "
+                "The published-study application plotting script still provides adaptable "
                 "examples of data preparation, checklist-informed design "
                 "defaults, accessible colour, captions, alt text, and "
                 "multi-format export."
             ),
-            "related_case_study_examples": [CASE_STUDY_EXAMPLES["helpers"]],
+            "related_published_study_application_examples": [PUBLISHED_STUDY_APPLICATION_EXAMPLES["helpers"]],
             "data_required": (
                 "Prepare data in the structure described by the visual mapping for "
                 "this recommendation."
             ),
-            "case_study_adaptation_points": [
-                "Start from the case-study script section whose visual structure is closest to this recommendation.",
+            "published_study_application_adaptation_points": [
+                "Start from the published-study application script section whose visual structure is closest to this recommendation.",
                 "Replace the NHANES-specific metric names, grouping variables, category order, and labels.",
                 "Adapt the plotting layer so the marks match the recommended visual mapping.",
                 "Review the checklist items that depend on the chosen visualisation type.",
@@ -738,11 +738,11 @@ def _implementation_metadata(visualisation: str) -> dict:
     if metadata.get("example_source") == MOCK_EXAMPLE_SOURCE:
         metadata.setdefault("example_code_file", MOCK_EXAMPLE_CODE_FILE)
     else:
-        metadata.setdefault("example_code_file", CASE_STUDY_EXAMPLE_CODE_FILE)
-    metadata.setdefault("direct_case_study_examples", [])
-    metadata.setdefault("related_case_study_examples", [])
+        metadata.setdefault("example_code_file", PUBLISHED_STUDY_APPLICATION_EXAMPLE_CODE_FILE)
+    metadata.setdefault("direct_published_study_application_examples", [])
+    metadata.setdefault("related_published_study_application_examples", [])
     metadata.setdefault("data_required", None)
-    metadata.setdefault("case_study_adaptation_points", [])
+    metadata.setdefault("published_study_application_adaptation_points", [])
     metadata.setdefault("checklist_aspects_to_review", DEFAULT_CHECKLIST_ASPECTS)
     return metadata
 
@@ -991,7 +991,7 @@ def _adaptation_guidance(visualisation: str) -> str:
     if any(term in name for term in ("scatter", "hexbin")):
         return guidance["scatter"]
     return (
-        "Use the case-study template as a structural example, then change the "
+        "Use the published-study application template as a structural example, then change the "
         "data preparation and visual mappings named in this recommendation."
     )
 
@@ -1516,22 +1516,22 @@ def format_result(result: DecisionResult) -> str:
             lines.append(f"   Example source note: {rec.example_source_note}")
         if rec.example_code_file:
             lines.append(f"   Example code file: {rec.example_code_file}")
-        if rec.direct_case_study_examples:
-            lines.append("   Case-study code examples:")
+        if rec.direct_published_study_application_examples:
+            lines.append("   Published-study application code examples:")
             lines.extend(
-                f"      - {example}" for example in rec.direct_case_study_examples
+                f"      - {example}" for example in rec.direct_published_study_application_examples
             )
-        if rec.related_case_study_examples:
-            lines.append("   Related case-study code:")
+        if rec.related_published_study_application_examples:
+            lines.append("   Related published-study application code:")
             lines.extend(
-                f"      - {example}" for example in rec.related_case_study_examples
+                f"      - {example}" for example in rec.related_published_study_application_examples
             )
         if rec.data_required:
             lines.append(f"   Data needed: {rec.data_required}")
-        if rec.case_study_adaptation_points:
+        if rec.published_study_application_adaptation_points:
             lines.append("   Main code changes:")
             lines.extend(
-                f"      - {point}" for point in rec.case_study_adaptation_points
+                f"      - {point}" for point in rec.published_study_application_adaptation_points
             )
         if rec.checklist_aspects_to_review:
             lines.append("   Checklist reminders:")

@@ -349,7 +349,7 @@ def copy_example_figures() -> None:
 
     figure_roots = [
         ROOT / "examples" / "figures",
-        ROOT / "case_study" / "figures",
+        ROOT / "application_to_a_published_study" / "figures",
     ]
 
     for source_dir in figure_roots:

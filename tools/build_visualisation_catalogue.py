@@ -1,7 +1,7 @@
 """Build a DOCX catalogue of generated visualisation examples.
 
 The catalogue is intended as a supplementary-material style artifact. It
-includes every worked case-study PNG and every simulated mock-data PNG used by
+includes every application to a published study PNG and every simulated mock-data PNG used by
 the recommendation interface.
 """
 
@@ -31,9 +31,9 @@ OUTPUT_DIR = ROOT / "visualisation_catalogue"
 OUTPUT_DOCX = OUTPUT_DIR / "Visualisation_examples_catalogue.docx"
 OUTPUT_PDF = OUTPUT_DIR / "Visualisation_examples_catalogue.pdf"
 
-CASE_STUDY_FIGURE_DIR = ROOT / "case_study" / "figures"
+PUBLISHED_STUDY_APPLICATION_FIGURE_DIR = ROOT / "application_to_a_published_study" / "figures"
 MOCK_FIGURE_DIR = ROOT / "examples" / "figures"
-CASE_STUDY_NOTES = CASE_STUDY_FIGURE_DIR / "case_study_visualisation_notes.md"
+PUBLISHED_STUDY_APPLICATION_NOTES = PUBLISHED_STUDY_APPLICATION_FIGURE_DIR / "published_study_application_visualisation_notes.md"
 EXAMPLE_GENERATOR = ROOT / "examples" / "generate_mock_visualisation_examples.py"
 
 PAGE_WIDTH_IN = 11.0
@@ -89,10 +89,10 @@ def fit_image(path: Path) -> tuple[float, float]:
     return width, height
 
 
-def case_study_entries() -> list[dict[str, str | Path]]:
-    """Extract ordered figure entries and captions from the case-study notes."""
+def published_study_application_entries() -> list[dict[str, str | Path]]:
+    """Extract ordered figure entries and captions from the published-study application notes."""
 
-    text = CASE_STUDY_NOTES.read_text(encoding="utf-8")
+    text = PUBLISHED_STUDY_APPLICATION_NOTES.read_text(encoding="utf-8")
     pattern = re.compile(
         r"## Figure (?P<number>\d+)\. (?P<title>.*?)\n\n"
         r"\*\*Files:\*\* (?P<files>.*?)\n\n"
@@ -108,8 +108,8 @@ def case_study_entries() -> list[dict[str, str | Path]]:
                 "number": match.group("number"),
                 "title": match.group("title").strip(),
                 "caption": re.sub(r"\s+", " ", match.group("caption")).strip(),
-                "path": CASE_STUDY_FIGURE_DIR / png,
-                "source": "Worked case study, reproduced NHANES 2011-2014 data",
+                "path": PUBLISHED_STUDY_APPLICATION_FIGURE_DIR / png,
+                "source": "Application to a published study, reproduced NHANES 2011-2014 data",
             }
         )
     return entries
@@ -214,7 +214,7 @@ def configure_document(document: Document) -> None:
     source.paragraph_format.space_after = Pt(4)
 
 
-def add_cover(document: Document, total_case: int, total_mock: int) -> None:
+def add_cover(document: Document, total_application: int, total_mock: int) -> None:
     title = document.add_paragraph(style="Title")
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     title.add_run("Visualisation Examples Catalogue")
@@ -230,8 +230,8 @@ def add_cover(document: Document, total_case: int, total_mock: int) -> None:
     note = document.add_paragraph()
     note.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = note.add_run(
-        f"This document contains {total_case + total_mock} generated visualisation examples: "
-        f"{total_case} worked case-study examples and {total_mock} simulated data examples."
+        f"This document contains {total_application + total_mock} generated visualisation examples: "
+        f"{total_application} application-to-a-published-study examples and {total_mock} simulated data examples."
     )
     run.font.size = Pt(10)
     run.font.color.rgb = INK
@@ -240,8 +240,8 @@ def add_cover(document: Document, total_case: int, total_mock: int) -> None:
     set_cell_shading(callout, "F2F7FB")
     callout.alignment = WD_ALIGN_PARAGRAPH.LEFT
     run = callout.add_run(
-        "Worked case-study examples were generated from the reproduced NHANES 2011-2014 "
-        "case-study outputs. Simulated data examples were generated from small mock datasets "
+        "Application to a published study examples were generated from the reproduced NHANES 2011-2014 "
+        "outputs reconstructed for the published-study application. Simulated data examples were generated from small mock datasets "
         "to illustrate recommendation-specific visual structures and should not be interpreted "
         "as evidence that the designs have been empirically tested."
     )
@@ -291,26 +291,26 @@ def add_figure_page(
 
 def build_catalogue() -> Path:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    case_entries = case_study_entries()
+    application_entries = published_study_application_entries()
     mock_entries = load_mock_recommendation_order()
 
     document = Document()
     configure_document(document)
-    add_cover(document, len(case_entries), len(mock_entries))
+    add_cover(document, len(application_entries), len(mock_entries))
 
     add_section_heading(
         document,
-        "Worked case study examples",
-        "Figures generated from the reproduced NHANES case-study dataset and associated summary outputs.",
+        "Application to a published study examples",
+        "Figures generated from the reconstructed NHANES dataset and associated summary outputs used in the published-study application.",
     )
-    for index, entry in enumerate(case_entries, start=1):
+    for index, entry in enumerate(application_entries, start=1):
         add_figure_page(
             document,
             title=str(entry["title"]),
             caption=str(entry["caption"]),
             source=str(entry["source"]),
             image_path=Path(entry["path"]),
-            figure_label=f"Worked example {index}",
+            figure_label=f"Published-study application example {index}",
         )
         document.add_page_break()
 
@@ -376,7 +376,7 @@ def draw_wrapped_pdf_text(
     return y
 
 
-def draw_pdf_cover(pdf: canvas.Canvas, total_case: int, total_mock: int) -> None:
+def draw_pdf_cover(pdf: canvas.Canvas, total_application: int, total_mock: int) -> None:
     pdf.setPageSize(landscape(letter))
     width, height = landscape(letter)
     pdf.setFillColor(HexColor(INK_HEX))
@@ -395,8 +395,8 @@ def draw_pdf_cover(pdf: canvas.Canvas, total_case: int, total_mock: int) -> None
     pdf.setFont("Helvetica", 11)
     pdf.setFillColor(HexColor(INK_HEX))
     summary = (
-        f"{total_case + total_mock} generated visualisation examples: "
-        f"{total_case} worked case-study examples and {total_mock} simulated data examples."
+        f"{total_application + total_mock} generated visualisation examples: "
+        f"{total_application} application-to-a-published-study examples and {total_mock} simulated data examples."
     )
     pdf.drawCentredString(width / 2, height - 215, summary)
 
@@ -407,8 +407,8 @@ def draw_pdf_cover(pdf: canvas.Canvas, total_case: int, total_mock: int) -> None
     pdf.setFillColor(HexColor(CALLOUT_HEX))
     pdf.roundRect(callout_x, callout_y, callout_w, callout_h, 8, fill=1, stroke=0)
     text = (
-        "Worked case-study examples were generated from the reproduced NHANES "
-        "2011-2014 case-study outputs. Simulated data examples were generated "
+        "Application to a published study examples were generated from the reproduced NHANES "
+        "2011-2014 outputs reconstructed for the published-study application. Simulated data examples were generated "
         "from small mock datasets to illustrate recommendation-specific visual "
         "structures and should not be interpreted as evidence that the designs "
         "have been empirically tested."
@@ -532,29 +532,29 @@ def draw_pdf_figure_page(
     pdf.showPage()
 
 
-def build_pdf(case_entries: list[dict[str, str | Path]], mock_entries: list[dict[str, str | Path]]) -> Path:
+def build_pdf(application_entries: list[dict[str, str | Path]], mock_entries: list[dict[str, str | Path]]) -> Path:
     """Build a direct PDF version of the same catalogue."""
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     pdf = canvas.Canvas(str(OUTPUT_PDF), pagesize=landscape(letter))
     pdf.setTitle("Visualisation Examples Catalogue")
     pdf.setAuthor("Visualisation decision-support toolkit")
-    pdf.setSubject("Generated worked case-study and simulated visualisation examples")
+    pdf.setSubject("Generated application to a published study and simulated visualisation examples")
 
-    draw_pdf_cover(pdf, len(case_entries), len(mock_entries))
+    draw_pdf_cover(pdf, len(application_entries), len(mock_entries))
     draw_pdf_section(
         pdf,
-        "Worked case study examples",
-        "Figures generated from the reproduced NHANES case-study dataset and associated summary outputs.",
+        "Application to a published study examples",
+        "Figures generated from the reconstructed NHANES dataset and associated summary outputs used in the published-study application.",
     )
-    for index, entry in enumerate(case_entries, start=1):
+    for index, entry in enumerate(application_entries, start=1):
         draw_pdf_figure_page(
             pdf,
             title=str(entry["title"]),
             caption=str(entry["caption"]),
             source=str(entry["source"]),
             image_path=Path(entry["path"]),
-            figure_label=f"Worked example {index}",
+            figure_label=f"Published-study application example {index}",
         )
 
     draw_pdf_section(
@@ -580,7 +580,7 @@ def build_all() -> tuple[Path, Path]:
     """Build both DOCX and PDF catalogue artifacts."""
 
     docx_path = build_catalogue()
-    pdf_path = build_pdf(case_study_entries(), load_mock_recommendation_order())
+    pdf_path = build_pdf(published_study_application_entries(), load_mock_recommendation_order())
     return docx_path, pdf_path
 
 

@@ -62,16 +62,16 @@ Each recommendation contains:
 | `use_when` | Conditions under which the recommendation is most appropriate. |
 | `caution` | Interpretation, readability, or design risks. |
 | `adaptation_guidance` | Signposting for where a plotting template would need to be adapted. |
-| `implementation_status` | Indicates whether a direct case-study example, related case-study example, or simulated example is available. |
+| `implementation_status` | Indicates whether a direct published-study application example, related published-study application example, or simulated example is available. |
 | `implementation_note` | Explains how closely the available example matches the recommendation. |
 | `example_image_file` | Points to the PNG visual example displayed in the interface. |
-| `example_source` | States whether the example uses NHANES case-study data or simulated mock data. |
+| `example_source` | States whether the example uses data reconstructed for the published-study application or simulated mock data. |
 | `example_source_note` | Explains the interpretation and limitations of the example source. |
-| `example_code_file` | Points to the case-study plotting script or simulated-example generator that users can inspect or adapt. |
-| `direct_case_study_examples` | Lists figures or functions that directly implement the recommendation. |
-| `related_case_study_examples` | Lists figures or functions with a related visual structure. |
+| `example_code_file` | Points to the published-study application plotting script or simulated-example generator that users can inspect or adapt. |
+| `direct_published_study_application_examples` | Lists figures or functions that directly implement the recommendation. |
+| `related_published_study_application_examples` | Lists figures or functions with a related visual structure. |
 | `data_required` | Describes the data structure needed to produce the recommended visualisation. |
-| `case_study_adaptation_points` | Identifies the case-study-specific elements a user would need to replace or edit. |
+| `published_study_application_adaptation_points` | Identifies the published-study application-specific elements a user would need to replace or edit. |
 | `checklist_aspects_to_review` | Lists checklist principles that remain especially relevant when implementing or adapting the recommendation. |
 
 The addition of `visual_mapping` was important because recommendation names,
@@ -101,14 +101,14 @@ in this order:
 | Use when | `use_when` | The situation in which this recommendation is most appropriate. |
 | Caution | `caution` | Risks, interpretive limitations, or readability issues to consider. |
 | How to adapt code later | `adaptation_guidance` | Which visual mappings or plotting layers would need to change in a plotting template. |
-| Visual example | `example_image_file`, `example_source`, `example_source_note` | A visual example of the recommended structure, labelled as NHANES case-study data or simulated mock data. |
-| Example status | `implementation_status` | Whether a direct case-study example, related case-study example, or simulated example is available. |
+| Visual example | `example_image_file`, `example_source`, `example_source_note` | A visual example of the recommended structure, labelled as data reconstructed for the published-study application or simulated mock data. |
+| Example status | `implementation_status` | Whether a direct published-study application example, related published-study application example, or simulated example is available. |
 | Example note | `implementation_note` | A short explanation of the relationship between the recommendation and the available example. |
-| Example code file | `example_code_file` | Where to find the code that generated the case-study or simulated example. |
-| Direct worked examples | `direct_case_study_examples` | Case-study figures/functions that directly implement the recommendation, where available. |
-| Related worked examples | `related_case_study_examples` | Case-study figures/functions that can be used as a starting point when the exact recommendation is not implemented. |
+| Example code file | `example_code_file` | Where to find the code that generated the published-study application or simulated example. |
+| Direct application examples | `direct_published_study_application_examples` | Published-study application figures/functions that directly implement the recommendation, where available. |
+| Related application examples | `related_published_study_application_examples` | Published-study application figures/functions that can be used as a starting point when the exact recommendation is not implemented. |
 | Data needed | `data_required` | The minimum data structure the user would need to prepare. |
-| Adapt in the worked example | `case_study_adaptation_points` | The case-study-specific labels, variables, groupings, or plotting layers the user would need to replace. |
+| Adapt the application example | `published_study_application_adaptation_points` | The published-study application-specific labels, variables, groupings, or plotting layers the user would need to replace. |
 | Checklist aspects to review | `checklist_aspects_to_review` | Checklist principles that should be checked when producing the final figure. |
 
 This means the final output does four things for each recommendation:
@@ -116,10 +116,10 @@ This means the final output does four things for each recommendation:
 - names the recommended visualisation;
 - specifies the intended visual structure;
 - explains why and when it should be used;
-- signposts how the user could begin implementing it from the worked-example or
+- signposts how the user could begin implementing it from the published-study application or
   simulated-example plotting code.
 
-Visual examples based on the NHANES worked case study use reproduced real-data
+Visual examples based on the NHANES application to a published study use reproduced real-data
 outputs from the selected paper. Visual examples based on simulated mock data
 are included only to demonstrate visual mapping and provide a coding starting
 point; they do not imply that the design has been formally tested for
@@ -446,9 +446,9 @@ review-status fields.
   rows and report sections.
 - The architecture figure has been updated to use the current title and the
   current proportion branch wording.
-- Application to the NHANES 2011-2014 case-study paper led to a refinement of
+- Application to the published NHANES 2011-2014 study led to a refinement of
   the two-level paired/repeated comparison recommendation. The original wording
-  implied participant-level connected lines, but the case-study paper reports
+  implied participant-level connected lines, but the published study reports
   weighted weekday and weekend summary estimates with confidence intervals.
   The recommendation now explicitly supports a summary paired/dumbbell variant
   and cautions against drawing participant-level trajectories when only summary
@@ -460,11 +460,11 @@ review-status fields.
   recommends single-value, observed-value, or single-summary displays as
   appropriate.
 
-## Case-study-driven refinement
+## Published-study application-driven refinement
 
-The first worked application used To et al. (2022), a paper comparing weekday
+The first application to a published study used To et al. (2022), a paper comparing weekday
 and weekend physical activity in NHANES 2011-2014 using daily MIMS-units. The
-case study clarified three points:
+application to a published study clarified three points:
 
 - The toolkit should use the descriptive accelerometer outputs from Tables 1 and
   2 as the basis for visualisation templates, because they directly display
@@ -476,7 +476,7 @@ case study clarified three points:
   paired dot/slope recommendation to include summary paired/dumbbell displays
   with clearly labelled intervals.
 
-## Questions to revisit after the first case-study application
+## Questions to revisit after the first application to a published study
 
 - Whether the field names `data_form`, `display_level`, and `primary_task` are
   understandable enough for movement-behaviour researchers without programming
@@ -489,10 +489,10 @@ case study clarified three points:
   pies, or whether multiple pies should always be translated into small-multiple
   composition bars.
 - Which of the 26 recommendation sets should receive implemented plotting
-  templates for the worked case study, and which should remain signposts only.
+  templates for the application to a published study, and which should remain signposts only.
 - Whether any recommendation names are still too broad without examples, even
   after adding visual mappings.
-- Whether future case studies expose more cases where one recommendation name
+- Whether future applications to published studies expose more cases where one recommendation name
   needs separate implementation variants for raw observations versus summary
   estimates.
 
@@ -508,5 +508,5 @@ case study clarified three points:
   report.
 - `decision_report/recommendation_sets.csv`: reviewable recommendation-set index.
 - `figures/Decision_tree_architecture_figure.*`: current architecture figure.
-- `CASE_STUDY_DECISION_TREE_APPLICATION.md`: first worked application and
-  case-study-driven refinement notes.
+- `PUBLISHED_STUDY_APPLICATION_DECISION_TREE.md`: first application to a published study and
+  refinement notes informed by that application.

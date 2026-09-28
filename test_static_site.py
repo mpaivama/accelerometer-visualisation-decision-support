@@ -71,7 +71,7 @@ class StaticSiteTests(unittest.TestCase):
             "No, still readable",
         )
 
-    def test_static_path_returns_case_study_like_recommendation(self) -> None:
+    def test_static_path_returns_published_study_application_like_recommendation(self) -> None:
         data = build_static_data()
         state, _answers = follow_path(
             data,

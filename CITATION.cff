@@ -35,7 +35,7 @@ abstract: >-
   checklist, report generator, structural-audit code, reusable plotting code,
   an application to a published NHANES study, simulated visualisation examples, documentation,
   and tests.
-version: '1.0.0'
+version: '1.0.1'
 license: MIT
 keywords:
   - accelerometry
